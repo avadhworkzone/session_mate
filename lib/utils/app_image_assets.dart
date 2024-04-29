@@ -59,4 +59,17 @@ class AppImageAssets {
   /// session screen
   static const String sessionIcn =
       '${AppConstants.baseIconAssetsPath}sessionIcn.svg';
+  ///DRAWER SCREEN
+  static const String profile =
+      '${AppConstants.baseImageAssetsPath}profile_photo.png';
+  static const String setting =
+      '${AppConstants.baseImageAssetsPath}Settings.png';
+  static const String arrow =
+      '${AppConstants.baseImageAssetsPath}Keyboard arrow right.png';
+  static const String delete =
+      '${AppConstants.baseImageAssetsPath}delete.png';
+  static const String exit =
+      '${AppConstants.baseImageAssetsPath}Exit to app.png';
+  static const String person =
+      '${AppConstants.baseImageAssetsPath}Person.png';
 }

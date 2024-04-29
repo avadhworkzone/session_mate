@@ -61,4 +61,15 @@ class AppStrings {
   static String confirmPasswordIsRequired = "confirm password is Required";
   static String isRequired = "isRequired";
   static String passValidation = "password and confirm password must be same";
+  /// Drawer
+  static String nitin = "Nitin";
+  static String user = "User 0987654321";
+  static String manageSessions = "Manage Sessions";
+  static String therapyCentres = "Manage Therapy Centres";
+  static String setting = "Setting";
+  static String myPlan = "My Plan";
+  static String delete = "Delete User Data";
+  static String logOut = "Log out";
+  static String plans = "Therapy Plans";
+  static String search = "Search For exchange rate";
 }
