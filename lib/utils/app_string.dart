@@ -19,6 +19,7 @@ class AppStrings {
   static String phoneNoHintTxt = 'Enter Your Phone number';
   static String passwordHintTxt = '*********';
   static String alreadyHaveAccount = 'Already have an Account ! ';
+  static String registerWith = 'Or Register with';
   static String privacyAndTermsCheckTxt =
       'By creating an account you agree to our';
   static String termsConditionTxt = 'Terms and Conditions';
@@ -29,6 +30,7 @@ class AppStrings {
   static String doNotHaveAccountTxt = 'Don’t have an Account ? ';
   static String rememberMe = 'Remember Me';
   static String forgotPassword = 'Forgot Password?';
+  static String loginWith = 'Or Login with';
 
   /// OTP VERIFICATION SCREEN
   static String otpVerificationTxt =

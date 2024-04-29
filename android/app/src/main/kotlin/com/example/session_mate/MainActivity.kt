@@ -1,4 +1,4 @@
-package com.example.session_mate
+package com.aiproff.sessionmate
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "824473918339",
+    "project_id": "session-mate-v2",
+    "storage_bucket": "session-mate-v2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:824473918339:android:9e77aaa912a92eb4fd34b6",
+        "android_client_info": {
+          "package_name": "com.aiproff.sessionmate"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCCPvygb8Emu4AV-9Z0bl8SQq2apISQ2hk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

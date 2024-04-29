@@ -15,6 +15,12 @@ class AppImageAssets {
       '${AppConstants.baseImageAssetsPath}signUpAppBar.png';
   static const String signUpManImage =
       '${AppConstants.baseImageAssetsPath}signUpImage.png';
+  static const String appleImage =
+      '${AppConstants.baseImageAssetsPath}appleImage.png';
+  static const String facebookImage =
+      '${AppConstants.baseImageAssetsPath}facebookImage.png';
+  static const String googleImage =
+      '${AppConstants.baseImageAssetsPath}googleImage.png';
 
   /// sign in screen
   static const String signInAppBarImage =
@@ -25,9 +31,9 @@ class AppImageAssets {
       '${AppConstants.baseImageAssetsPath}otpVerificationImage.png';
 
   /// BottomBar
-  static const String homeImg = '${AppConstants.baseImageAssetsPath}home.png';
   static const String homeSelectedImg =
-      '${AppConstants.baseImageAssetsPath}home (1).png';
+      '${AppConstants.baseImageAssetsPath}homeSelected.png';
+  static const String homeImg = '${AppConstants.baseImageAssetsPath}home.png';
   static const String sessionImg =
       '${AppConstants.baseImageAssetsPath}session.png';
   static const String sessionSelectedImg =

@@ -57,6 +57,10 @@ class SizeConfig {
   static Widget sH20 = SizedBox(
     height: 20.h,
   );
+  static Widget sH22 = SizedBox(
+    height: 22.h,
+  );
+
   static Widget sH25 = SizedBox(
     height: 25.h,
   );

@@ -11,6 +11,7 @@ import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:session_mate/utils/regex.dart';
 import 'package:session_mate/utils/size_config_utils.dart';
+import 'package:session_mate/view/auth/common_container_social_media.dart';
 import 'package:session_mate/view/auth/sign_up_screen.dart';
 import 'package:session_mate/view/bottomBar/bottom_bar_screen.dart';
 import 'package:session_mate/view/welcomeScreen/welcome_screen.dart';
@@ -207,7 +208,46 @@ class _SignInScreenState extends State<SignInScreen> {
                                       }
                                     },
                                   ),
-                                  SizeConfig.sH30,
+                                  SizeConfig.sH20,
+                                  Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      const Expanded(
+                                        child: Divider(
+                                          color: AppColors.whiteF4,
+                                          endIndent: 10,
+                                          thickness: 1.5,
+                                        ),
+                                      ),
+                                      CustomText(AppStrings.loginWith,
+                                          fontSize: 14.sp,
+                                          fontWeight: FontWeight.w600,
+                                          color: AppColors.white7C),
+                                      const Expanded(
+                                        child: Divider(
+                                          color: AppColors.whiteF4,
+                                          indent: 10,
+                                          thickness: 1.5,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  SizeConfig.sH22,
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      commonSocialMediaDesign(
+                                          imagePath:
+                                              AppImageAssets.facebookImage),
+                                      commonSocialMediaDesign(
+                                          imagePath:
+                                              AppImageAssets.googleImage),
+                                      commonSocialMediaDesign(
+                                          imagePath: AppImageAssets.appleImage)
+                                    ],
+                                  ),
+                                  SizeConfig.sH15,
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [

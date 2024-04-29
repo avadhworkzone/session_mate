@@ -15,6 +15,7 @@ import 'package:session_mate/utils/common_methods.dart';
 import 'package:session_mate/utils/local_assets.dart';
 import 'package:session_mate/utils/regex.dart';
 import 'package:session_mate/utils/size_config_utils.dart';
+import 'package:session_mate/view/auth/common_container_social_media.dart';
 import 'package:session_mate/view/auth/sign_in_screen.dart';
 import 'package:session_mate/view/services/webview_widget.dart';
 import 'package:session_mate/view/welcomeScreen/welcome_screen.dart';
@@ -71,7 +72,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     children: [
                       Container(
                         margin: EdgeInsets.only(
-                          top: Get.width / 2.4,
+                          top: Get.width / 7.5,
                         ),
                         decoration: BoxDecoration(
                             borderRadius: const BorderRadius.only(
@@ -87,7 +88,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             ]),
                         child: Padding(
                           padding: EdgeInsets.symmetric(
-                              horizontal: 20.w, vertical: 35.w),
+                              horizontal: 20.w, vertical: 55.w),
                           child: SingleChildScrollView(
                             padding: EdgeInsets.only(
                                 bottom:
@@ -389,39 +390,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                     ],
                                   ),
                                   SizeConfig.sH30,
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      CustomText(AppStrings.alreadyHaveAccount,
-                                          fontSize: 15.sp,
-                                          color: AppColors.black1c),
-                                      InkWell(
-                                        onTap: () {
-                                          signUpViewModel
-                                              .signUpEmailController.value
-                                              .clear();
-                                          signUpViewModel
-                                              .signUpPhoneNoController.value
-                                              .clear();
-                                          signUpViewModel
-                                              .signUpPasswordController.value
-                                              .clear();
-                                          signUpViewModel
-                                              .signUpConfirmPasswordController
-                                              .value
-                                              .clear();
-                                          signUpViewModel.signUpPhoneIsValidate
-                                              .value = false;
-                                          Get.off(() => const SignInScreen());
-                                        },
-                                        child: CustomText(AppStrings.login,
-                                            fontWeight: FontWeight.w500,
-                                            fontSize: 15.sp,
-                                            color: AppColors.primaryColor),
-                                      )
-                                    ],
-                                  ),
-                                  SizeConfig.sH10,
                                   CustomBtn(
                                     title: AppStrings.createAccount,
                                     fontSize: 18.sp,
@@ -454,6 +422,77 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                       }
                                     },
                                   ),
+                                  SizeConfig.sH15,
+                                  Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      const Expanded(
+                                        child: Divider(
+                                          color: AppColors.whiteF4,
+                                          endIndent: 10,
+                                          thickness: 1.5,
+                                        ),
+                                      ),
+                                      CustomText(AppStrings.registerWith,
+                                          fontSize: 15.sp,
+                                          color: AppColors.black1c),
+                                      const Expanded(
+                                        child: Divider(
+                                          color: AppColors.whiteF4,
+                                          indent: 10,
+                                          thickness: 1.5,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  SizeConfig.sH22,
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      commonSocialMediaDesign(
+                                          imagePath:
+                                              AppImageAssets.facebookImage),
+                                      commonSocialMediaDesign(
+                                          imagePath:
+                                              AppImageAssets.googleImage),
+                                      commonSocialMediaDesign(
+                                          imagePath: AppImageAssets.appleImage)
+                                    ],
+                                  ),
+                                  SizeConfig.sH15,
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      CustomText(AppStrings.alreadyHaveAccount,
+                                          fontSize: 15.sp,
+                                          color: AppColors.black1c),
+                                      InkWell(
+                                        onTap: () {
+                                          signUpViewModel
+                                              .signUpEmailController.value
+                                              .clear();
+                                          signUpViewModel
+                                              .signUpPhoneNoController.value
+                                              .clear();
+                                          signUpViewModel
+                                              .signUpPasswordController.value
+                                              .clear();
+                                          signUpViewModel
+                                              .signUpConfirmPasswordController
+                                              .value
+                                              .clear();
+                                          signUpViewModel.signUpPhoneIsValidate
+                                              .value = false;
+                                          Get.off(() => const SignInScreen());
+                                        },
+                                        child: CustomText(AppStrings.login,
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 15.sp,
+                                            color: AppColors.primaryColor),
+                                      )
+                                    ],
+                                  ),
                                   // SizedBox(
                                   //   height: MediaQuery.of(context).viewInsets.bottom,
                                   // )
@@ -467,8 +506,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           right: 20.w,
                           child: LocalAssets(
                             imagePath: AppImageAssets.signUpManImage,
-                            height: Get.width * 0.5,
-                            width: Get.width * 0.5,
+                            height: Get.width / 3,
+                            width: Get.width / 3,
                           ))
                     ],
                   ),
