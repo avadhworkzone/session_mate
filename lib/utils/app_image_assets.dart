@@ -42,6 +42,8 @@ class AppImageAssets {
       '${AppConstants.baseImageAssetsPath}setting.png';
 
   /// icons
+  static const String edit = '${AppConstants.baseIconAssetsPath}edit.png';
+  static const String deleteIcon = '${AppConstants.baseIconAssetsPath}delete.png';
 
   ///sign up screen
   static const String emailIcon = '${AppConstants.baseIconAssetsPath}email.svg';
@@ -72,4 +74,14 @@ class AppImageAssets {
       '${AppConstants.baseImageAssetsPath}Exit to app.png';
   static const String person =
       '${AppConstants.baseImageAssetsPath}Person.png';
+  static const String backArrow =
+      '${AppConstants.baseImageAssetsPath}back_arrow.png';
+  static const String menuDrawer =
+      '${AppConstants.baseImageAssetsPath}drawer_icon.png';
+  static const String addNewSession =
+      '${AppConstants.baseImageAssetsPath}add_new_session.png';
+  static const String therapyPlan =
+      '${AppConstants.baseImageAssetsPath}therapyplan.png';
+  static const String retriveCount =
+      '${AppConstants.baseImageAssetsPath}retrive_count.png';
 }

@@ -46,7 +46,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
                           Align(
                               alignment: Alignment.bottomLeft,
                               child: CustomText(
-                                AppStrings.nitin,
+                               "nitin",
                                 color: AppColors.white,
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
@@ -54,7 +54,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
                           Align(
                               alignment: Alignment.bottomLeft,
                               child: CustomText(
-                                AppStrings.user,
+                                "bjshdbfjsdchj",
                                 color:  AppColors.white,
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,

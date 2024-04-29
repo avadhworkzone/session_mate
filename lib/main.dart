@@ -39,6 +39,8 @@ class MyApp extends StatelessWidget {
               scaffoldBackgroundColor: AppColors.white,
               pageTransitionsTheme: const PageTransitionsTheme(),
               useMaterial3: true,
+
+
             ),
             transitionDuration: const Duration(milliseconds: 100),
             // builder: (context, widget) => ColoredBox(

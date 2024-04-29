@@ -61,9 +61,8 @@ class AppStrings {
   static String confirmPasswordIsRequired = "confirm password is Required";
   static String isRequired = "isRequired";
   static String passValidation = "password and confirm password must be same";
-  /// Drawer
-  static String nitin = "Nitin";
-  static String user = "User 0987654321";
+  /// DrawerSCREEN
+
   static String manageSessions = "Manage Sessions";
   static String therapyCentres = "Manage Therapy Centres";
   static String setting = "Setting";
@@ -72,4 +71,7 @@ class AppStrings {
   static String logOut = "Log out";
   static String plans = "Therapy Plans";
   static String search = "Search For exchange rate";
+  static String noTherapy = "No therapy centers \n Try adding one!";
+  static String add = "Add Therapy Center";
+
 }
