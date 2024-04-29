@@ -46,7 +46,7 @@ class CustomBtn extends StatelessWidget {
     return Material(
       color: Colors.transparent,
       child: Container(
-        height: height ?? 52.h,
+        height: height ?? 50.h,
         width: width ?? Get.width,
         decoration: BoxDecoration(
           color: bgColor ?? AppColors.primaryColor,
@@ -64,7 +64,7 @@ class CustomBtn extends StatelessWidget {
                   title,
                   fontWeight: fontWeight ?? FontWeight.w600,
                   color: textColor ?? AppColors.white,
-                  fontSize: fontSize ?? 15.sp,
+                  fontSize: fontSize ?? 18.sp,
                   textAlign: TextAlign.center,
                 ),
               ),

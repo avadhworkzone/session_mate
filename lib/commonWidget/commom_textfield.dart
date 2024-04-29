@@ -6,6 +6,7 @@ import 'package:session_mate/commonWidget/custom_text.dart';
 import 'package:session_mate/utils/app_colors.dart';
 import 'package:session_mate/utils/app_constant.dart';
 import 'package:session_mate/utils/app_enum.dart';
+import 'package:session_mate/utils/app_string.dart';
 import 'package:session_mate/utils/local_assets.dart';
 import 'package:session_mate/utils/regex.dart';
 import 'package:session_mate/utils/size_config_utils.dart';
@@ -92,7 +93,7 @@ class CommonTextField extends StatelessWidget {
             ? const SizedBox.shrink()
             : CustomText(
                 title ?? '',
-                fontSize: 17.sp,
+                fontSize: 15.sp,
                 fontWeight: FontWeight.w500,
                 color: AppColors.black1c.withOpacity(0.8),
               ),
@@ -127,22 +128,23 @@ class CommonTextField extends StatelessWidget {
             obscureText: validationType == ValidationTypeEnum.password
                 ? obscureValue!
                 : false,
+            obscuringCharacter: '*',
             onChanged: onChange,
             enabled: !readOnly!,
             readOnly: readOnly!,
-            // validator: (value) {
-            //   return isValidate == false
-            //       ? null
-            //       : value!.isEmpty
-            //           ? validationMessage?.tr ?? AppStrings.isRequired.tr
-            //           : validationType == ValidationTypeEnum.email
-            //               ? ValidationMethod.validateEmail(value)
-            //               : validationType == ValidationTypeEnum.name
-            //                   ? ValidationMethod.validateName(value)
-            //                   : validationType == ValidationTypeEnum.address
-            //                       ? ValidationMethod.validateAddress(value)
-            //                       : null;
-            // },
+            validator: (value) {
+              return isValidate == false
+                  ? null
+                  : value!.isEmpty
+                      ? validationMessage ?? AppStrings.isRequired
+                      : validationType == ValidationTypeEnum.email
+                          ? ValidationMethod.validateEmail(value)
+                          // : validationType == ValidationTypeEnum.name
+                          //     ? ValidationMethod.validateName(value)
+                          //     : validationType == ValidationTypeEnum.address
+                          //         ? ValidationMethod.validateAddress(value)
+                          : null;
+            },
             textInputAction: textInputAction,
             autovalidateMode: AutovalidateMode.onUserInteraction,
             cursorColor: cursorColor ?? AppColors.black1c,
@@ -173,27 +175,24 @@ class CommonTextField extends StatelessWidget {
                   borderSide: BorderSide(
                       color:
                           borderColor ?? AppColors.black1c.withOpacity(0.4))),
-              prefixIcon: Padding(
-                padding: EdgeInsets.symmetric(vertical: 12.w),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    LocalAssets(
-                      imagePath: preFixIconPath ?? '',
-                    ),
-                    SizeConfig.sW8,
-                    Container(
-                      color: AppColors.black1c.withOpacity(0.3),
-                      height: 20,
-                      width: 1,
-                    ),
-                    SizeConfig.sW8,
-                  ],
-                ),
+              prefixIcon: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  LocalAssets(
+                    imagePath: preFixIconPath ?? '',
+                  ),
+                  SizeConfig.sW8,
+                  Container(
+                    color: AppColors.black1c.withOpacity(0.3),
+                    height: 17,
+                    width: 1,
+                  ),
+                  SizeConfig.sW8,
+                ],
               ),
               suffixIcon: sIcon,
               prefixIconConstraints: BoxConstraints(maxWidth: 50.w),
-
+              suffixIconConstraints: BoxConstraints(maxWidth: 50.w),
               counterText: ''.tr,
               // filled: true,
               // fillColor: ColorUtils.greyE7,
@@ -202,7 +201,7 @@ class CommonTextField extends StatelessWidget {
                   color: AppColors.black,
                   fontWeight: FontWeight.w600),
               hintStyle: TextStyle(
-                color: hintTextColor ?? AppColors.black1c,
+                color: hintTextColor ?? AppColors.black1c.withOpacity(0.5),
                 fontSize: 14.sp,
                 fontFamily: AppConstants.inter,
                 fontWeight: hintFontWeight ?? FontWeight.normal,

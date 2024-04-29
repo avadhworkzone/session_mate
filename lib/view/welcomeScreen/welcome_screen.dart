@@ -8,7 +8,10 @@ import 'package:session_mate/utils/app_image_assets.dart';
 import 'package:session_mate/utils/app_string.dart';
 import 'package:session_mate/utils/local_assets.dart';
 import 'package:session_mate/utils/size_config_utils.dart';
+import 'package:session_mate/view/auth/sign_in_screen.dart';
 import 'package:session_mate/view/auth/sign_up_screen.dart';
+import 'package:session_mate/viewModel/sign_in_view_model.dart';
+import 'package:session_mate/viewModel/sign_up_view_model.dart';
 
 class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({super.key});
@@ -18,6 +21,9 @@ class WelcomeScreen extends StatefulWidget {
 }
 
 class _WelcomeScreenState extends State<WelcomeScreen> {
+  SignUpViewModel signUpViewModel = Get.put(SignUpViewModel());
+  SignInViewModel signInViewModel = Get.put(SignInViewModel());
+
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -61,11 +67,13 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             SizeConfig.sH25,
             CustomBtn(
               title: AppStrings.login,
-              bgColor: AppColors.white,
+              bgColor: AppColors.whiteFF,
               borderColor: AppColors.primaryColor,
               fontSize: 18.sp,
               textColor: AppColors.primaryColor,
-              onTap: () {},
+              onTap: () {
+                Get.to(() => const SignInScreen());
+              },
             ),
             SizeConfig.sH30,
           ],

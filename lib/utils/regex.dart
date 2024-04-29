@@ -1,13 +1,15 @@
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:session_mate/utils/app_string.dart';
 
 class RegularExpressionUtils {
   static String alphabetPattern = "[a-zA-Z]";
   static String text = "^[a-zA-Z ]*\$";
   static String alphabetSpacePattern = "[a-zA-Z ]";
   static String emailPattern = r"[a-zA-Z0-9$_@.-]";
-
+  static String digitsPattern = r"[0-9]";
   static String address = r"^[a-zA-Z0-9\s,-]+$";
+  static String passwordPattern = r"[a-zA-Z0-9#!_@$%^&*-]";
 
   /// capitalCase is used for one capital character is requiter in string
   var capitalCase = RegExp(r'[A-Z]');
@@ -58,18 +60,20 @@ class NoLeadingSpaceFormatter extends TextInputFormatter {
 /// VALIDATION METHOD
 class ValidationMethod {
   /// EMAIL VALIDATION METHOD
-  // static String? validateEmail(value) {
-  //   bool regex = RegExp(
-  //           r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$')
-  //       .hasMatch(value);
-  //   if (value == null) {
-  //     return AppStrings.emailIsRequired.tr;
-  //   } else if (regex == false) {
-  //     return AppStrings.emailIsRequired.tr;
-  //   }
-  //
-  //   return null;
-  // }
+  static String? validateEmail(value) {
+    bool regex = RegExp(r'^(([^<>()[\]\\.,;:\s@\"]+'
+            r'(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@'
+            r'((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.'
+            r'[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$')
+        .hasMatch(value);
+    if (value == null) {
+      return AppStrings.emailIsRequired;
+    } else if (regex == false) {
+      return AppStrings.enterValidEmail;
+    }
+
+    return null;
+  }
 
   // static String? validateName(value) {
   //   bool regex =
