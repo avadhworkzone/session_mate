@@ -19,7 +19,7 @@ void main() {
 
 class MyApp extends StatelessWidget {
   MyApp({super.key});
-
+//demo
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -39,6 +39,8 @@ class MyApp extends StatelessWidget {
               scaffoldBackgroundColor: AppColors.white,
               pageTransitionsTheme: const PageTransitionsTheme(),
               useMaterial3: true,
+
+
             ),
             transitionDuration: const Duration(milliseconds: 100),
             // builder: (context, widget) => ColoredBox(
