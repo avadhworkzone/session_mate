@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -6,12 +9,15 @@ import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:session_mate/commonWidget/commom_textfield.dart';
 import 'package:session_mate/commonWidget/custom_btn.dart';
 import 'package:session_mate/commonWidget/custom_text.dart';
+import 'package:session_mate/modal/user_model.dart';
+import 'package:session_mate/service/auth_service.dart';
 import 'package:session_mate/utils/app_colors.dart';
 import 'package:session_mate/utils/app_constant.dart';
 import 'package:session_mate/utils/app_enum.dart';
 import 'package:session_mate/utils/app_image_assets.dart';
 import 'package:session_mate/utils/app_string.dart';
 import 'package:session_mate/utils/common_methods.dart';
+import 'package:session_mate/utils/loading_dialog.dart';
 import 'package:session_mate/utils/local_assets.dart';
 import 'package:session_mate/utils/regex.dart';
 import 'package:session_mate/utils/size_config_utils.dart';
@@ -267,6 +273,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                     textEditController: signUpViewModel
                                         .signUpConfirmPasswordController.value,
                                     title: AppStrings.confirmPassword,
+                                    validationType: ValidationTypeEnum.password,
                                     regularExpression:
                                         RegularExpressionUtils.passwordPattern,
                                     keyBoardType: TextInputType.text,
@@ -418,6 +425,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                           commonErrorSnackBar(
                                               message:
                                                   AppStrings.passValidation);
+                                        } else {
+                                          signUpOnTap();
                                         }
                                       }
                                     },
@@ -519,4 +528,81 @@ class _SignUpScreenState extends State<SignUpScreen> {
       ),
     );
   }
+
+  signUpOnTap() async {
+    UserModel model = UserModel();
+
+    model.email = signUpViewModel.signUpEmailController.value.text;
+    model.mobileNumber = signUpViewModel.signUpPhoneNoController.value.text;
+    model.password = signUpViewModel.signUpPasswordController.value.text;
+    showLoadingDialog(context: context);
+
+    final checkUserExistStatus =
+        await AuthService.checkUserExist(model.mobileNumber!);
+    if (checkUserExistStatus) {
+      /// LOADING FALSE
+      /// SHOW TOAST M<SG USER ALREADY EXIST
+      hideLoadingDialog(context: context);
+      commonSnackBar(message: AppStrings.userExistError);
+      return;
+    }
+    final status = await AuthService.signUp(model);
+    if (status) {
+      commonSnackBar(message: AppStrings.loginSuccessfully);
+      verifyPhoneNumber(
+          phoneNumber: signUpViewModel.signUpPhoneNoController.value.text);
+      // PreferenceManagerUtils.setUserId(model.mobileNumber ?? '');
+      hideLoadingDialog(context: context);
+      // PreferenceManagerUtils.setLoginExist('true');
+      // Get.offAll(() => DoctorSelectionScreen());
+    } else {
+      hideLoadingDialog(context: context);
+      commonSnackBar(message: AppStrings.userExistError);
+    }
+  }
+}
+
+Future<bool?> verifyPhoneNumber({
+  required String phoneNumber,
+  // required BuildContext context,
+}) async {
+  FirebaseAuth auth = FirebaseAuth.instance;
+  PhoneCodeSent phoneCodeSent =
+      (String verificationID, [int? forceResendinToken]) {
+    log('verificationID : $verificationID , OTP send succssfully');
+    // Navigator.pushReplacement(
+    //   context,
+    //   MaterialPageRoute(
+    //     builder: (context) => OtpScreen(
+    //       phoneNumber: phoneNumber,
+    //       verificationID: verificationID,
+    //     ),
+    //   ),
+    // );
+  };
+
+  try {
+    await auth.verifyPhoneNumber(
+        phoneNumber: "$phoneNumber",
+        timeout: const Duration(seconds: 100),
+        verificationCompleted: (PhoneAuthCredential credential) {},
+        verificationFailed: (FirebaseAuthException exception) {
+          print('VERI FAILED :${exception.code}');
+          print('VERI FAILED ERROR :$exception');
+          // setLoader(false);
+          if (exception.code == 'invalid-phone-number' ||
+              exception.code == "missing-client-identifier") {
+            commonSnackBar(message: 'The provided phone number is not valid.');
+          } else if (exception.code == "too-many-requests") {
+            commonSnackBar(
+                message:
+                    'We have blocked all requests from this device due to unusual activity. Try again later.');
+          }
+        },
+        codeSent: phoneCodeSent,
+        codeAutoRetrievalTimeout: (String verificationId) {});
+  } catch (e) {
+    commonSnackBar(message: "Something went wrong, try Again!");
+  }
+  return null;
 }

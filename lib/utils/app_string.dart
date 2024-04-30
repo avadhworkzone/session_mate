@@ -31,6 +31,7 @@ class AppStrings {
   static String rememberMe = 'Remember Me';
   static String forgotPassword = 'Forgot Password?';
   static String loginWith = 'Or Login with';
+  static const loginSuccessfully = 'Login Successfully!';
 
   /// OTP VERIFICATION SCREEN
   static String otpVerificationTxt =
@@ -63,8 +64,9 @@ class AppStrings {
   static String confirmPasswordIsRequired = "confirm password is Required";
   static String isRequired = "isRequired";
   static String passValidation = "password and confirm password must be same";
-  /// DrawerSCREEN
+  static const userExistError = 'User Already Exist!';
 
+  /// DrawerSCREEN
   static String manageSessions = "Manage Sessions";
   static String therapyCentres = "Manage Therapy Centres";
   static String setting = "Setting";
@@ -75,5 +77,4 @@ class AppStrings {
   static String search = "Search For exchange rate";
   static String noTherapy = "No therapy centers \n Try adding one!";
   static String add = "Add Therapy Center";
-
 }

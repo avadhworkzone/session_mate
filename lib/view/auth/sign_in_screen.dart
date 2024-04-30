@@ -107,7 +107,6 @@ class _SignInScreenState extends State<SignInScreen> {
                                     validationType: ValidationTypeEnum.email,
                                     textInputAction: TextInputAction.next,
                                   ),
-
                                   SizeConfig.sH20,
                                   CommonTextField(
                                     title: AppStrings.password,
