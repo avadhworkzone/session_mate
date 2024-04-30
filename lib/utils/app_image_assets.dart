@@ -63,6 +63,7 @@ class AppImageAssets {
 
   /// home screen
   static const String menuIcn = '${AppConstants.baseIconAssetsPath}menuIcn.svg';
+  static const String download = '${AppConstants.baseIconAssetsPath}download.svg';
 
   /// session screen
   static const String sessionIcn =
@@ -81,7 +82,7 @@ class AppImageAssets {
   static const String person =
       '${AppConstants.baseImageAssetsPath}Person.png';
   static const String backArrow =
-      '${AppConstants.baseImageAssetsPath}back_arrow.png';
+      '${AppConstants.baseIconAssetsPath}arrow-down-sign-to-navigate.svg';
   static const String menuDrawer =
       '${AppConstants.baseImageAssetsPath}drawer_icon.png';
   static const String addNewSession =
