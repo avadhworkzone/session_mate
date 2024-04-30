@@ -57,7 +57,7 @@ class AppImageAssets {
 
   /// home screen
   static const String menuIcn = '${AppConstants.baseIconAssetsPath}menuIcn.svg';
-  static const String download = '${AppConstants.baseIconAssetsPath}download.svg';
+  static const String download = '${AppConstants.baseImageAssetsPath}down.png';
 
   /// session screen
   static const String sessionIcn =
@@ -85,4 +85,8 @@ class AppImageAssets {
       '${AppConstants.baseImageAssetsPath}therapyplan.png';
   static const String retriveCount =
       '${AppConstants.baseImageAssetsPath}retrive_count.png';
+  static const String whatsapp =
+      '${AppConstants.baseImageAssetsPath}whatsppIcon.png';
+  static const String messageBox =
+      '${AppConstants.baseIconAssetsPath}messagebox.svg';
 }

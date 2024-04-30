@@ -83,5 +83,11 @@ class AppStrings {
   static String childName = "Child Name";
   static String childAge = "Child Age";
   static String back = "Back";
+  static String downloadPlan = "Download Plan";
+  static String share = "Share";
+  static String category = "Category";
+  static String subCategory = "Sub-Category";
+  static String currentLeval = "Current\nLevel";
+  static String strategies = "Planned\nStrategies";
 
 }
