@@ -67,6 +67,13 @@ class _TherapyPlanState extends State<TherapyPlan> {
                         bgColor: AppColors.white,
                         title: AppStrings.submit,textColor: AppColors.colorA2,)
                     ],
+                  ),
+                  Row(
+                    children: [
+                      Container(
+                        height: ,
+                      )
+                    ],
                   )
                   
                 ],

@@ -57,6 +57,7 @@ class AppImageAssets {
 
   /// home screen
   static const String menuIcn = '${AppConstants.baseIconAssetsPath}menuIcn.svg';
+  static const String download = '${AppConstants.baseIconAssetsPath}download.svg';
 
   /// session screen
   static const String sessionIcn =
