@@ -77,7 +77,8 @@ class AppStrings {
   static String search = "Search For exchange rate";
   static String noTherapy = "No therapy centers \n Try adding one!";
   static String add = "Add Therapy Center";
-/// homescreen
+
+  /// homescreen
   static String retrieveCounts = "Retrieve Counts";
   static String addsession = "Add new Session";
   static String therepyPlan = "Therapy Plan";
@@ -87,5 +88,4 @@ class AppStrings {
   static String childName = "Child Name";
   static String childAge = "Child Age";
   static String back = "Back";
-
 }
