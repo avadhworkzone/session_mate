@@ -71,7 +71,7 @@ class _TherapyPlanState extends State<TherapyPlan> {
                   Row(
                     children: [
                       Container(
-                        height: ,
+                        height: 56,
                       )
                     ],
                   )
