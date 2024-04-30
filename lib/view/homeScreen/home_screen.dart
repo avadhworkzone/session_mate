@@ -6,10 +6,13 @@ import 'package:session_mate/utils/app_colors.dart';
 import 'package:session_mate/utils/app_image_assets.dart';
 import 'package:session_mate/utils/local_assets.dart';
 import 'package:session_mate/utils/size_config_utils.dart';
+import 'package:session_mate/view/homeScreen/retrieve_counts_screen.dart';
+import 'package:session_mate/view/homeScreen/therapy_plan_screen.dart';
 
 import '../../utils/app_string.dart';
 import '../drawer_screen/manage_sessions.dart';
 import '../drawer_screen/manage_therapy_centers.dart';
+import 'add_new_session_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -24,6 +27,16 @@ class _HomeScreenState extends State<HomeScreen> {
     AppImageAssets.addNewSession,
     AppImageAssets.retriveCount,
     AppImageAssets.therapyPlan
+  ];
+  List<String> title = [
+    AppStrings.addsession,
+    AppStrings.retrieveCounts,
+    AppStrings.therepyPlan
+  ];
+  List<String> subtitle = [
+    AppStrings.searchforbranch,
+    AppStrings.searchForinterestRate,
+    AppStrings.searchForExchangeRate
   ];
   @override
   Widget build(BuildContext context) {
@@ -40,17 +53,15 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  InkWell(
-                   onTap: (){
-                     _key.currentState?.openDrawer();
-                   },
 
-                      child: Image(
-                        height: 30.w,width: 30.w,
-                          image: AssetImage(AppImageAssets.menuDrawer))),
-                  const LocalAssets(
-                    imagePath: AppImageAssets.menuIcn,
-                    imgColor: Colors.white,
+                  InkWell(
+                    onTap: (){
+                      _key.currentState?.openDrawer();
+                    },
+                    child: const LocalAssets(
+                      imagePath: AppImageAssets.menuIcn,
+                      imgColor: AppColors.primaryColor,
+                    ),
                   ),
                   SizeConfig.sW40,
                   CustomText(
@@ -69,47 +80,62 @@ class _HomeScreenState extends State<HomeScreen> {
               itemCount: 3,
               itemBuilder: (context, index) => Padding(
                 padding: EdgeInsets.symmetric(horizontal: 30.w, vertical: 10.h),
-                child: Container(
-                  decoration: BoxDecoration(
-                      color: AppColors.white,
-                      borderRadius: BorderRadius.circular(15.r),
-                      boxShadow: [
-                        BoxShadow(
-                            color: AppColors.black.withOpacity(0.20),
-                            blurRadius: 10,
-                            spreadRadius: 1)
-                      ]),
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 25.w,
-                    ),
-                    child: Row(
-                      children: [
-                        Column(
-                          children: [
-                            CustomText(
-                              'Add new Session',
-                              fontWeight: FontWeight.w600,
-                              color: AppColors.black34,
-                              fontSize: 16.sp,
-                            ),
-                            SizeConfig.sH8,
-                            CustomText(
-                              'Search for branch',
-                              fontWeight: FontWeight.w500,
-                              color: AppColors.black34,
-                              fontSize: 12.sp,
-                            ),
-                          ],
-                        ),
-                        SizeConfig.sW60,
-                        Image(
-                          image:  AssetImage(
-                              imageList[index]),
-                          height: 131.h,
-                          width: 93.w,
-                        ),
-                      ],
+                child: GestureDetector(
+                  onTap: (){
+                    if(index == 0){
+                      Get.to(()=>const AddNewSession());
+                    }else if(index == 1){
+                      Get.to(()=> const RetrieveCounts());
+                    }else{
+                      Get.to(()=> const TherapyPlan());
+                    }
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                        color: AppColors.white,
+                        borderRadius: BorderRadius.circular(15.r),
+                        boxShadow: [
+                          BoxShadow(
+                              color: AppColors.black.withOpacity(0.20),
+                              blurRadius: 10,
+                              spreadRadius: 1)
+                        ]),
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 25.w,
+                      ),
+                      child: Row(
+                        children: [
+                          Column(
+                            // mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                  
+                            children: [
+                              CustomText(
+                                title[index],
+                                fontWeight: FontWeight.w600,
+                                color: AppColors.black34,
+                                fontSize: 16.sp,
+                  
+                              ),
+                              SizeConfig.sH8,
+                              CustomText(
+                                subtitle[index
+                                ],
+                                fontWeight: FontWeight.w500,
+                                color: AppColors.black34,
+                                fontSize: 12.sp,
+                              ),
+                            ],
+                          ),
+                          SizeConfig.sW60,
+                          LocalAssets(
+                                 imagePath: imageList[index],
+                            height: 131.h,
+                            width: 93.w,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -123,115 +149,110 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Drawer buildDrawer() {
     return Drawer(
-      backgroundColor: AppColors.primaryColor,
-      child: Column(
-        children: [
-          Expanded(
-            child: Column(
-              children: [
-                 SizedBox(
-                  height: 250.w,
-                  child: DrawerHeader(
-                    decoration: BoxDecoration(
-                      color: AppColors.primaryColor,
-                    ),
-                    child: Column(
-                      children: [
-                        Align(
-                          alignment: Alignment.topLeft,
-                          child: CircleAvatar(
-                            radius: 50,
-                            backgroundImage: AssetImage(AppImageAssets.profile),
-                          ),
-                        ),
-                        SizedBox(height: 10,),
-                        Align(
-                            alignment: Alignment.bottomLeft,
-                            child: CustomText(
-                              "Nitin",
+      width: Get.width/1.3,
+      backgroundColor: AppColors.primaryColor.withOpacity(0.8),
+      child: SafeArea(
+        child: Column(
+          children: [
+            Expanded(
+              child: Column(
+                children: [
+                   Container(
+                     width: Get.width/1.3 ,
+                     decoration: const BoxDecoration(
+                       color: AppColors.primaryColor,
+                     ),
+                     child:
+                     Padding(
+                       padding:  EdgeInsets.symmetric(horizontal:28.w ,vertical: 25.h),
+                       child: Column(
+                         // mainAxisAlignment: MainAxisAlignment.center,
+                         crossAxisAlignment: CrossAxisAlignment.start,
+                         children: [
+                           CircleAvatar(
+                             radius: 30.w,
+                             backgroundImage: const AssetImage(AppImageAssets.profile),
+                           ),
+                           SizedBox(height: 12.h),
+                           CustomText(
+                             "Nitin",
+                             color: AppColors.white,
+                             fontSize: 20.sp,
+                             fontWeight: FontWeight.bold,
+                           ),
+                           SizedBox(height: 7.h),
+                           CustomText(
+                             "User 0987654321",
+                             color:  AppColors.white,
+                             fontSize: 20.sp,
+                             fontWeight: FontWeight.bold,
+                           ),
+
+                         ],
+
+                       ),
+                     ),
+                   ),
+                  Expanded(
+                    child: SingleChildScrollView(
+                      child: Padding(
+                        padding:  EdgeInsets.only(left: 13.w,right: 29.w),
+                        child: Column(
+                          children: [
+                            commonDrawerBtn(
+                              image:  AppImageAssets.person,
+                              title: AppStrings.manageSessions,
+                              
+                              ontap: () {Get.to(()=> const ManageSessions());},
+                              
+                            ),
+                            const Divider(
                               color: AppColors.white,
-                              fontSize: 20.sp,
-                              fontWeight: FontWeight.bold,
-                            )),
-                        Align(
-                            alignment: Alignment.bottomLeft,
-                            child: CustomText(
-                              "User 0987654321",
-                              color:  AppColors.white,
-                              fontSize: 20.sp,
-                              fontWeight: FontWeight.bold,
-                            )),
+                            ),
+                            commonDrawerBtn(
+                                image:  AppImageAssets.person,
+                                title: AppStrings.therapyCentres,
+                                ontap: () {Get.to(()=>const ManageTherapyCenters());}),
+                            const Divider(
+                              color: AppColors.white,
+                            ),
+                            commonDrawerBtn(
+                                image:  AppImageAssets.setting,
+                                title: AppStrings.settings,
+                                ontap: () {}),
+                            const Divider(
+                              color: AppColors.white,
+                            ),
+                            commonDrawerBtn(
+                                image:  AppImageAssets.person,
+                                title: AppStrings.myPlan,
+                                ontap: () {}),
+                            const Divider(
+                              color: AppColors.white,
+                            ),
+                            commonDrawerBtn(
+                                image:  AppImageAssets.delete,
+                                title: AppStrings.delete,
+                                ontap: () {}),
+                            const Divider(
+                              color: AppColors.white,
+                            ),
+                            commonDrawerBtn(
+                                image:  AppImageAssets.exit,
+                                title: AppStrings.logOut,
+                                ontap: () {}),
 
-                      ],
-
+                          ],
+                        ),
+                      ),
                     ),
                   ),
-                ),
-                Column(
-                  children: [
-                    commonDrawerBtn(
-                      image:  AppImageAssets.person,
-                      title: AppStrings.manageSessions,
-
-                      ontap: () {Get.to(()=> ManageSessions());},
-
-                    ),
-                    Container(
-                      height: 1.w,
-                      width: 250.w,
-                      color: Colors.white,
-
-                    ),
-                    commonDrawerBtn(
-                        image:  AppImageAssets.person,
-                        title: AppStrings.therapyCentres,
-                        ontap: () {Get.to(()=>ManageTherapyCenters());}),
-                    Container(
-                      height: 1.w,
-                      width: 250.w,
-                      color:Colors.white,
-                    ),
-                    commonDrawerBtn(
-                        image:  AppImageAssets.setting,
-                        title: AppStrings.settings,
-                        ontap: () {}),
-                    Container(
-                      height: 1.w,
-                      width: 250.w,
-                      color: Colors.white,
-
-                    ),
-                    commonDrawerBtn(
-                        image:  AppImageAssets.person,
-                        title: AppStrings.myPlan,
-                        ontap: () {}),
-                    Container(
-                      height: 1.w,
-                      width: 250.w,
-                      color: Colors.white,
-
-                    ),
-                    commonDrawerBtn(
-                        image:  AppImageAssets.delete,
-                        title: AppStrings.delete,
-                        ontap: () {}),
-                    Container(
-                      height: 1.w,
-                      width: 250.w,
-                      color: Colors.white,
-
-                    ),
-                    commonDrawerBtn(
-                        image:  AppImageAssets.exit,
-                        title: AppStrings.logOut,
-                        ontap: () {}),
-                  ],
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-
-        ],
+        
+          ],
+        ),
       ),
     );
   }
@@ -249,20 +270,13 @@ class _HomeScreenState extends State<HomeScreen> {
       onTap: () {
         ontap();
       },
-      child: ListTile(
-        leading: Image(
-          width: 30,height: 30,
-          image: AssetImage(image),
-
-        ),
+      child: ListTile(contentPadding: EdgeInsets.zero,
+          leading: LocalAssets(imagePath: image,width: 30.w,height: 30.w,),
         title: CustomText(
           title,
-          fontWeight: FontWeight.bold, fontSize: 17,color: AppColors.white,
+          fontWeight: FontWeight.bold, fontSize: 17.sp,color: AppColors.white,
         ),
-        trailing: const Image(
-          width: 30,height: 30,
-          image: AssetImage( AppImageAssets.arrow,),
-        ),
+        trailing: LocalAssets(imagePath: AppImageAssets.arrow,width: 30.w,height: 30.w,)
       ),
 
     );

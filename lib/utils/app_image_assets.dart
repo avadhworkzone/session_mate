@@ -75,7 +75,7 @@ class AppImageAssets {
   static const String person =
       '${AppConstants.baseImageAssetsPath}Person.png';
   static const String backArrow =
-      '${AppConstants.baseImageAssetsPath}back_arrow.png';
+      '${AppConstants.baseIconAssetsPath}arrow-down-sign-to-navigate.svg';
   static const String menuDrawer =
       '${AppConstants.baseImageAssetsPath}drawer_icon.png';
   static const String addNewSession =

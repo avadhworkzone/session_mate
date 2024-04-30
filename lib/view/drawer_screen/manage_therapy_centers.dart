@@ -5,6 +5,9 @@ import 'package:session_mate/commonWidget/custom_text.dart';
 import 'package:session_mate/utils/app_colors.dart';
 import 'package:session_mate/utils/app_image_assets.dart';
 import 'package:session_mate/utils/app_string.dart';
+import 'package:session_mate/utils/common_methods.dart';
+
+import '../../utils/local_assets.dart';
 
 class ManageTherapyCenters extends StatefulWidget {
   const ManageTherapyCenters({super.key});
@@ -17,16 +20,18 @@ class _ManageTherapyCentersState extends State<ManageTherapyCenters> {
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
-      appBar: AppBar(
-        leading: Image(
-         height: 10.w,width: 10.w,
-          image: AssetImage(AppImageAssets.backArrow),),
-        title: CustomText(AppStrings.therapyCentres,fontSize: 23,fontWeight: FontWeight.w600,),
-        
-      ),
+      // appBar: AppBar(
+      //   leading: Image(
+      //    height: 10.w,width: 10.w,
+      //     image: AssetImage(AppImageAssets.backArrow),),
+      //   title: CustomText(AppStrings.therapyCentres,fontSize: 23,fontWeight: FontWeight.w600,),
+      //
+      // ),
       body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
+          commonAppBar(title:AppStrings.therapyCentres),
           Padding(
             padding: const EdgeInsets.all(60),
             child: CustomText(AppStrings.noTherapy,color: AppColors.black34,fontSize: 25,textAlign: TextAlign.center,),
