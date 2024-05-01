@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -22,6 +20,8 @@ import 'package:session_mate/utils/local_assets.dart';
 import 'package:session_mate/utils/regex.dart';
 import 'package:session_mate/utils/size_config_utils.dart';
 import 'package:session_mate/view/auth/common_container_social_media.dart';
+import 'package:session_mate/view/auth/otp_verification_screen.dart';
+import 'package:session_mate/view/auth/send_otp_method.dart';
 import 'package:session_mate/view/auth/sign_in_screen.dart';
 import 'package:session_mate/view/services/webview_widget.dart';
 import 'package:session_mate/view/welcomeScreen/welcome_screen.dart';
@@ -426,7 +426,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                               message:
                                                   AppStrings.passValidation);
                                         } else {
-                                          signUpOnTap();
+                                          sendOtp(
+                                              phoneNumber: signUpViewModel
+                                                  .signUpPhoneNoController
+                                                  .value
+                                                  .text,
+                                              context: context,
+                                              isLoginScreen: false);
                                         }
                                       }
                                     },
@@ -528,81 +534,4 @@ class _SignUpScreenState extends State<SignUpScreen> {
       ),
     );
   }
-
-  signUpOnTap() async {
-    UserModel model = UserModel();
-
-    model.email = signUpViewModel.signUpEmailController.value.text;
-    model.mobileNumber = signUpViewModel.signUpPhoneNoController.value.text;
-    model.password = signUpViewModel.signUpPasswordController.value.text;
-    showLoadingDialog(context: context);
-
-    final checkUserExistStatus =
-        await AuthService.checkUserExist(model.mobileNumber!);
-    if (checkUserExistStatus) {
-      /// LOADING FALSE
-      /// SHOW TOAST M<SG USER ALREADY EXIST
-      hideLoadingDialog(context: context);
-      commonSnackBar(message: AppStrings.userExistError);
-      return;
-    }
-    final status = await AuthService.signUp(model);
-    if (status) {
-      commonSnackBar(message: AppStrings.loginSuccessfully);
-      verifyPhoneNumber(
-          phoneNumber: signUpViewModel.signUpPhoneNoController.value.text);
-      // PreferenceManagerUtils.setUserId(model.mobileNumber ?? '');
-      hideLoadingDialog(context: context);
-      // PreferenceManagerUtils.setLoginExist('true');
-      // Get.offAll(() => DoctorSelectionScreen());
-    } else {
-      hideLoadingDialog(context: context);
-      commonSnackBar(message: AppStrings.userExistError);
-    }
-  }
-}
-
-Future<bool?> verifyPhoneNumber({
-  required String phoneNumber,
-  // required BuildContext context,
-}) async {
-  FirebaseAuth auth = FirebaseAuth.instance;
-  PhoneCodeSent phoneCodeSent =
-      (String verificationID, [int? forceResendinToken]) {
-    log('verificationID : $verificationID , OTP send succssfully');
-    // Navigator.pushReplacement(
-    //   context,
-    //   MaterialPageRoute(
-    //     builder: (context) => OtpScreen(
-    //       phoneNumber: phoneNumber,
-    //       verificationID: verificationID,
-    //     ),
-    //   ),
-    // );
-  };
-
-  try {
-    await auth.verifyPhoneNumber(
-        phoneNumber: "$phoneNumber",
-        timeout: const Duration(seconds: 100),
-        verificationCompleted: (PhoneAuthCredential credential) {},
-        verificationFailed: (FirebaseAuthException exception) {
-          print('VERI FAILED :${exception.code}');
-          print('VERI FAILED ERROR :$exception');
-          // setLoader(false);
-          if (exception.code == 'invalid-phone-number' ||
-              exception.code == "missing-client-identifier") {
-            commonSnackBar(message: 'The provided phone number is not valid.');
-          } else if (exception.code == "too-many-requests") {
-            commonSnackBar(
-                message:
-                    'We have blocked all requests from this device due to unusual activity. Try again later.');
-          }
-        },
-        codeSent: phoneCodeSent,
-        codeAutoRetrievalTimeout: (String verificationId) {});
-  } catch (e) {
-    commonSnackBar(message: "Something went wrong, try Again!");
-  }
-  return null;
 }

@@ -55,6 +55,7 @@ class AppStrings {
   static String speech = 'Speech';
   static String music = 'Music';
   static String selectTherapy = 'Select Therapy';
+  static String calender = 'Calender';
 
   ///APP ERROR MESSAGE
   static String enterValidEmail = "Please Enter Valid Email Address";
@@ -65,6 +66,7 @@ class AppStrings {
   static String isRequired = "isRequired";
   static String passValidation = "password and confirm password must be same";
   static const userExistError = 'User Already Exist!';
+  static const loginError = 'User or Password invalid!';
 
   /// DrawerSCREEN
   static String manageSessions = "Manage Sessions";

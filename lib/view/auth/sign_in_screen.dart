@@ -1,17 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:session_mate/commonWidget/commom_textfield.dart';
 import 'package:session_mate/commonWidget/custom_btn.dart';
 import 'package:session_mate/commonWidget/custom_text.dart';
+import 'package:session_mate/modal/user_model.dart';
+import 'package:session_mate/service/auth_service.dart';
 import 'package:session_mate/utils/app_colors.dart';
+import 'package:session_mate/utils/app_constant.dart';
 import 'package:session_mate/utils/app_enum.dart';
 import 'package:session_mate/utils/app_image_assets.dart';
 import 'package:session_mate/utils/app_string.dart';
+import 'package:session_mate/utils/common_methods.dart';
+import 'package:session_mate/utils/loading_dialog.dart';
 import 'package:session_mate/utils/local_assets.dart';
 import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:session_mate/utils/regex.dart';
 import 'package:session_mate/utils/size_config_utils.dart';
 import 'package:session_mate/view/auth/common_container_social_media.dart';
+import 'package:session_mate/view/auth/otp_verification_screen.dart';
+import 'package:session_mate/view/auth/send_otp_method.dart';
 import 'package:session_mate/view/auth/sign_up_screen.dart';
 import 'package:session_mate/view/bottomBar/bottom_bar_screen.dart';
 import 'package:session_mate/view/welcomeScreen/welcome_screen.dart';
@@ -27,6 +36,7 @@ class SignInScreen extends StatefulWidget {
 class _SignInScreenState extends State<SignInScreen> {
   SignInViewModel signInViewModel = Get.find();
   final GlobalKey<FormState> signInFormKey = GlobalKey<FormState>();
+  UserModel model = UserModel();
   @override
   void dispose() {
     signInFormKey.currentState?.dispose();
@@ -96,6 +106,7 @@ class _SignInScreenState extends State<SignInScreen> {
                                     title: AppStrings.email,
                                     regularExpression:
                                         RegularExpressionUtils.emailPattern,
+                                    // isCapitalize: false,
                                     textEditController: signInViewModel
                                         .signInEmailController.value,
                                     keyBoardType: TextInputType.emailAddress,
@@ -106,6 +117,115 @@ class _SignInScreenState extends State<SignInScreen> {
                                     isValidate: true,
                                     validationType: ValidationTypeEnum.email,
                                     textInputAction: TextInputAction.next,
+                                  ),
+                                  SizeConfig.sH20,
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      CustomText(
+                                        AppStrings.phoneNo,
+                                        fontSize: 15.sp,
+                                        fontWeight: FontWeight.w500,
+                                        color:
+                                            AppColors.black1c.withOpacity(0.8),
+                                      ),
+                                      SizedBox(
+                                        height: 60.w,
+                                        child: IntlPhoneField(
+                                          showDropdownIcon: false,
+                                          textAlignVertical:
+                                              TextAlignVertical.bottom,
+                                          textInputAction: TextInputAction.done,
+                                          inputFormatters: [
+                                            FilteringTextInputFormatter
+                                                .digitsOnly
+                                          ],
+                                          controller: signInViewModel
+                                              .signInPhoneNoController.value,
+                                          autovalidateMode: AutovalidateMode
+                                              .onUserInteraction,
+                                          keyboardType: TextInputType.number,
+                                          initialCountryCode: 'IN',
+                                          onChanged: (val) {
+                                            if (val.toString().isNotEmpty) {
+                                              signInViewModel
+                                                  .signInPhoneIsValidate
+                                                  .value = false;
+                                            }
+                                          },
+                                          style: TextStyle(
+                                              fontSize: 14.sp,
+                                              color: AppColors.black,
+                                              fontFamily: AppConstants.inter,
+                                              fontWeight: FontWeight.w400),
+                                          decoration: InputDecoration(
+                                            isDense: true,
+                                            fillColor: Colors.transparent,
+                                            filled: true,
+                                            contentPadding:
+                                                EdgeInsets.symmetric(
+                                                    vertical: 10.h),
+                                            hintText: AppStrings.phoneNoHintTxt,
+                                            hintStyle: TextStyle(
+                                              color: AppColors.black1c
+                                                  .withOpacity(0.5),
+                                              fontSize: 14.sp,
+                                              fontFamily: AppConstants.inter,
+                                              fontWeight: FontWeight.normal,
+                                            ),
+                                            // contentPadding: EdgeInsets.zero,
+                                            errorText: (signInViewModel
+                                                            .signInPhoneIsValidate
+                                                            .value ==
+                                                        true &&
+                                                    signInViewModel
+                                                        .signInPhoneNoController
+                                                        .value
+                                                        .text
+                                                        .isEmpty)
+                                                ? AppStrings
+                                                    .phoneNumberIsRequired
+                                                : null,
+                                            errorBorder: (signInViewModel
+                                                            .signInPhoneIsValidate
+                                                            .value ==
+                                                        true &&
+                                                    signInViewModel
+                                                        .signInPhoneNoController
+                                                        .value
+                                                        .text
+                                                        .isEmpty)
+                                                ? const UnderlineInputBorder(
+                                                    borderSide: BorderSide(
+                                                        color: AppColors.red1D),
+                                                  )
+                                                : UnderlineInputBorder(
+                                                    borderSide: BorderSide(
+                                                        color: AppColors.black1c
+                                                            .withOpacity(0.4))),
+                                            border: UnderlineInputBorder(
+                                                borderSide: BorderSide(
+                                                    color: AppColors.black1c
+                                                        .withOpacity(0.4))),
+                                            focusedBorder: UnderlineInputBorder(
+                                                borderSide: BorderSide(
+                                                    color: AppColors.black1c
+                                                        .withOpacity(0.4))),
+                                            disabledBorder:
+                                                UnderlineInputBorder(
+                                                    borderSide: BorderSide(
+                                                        color: AppColors.black1c
+                                                            .withOpacity(0.4))),
+                                            enabledBorder: UnderlineInputBorder(
+                                                borderSide: BorderSide(
+                                                    color: AppColors.black1c
+                                                        .withOpacity(0.4))),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                   SizeConfig.sH20,
                                   CommonTextField(
@@ -203,7 +323,7 @@ class _SignInScreenState extends State<SignInScreen> {
                                           ?.unfocus();
                                       if (signInFormKey.currentState!
                                           .validate()) {
-                                        Get.to(() => const BottomBar());
+                                        onLoginTap();
                                       }
                                     },
                                   ),
@@ -259,6 +379,9 @@ class _SignInScreenState extends State<SignInScreen> {
                                               .signInEmailController.value
                                               .clear();
                                           signInViewModel
+                                              .signInPhoneNoController.value
+                                              .clear();
+                                          signInViewModel
                                               .signInPasswordController.value
                                               .clear();
                                           Get.to(() => const SignUpScreen());
@@ -296,5 +419,29 @@ class _SignInScreenState extends State<SignInScreen> {
         ),
       ),
     );
+  }
+
+  onLoginTap() async {
+    FocusScope.of(context).unfocus();
+    showLoadingDialog(context: context);
+    model.password = signInViewModel.signInPasswordController.value.text;
+    model.email = signInViewModel.signInEmailController.value.text;
+    model.mobileNumber = signInViewModel.signInPhoneNoController.value.text;
+    final status = await AuthService.checkLoginCredential(model);
+    print('status is a -=-=====>>>> ${status}');
+    if (status) {
+      hideLoadingDialog(context: context);
+      sendOtp(
+          phoneNumber: signInViewModel.signInPhoneNoController.value.text,
+          context: context,
+          isLoginScreen: true);
+
+      // await PreferenceManagerUtils.setUserId(model.mobileNumber ?? '');
+      // hideLoadingDialog(context: context);
+      // PreferenceManagerUtils.setLoginExist('true');
+    } else {
+      hideLoadingDialog(context: context);
+      commonSnackBar(message: AppStrings.loginError);
+    }
   }
 }

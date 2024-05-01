@@ -49,7 +49,8 @@ class AppImageAssets {
 
   /// icons
   static const String edit = '${AppConstants.baseIconAssetsPath}edit.png';
-  static const String deleteIcon = '${AppConstants.baseIconAssetsPath}delete.png';
+  static const String deleteIcon =
+      '${AppConstants.baseIconAssetsPath}delete.png';
 
   ///sign up screen
   static const String emailIcon = '${AppConstants.baseIconAssetsPath}email.svg';
@@ -63,11 +64,15 @@ class AppImageAssets {
 
   /// home screen
   static const String menuIcn = '${AppConstants.baseIconAssetsPath}menuIcn.svg';
-  static const String download = '${AppConstants.baseIconAssetsPath}download.svg';
+  static const String download =
+      '${AppConstants.baseIconAssetsPath}download.svg';
 
   /// session screen
   static const String sessionIcn =
       '${AppConstants.baseIconAssetsPath}sessionIcn.svg';
+  static const String calenderIcn =
+      '${AppConstants.baseIconAssetsPath}calender.svg';
+
   ///DRAWER SCREEN
   static const String profile =
       '${AppConstants.baseImageAssetsPath}profile_photo.png';
@@ -75,12 +80,10 @@ class AppImageAssets {
       '${AppConstants.baseImageAssetsPath}Settings.png';
   static const String arrow =
       '${AppConstants.baseImageAssetsPath}Keyboard arrow right.png';
-  static const String delete =
-      '${AppConstants.baseImageAssetsPath}delete.png';
+  static const String delete = '${AppConstants.baseImageAssetsPath}delete.png';
   static const String exit =
       '${AppConstants.baseImageAssetsPath}Exit to app.png';
-  static const String person =
-      '${AppConstants.baseImageAssetsPath}Person.png';
+  static const String person = '${AppConstants.baseImageAssetsPath}Person.png';
   static const String backArrow =
       '${AppConstants.baseIconAssetsPath}arrow-down-sign-to-navigate.svg';
   static const String menuDrawer =

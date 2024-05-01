@@ -23,4 +23,17 @@ class AuthService {
       return false;
     });
   }
+
+  static Future<bool> checkLoginCredential(UserModel model) async {
+    return CollectionUtils.userCollection
+        .where('mobileNumber', isEqualTo: model.mobileNumber)
+        .where('password', isEqualTo: model.password)
+        .where('email', isEqualTo: model.email)
+        .get()
+        .then((value) => value.docs.isNotEmpty ? true : false)
+        .catchError((e) {
+      print('CHECK USER EXIST ERROR:=>$e');
+      return false;
+    });
+  }
 }

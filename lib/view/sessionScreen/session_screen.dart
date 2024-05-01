@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:session_mate/commonWidget/custom_btn.dart';
 import 'package:session_mate/commonWidget/custom_text.dart';
 import 'package:session_mate/utils/app_colors.dart';
 import 'package:session_mate/utils/app_image_assets.dart';
 import 'package:session_mate/utils/app_string.dart';
+import 'package:session_mate/utils/local_assets.dart';
 import 'package:session_mate/utils/size_config_utils.dart';
 import 'package:session_mate/view/sessionScreen/common_session_container.dart';
+import 'package:session_mate/viewModel/session_view_model.dart';
 
 class SessionScreen extends StatefulWidget {
   const SessionScreen({super.key});
@@ -16,6 +19,8 @@ class SessionScreen extends StatefulWidget {
 }
 
 class _SessionScreenState extends State<SessionScreen> {
+  SessionViewModel sessionViewModel = Get.put(SessionViewModel());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,45 +60,136 @@ class _SessionScreenState extends State<SessionScreen> {
                   borderRadius: BorderRadius.only(
                       topRight: Radius.circular(35.r),
                       topLeft: Radius.circular(35.r))),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  SizeConfig.sH30,
-                  CustomText(
-                    AppStrings.chooseYourSession,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 20.sp,
-                    color: AppColors.black34,
-                  ),
-                  SizeConfig.sH25,
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      CommonSessionContainer(
-                        imageUrl: AppImageAssets.sessionIcn,
-                        titleText: AppStrings.specialEducation,
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SizeConfig.sH30,
+                    CustomText(
+                      AppStrings.chooseYourSession,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 20.sp,
+                      color: AppColors.black34,
+                    ),
+                    SizeConfig.sH25,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        CommonSessionContainer(
+                          imageUrl: AppImageAssets.sessionIcn,
+                          titleText: AppStrings.specialEducation,
+                        ),
+                        CommonSessionContainer(
+                          imageUrl: AppImageAssets.sessionIcn,
+                          titleText: AppStrings.occupationalTherapy,
+                        )
+                      ],
+                    ),
+                    SizeConfig.sH35,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        CommonSessionContainer(
+                          imageUrl: AppImageAssets.sessionIcn,
+                          titleText: AppStrings.sports,
+                        ),
+                        CommonSessionContainer(
+                          imageUrl: AppImageAssets.sessionIcn,
+                          titleText: AppStrings.speech,
+                        )
+                      ],
+                    ),
+                    SizeConfig.sH35,
+                    CommonSessionContainer(
+                      imageUrl: AppImageAssets.sessionIcn,
+                      titleText: AppStrings.music,
+                    ),
+                    SizeConfig.sH25,
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 60.w),
+                      child: Container(
+                        height: 45.h,
+                        padding: const EdgeInsets.all(8.0),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(17.r),
+                          border: Border.all(color: Colors.grey),
+                        ),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: DropdownButton<String>(
+                                padding: EdgeInsets.symmetric(horizontal: 20.w),
+                                isExpanded: true,
+                                underline: SizedBox(),
+                                iconEnabledColor: AppColors.color97,
+                                iconDisabledColor: AppColors.color97,
+                                hint: CustomText(
+                                  AppStrings.selectTherapy,
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 15.sp,
+                                  color: AppColors.color97,
+                                ),
+                                items: const [
+                                  DropdownMenuItem(
+                                    value: 'Therapy 1',
+                                    child: Text('Therapy 1'),
+                                  ),
+                                  DropdownMenuItem(
+                                    value: 'Therapy 2',
+                                    child: Text('Therapy 2'),
+                                  ),
+                                ],
+                                onChanged: (value) {},
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                      CommonSessionContainer(
-                        imageUrl: AppImageAssets.sessionIcn,
-                        titleText: AppStrings.occupationalTherapy,
-                      )
-                    ],
-                  ),
-                  SizeConfig.sH35,
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      CommonSessionContainer(
-                        imageUrl: AppImageAssets.sessionIcn,
-                        titleText: AppStrings.sports,
+                    ),
+                    SizeConfig.sH15,
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 60.w),
+                      child: GestureDetector(
+                        onTap: () => sessionViewModel.selectDate(context),
+                        child: Container(
+                          height: 45.h,
+                          padding: const EdgeInsets.all(8.0),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(17.r),
+                            border: Border.all(color: Colors.grey),
+                          ),
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 20.w),
+                            child: Obx(
+                              () => Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  CustomText(
+                                    sessionViewModel.isSelected.value == true
+                                        ? sessionViewModel.date.value
+                                        : AppStrings.calender,
+                                    fontSize: 15.sp,
+                                    color: AppColors.color97,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                  LocalAssets(
+                                      imagePath: AppImageAssets.calenderIcn)
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
                       ),
-                      CommonSessionContainer(
-                        imageUrl: AppImageAssets.sessionIcn,
-                        titleText: AppStrings.speech,
-                      )
-                    ],
-                  )
-                ],
+                    ),
+                    SizeConfig.sH18,
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 25.w),
+                      child: CustomBtn(onTap: () {}, title: AppStrings.submit),
+                    ),
+                    SizeConfig.sH35,
+                  ],
+                ),
               ),
             ),
           ),
