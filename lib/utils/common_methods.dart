@@ -60,7 +60,7 @@ commonCapitalize(String value) {
   return value.capitalizeFirst;
 }
 ///COMMON APPBAR
-commonAppBar({required String title, Color? color}){
+commonAppBar({required String title, Color? color,LocalAssets? localAssets}){
   return Padding(
     padding:  EdgeInsets.symmetric(horizontal: 30.w,vertical: 35.w),
     child: Row(
@@ -70,8 +70,7 @@ commonAppBar({required String title, Color? color}){
           child: InkWell(
             onTap: (){Get.back();},
 
-            child: LocalAssets(
-              imagePath: AppImageAssets.backArrow,height: 23.h,width: 23.w,imgColor: AppColors.white,),
+            child: localAssets
           ),
         ),
 
@@ -109,9 +108,30 @@ commonAppTextField({required String text,required TextEditingController textEdit
                 width: 1.5,
               )
           ),
-          hintText:text,hintStyle: TextStyle(color: AppColors.white)
+          hintText: text, hintStyle: TextStyle(color: AppColors.white)
       ),
 
     ),
+  );
+}
+///COMMON CHECKBOX
+commonCheckBox({onChanged, value }){
+
+  return Transform.scale(
+    scale: 1.5,
+    child: Checkbox(
+        checkColor: AppColors.white,
+        fillColor:  MaterialStateProperty.resolveWith<Color>(
+              (Set<MaterialState> states) {
+            if (states.contains(MaterialState.selected)) {
+              return AppColors.pink; // Color when checked
+            }
+            return AppColors.white; // Color when unchecked
+          },
+
+        ),
+        side: BorderSide(color: AppColors.grey),
+        value: value,
+        onChanged: onChanged),
   );
 }

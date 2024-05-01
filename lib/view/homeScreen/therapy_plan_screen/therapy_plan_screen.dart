@@ -2,14 +2,17 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:session_mate/commonWidget/custom_btn.dart';
 import 'package:session_mate/commonWidget/custom_text.dart';
 import 'package:session_mate/utils/app_colors.dart';
 import 'package:session_mate/utils/app_image_assets.dart';
 import 'package:session_mate/utils/app_string.dart';
 import 'package:session_mate/utils/local_assets.dart';
+import 'package:session_mate/utils/size_config_utils.dart';
+import 'package:session_mate/view/homeScreen/therapy_plan_screen/assessment_plan_screen.dart';
 
-import '../../utils/common_methods.dart';
+import '../../../utils/common_methods.dart';
 
 class TherapyPlan extends StatefulWidget {
   const TherapyPlan({super.key});
@@ -29,23 +32,21 @@ class _TherapyPlanState extends State<TherapyPlan> {
         backgroundColor: AppColors.primaryColor,
         body: Column(
           children: [
-            commonAppBar(title: AppStrings.therepyPlan, color: AppColors.white),
+            commonAppBar(localAssets: LocalAssets(imagePath: AppImageAssets.backArrow,height: 23.h,width: 23.w,imgColor: AppColors.white,),
+              title: AppStrings.therepyPlan, color: AppColors.white,),
             Expanded(
               child: SingleChildScrollView(
                 child: Column(
                   children: [
                     commonAppTextField(
                         text: AppStrings.childName,
+
                         textEditingController: childNameController),
-                    SizedBox(
-                      height: 10.h,
-                    ),
+                    SizeConfig.sH10,
                     commonAppTextField(
                         text: AppStrings.childAge,
                         textEditingController: ageNameController),
-                    SizedBox(
-                      height: 10.h,
-                    ),
+                    SizeConfig.sH10,
                     Stack(
                       children: [
                         Container(
@@ -75,11 +76,11 @@ class _TherapyPlanState extends State<TherapyPlan> {
                                     CustomText(AppStrings.currentLeval,
                                         fontWeight: FontWeight.w700,
                                         color: AppColors.color5B,
-                                        fontSize: 14),
+                                        fontSize: 14,textAlign: TextAlign.center,),
                                     CustomText(AppStrings.strategies,
                                         fontWeight: FontWeight.w700,
                                         color: AppColors.color59,
-                                        fontSize: 14),
+                                        fontSize: 14,textAlign: TextAlign.center,),
                                   ],
                                 ),
                               ),
@@ -88,38 +89,32 @@ class _TherapyPlanState extends State<TherapyPlan> {
                                 width: 367.w,
                                 color: AppColors.grey,
                               ),
-                              SizedBox(
-                                height: 66.h,
-                              ),
+                              SizeConfig.sH66,
                               Container(
                                 height: 66.h,
                                 width: 367.w,
                                 color: AppColors.grey,
                               ),
-                              SizedBox(
-                                height: 66.h,
-                              ),
+                              SizeConfig.sH66,
                               Container(
                                 height: 66.h,
                                 width: 367.w,
                                 color: AppColors.grey,
                               ),
-                              SizedBox(
-                                height: 66.h,
-                              )
+                              SizeConfig.sH66,
                             ],
                           ),
                         )
                       ],
                     ),
-                    SizedBox(
-                      height: 15.h,
-                    ),
+                    SizeConfig.sH15,
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         CustomBtn(
-                          onTap: () {},
+                          onTap: () {
+                            Get.to(()=>AssessMentPlanScreen());
+                          },
                           height: 55.h,
                           width: 144.w,
                           bgColor: AppColors.white,
@@ -136,9 +131,7 @@ class _TherapyPlanState extends State<TherapyPlan> {
                         )
                       ],
                     ),
-                    SizedBox(
-                      height: 15.h,
-                    ),
+                    SizeConfig.sH15,
                     Row(
                       children: [
                         Padding(
@@ -157,9 +150,7 @@ class _TherapyPlanState extends State<TherapyPlan> {
                                     imagePath: AppImageAssets.download)),
                           ),
                         ),
-                        SizedBox(
-                          width: 15.w,
-                        ),
+                        SizeConfig.sW15,
                         CustomText(
                           AppStrings.downloadPlan,
                           color: AppColors.white,
@@ -168,9 +159,7 @@ class _TherapyPlanState extends State<TherapyPlan> {
                         )
                       ],
                     ),
-                    SizedBox(
-                      height: 15.h,
-                    ),
+                    SizeConfig.sH15,
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
@@ -181,7 +170,7 @@ class _TherapyPlanState extends State<TherapyPlan> {
                               border:
                                   Border.all(width: 2, color: AppColors.white)),
                           child: Padding(
-                            padding: const EdgeInsets.all(15),
+                            padding: const EdgeInsets.all(10),
                             child: CustomText(
                               AppStrings.share,
                               color: AppColors.white,

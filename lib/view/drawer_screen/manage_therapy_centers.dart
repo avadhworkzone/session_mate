@@ -19,31 +19,33 @@ class ManageTherapyCenters extends StatefulWidget {
 class _ManageTherapyCentersState extends State<ManageTherapyCenters> {
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
-      // appBar: AppBar(
-      //   leading: Image(
-      //    height: 10.w,width: 10.w,
-      //     image: AssetImage(AppImageAssets.backArrow),),
-      //   title: CustomText(AppStrings.therapyCentres,fontSize: 23,fontWeight: FontWeight.w600,),
-      //
-      // ),
-      body: Column(
+    return  SafeArea(
+      child: Scaffold(
 
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          commonAppBar(title:AppStrings.therapyCentres),
-          Padding(
-            padding: const EdgeInsets.all(60),
-            child: CustomText(AppStrings.noTherapy,color: AppColors.black34,fontSize: 25,textAlign: TextAlign.center,),
-          ),
-          Center(
-            child: CustomBtn(
-              width: 353.w,
-                onTap: (){}, title: AppStrings.add),
-          )
-        ],
+        body: Column(
+
+          children: [
+            commonAppBar(localAssets: LocalAssets(
+              imagePath: AppImageAssets.backArrow,height: 23.h,width: 23.w,),
+                title:AppStrings.therapyCentres),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(60),
+                  child: CustomText(AppStrings.noTherapy,color: AppColors.black34,fontSize: 25,textAlign: TextAlign.center,),
+                ),
+                Center(
+                  child: CustomBtn(
+                    width: 353.w,
+                      onTap: (){}, title: AppStrings.add),
+                ),
+              ],
+            )
+          ],
+        ),
+
       ),
-
     );
   }
 }

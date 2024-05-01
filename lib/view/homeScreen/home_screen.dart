@@ -7,7 +7,7 @@ import 'package:session_mate/utils/app_image_assets.dart';
 import 'package:session_mate/utils/local_assets.dart';
 import 'package:session_mate/utils/size_config_utils.dart';
 import 'package:session_mate/view/homeScreen/retrieve_counts_screen.dart';
-import 'package:session_mate/view/homeScreen/therapy_plan_screen.dart';
+import 'package:session_mate/view/homeScreen/therapy_plan_screen/therapy_plan_screen.dart';
 
 import '../../utils/app_string.dart';
 import '../drawer_screen/manage_sessions.dart';
@@ -65,7 +65,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   SizeConfig.sW40,
                   CustomText(
-                    'Hi, Nitin',
+                    '${AppStrings.hi},Nitin',
                     color: AppColors.black1c,
                     fontSize: 32.sp,
                     fontWeight: FontWeight.w400,
@@ -131,7 +131,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           SizeConfig.sW60,
                           LocalAssets(
                                  imagePath: imageList[index],
-                            height: 131.h,
+                            height: 115.h,
                             width: 93.w,
                           ),
                         ],
@@ -241,6 +241,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                 image:  AppImageAssets.exit,
                                 title: AppStrings.logOut,
                                 ontap: () {}),
+                            const Divider(
+                              color: AppColors.white,
+                            ),
 
                           ],
                         ),
