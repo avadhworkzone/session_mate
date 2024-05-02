@@ -97,4 +97,13 @@ class AppStrings {
   static String hi = "Hi, ";
   static String yes = "YES";
   static String no = "NO";
+  static String downloadPlan = "Download Plan";
+  static String share = "Share";
+  static String category = "Category";
+  static String subCategory = "Sub-Category";
+  static String currentLeval = "Current\nLevel";
+  static String strategies = "Planned\nStrategies";
+  static String hi = "Hi";
+  static String assessmentPlan = "Assessment & Plan";
+
 }

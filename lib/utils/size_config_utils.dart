@@ -80,6 +80,10 @@ class SizeConfig {
   static Widget sH50 = SizedBox(
     height: 50.h,
   );
+  static Widget sH66 = SizedBox(
+    height: 66.h,
+
+  );
 
   /// WIDTH
   // ignore: prefer_const_constructors

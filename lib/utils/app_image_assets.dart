@@ -102,4 +102,8 @@ class AppImageAssets {
       '${AppConstants.baseImageAssetsPath}therapyplan.png';
   static const String retriveCount =
       '${AppConstants.baseImageAssetsPath}retrive_count.png';
+  static const String whatsapp =
+      '${AppConstants.baseImageAssetsPath}whatsppIcon.png';
+  static const String messageBox =
+      '${AppConstants.baseIconAssetsPath}messagebox.svg';
 }
