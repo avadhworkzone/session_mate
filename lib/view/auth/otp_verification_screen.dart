@@ -14,6 +14,7 @@ import 'package:session_mate/utils/common_methods.dart';
 import 'package:session_mate/utils/loading_dialog.dart';
 import 'package:session_mate/utils/local_assets.dart';
 import 'package:session_mate/utils/size_config_utils.dart';
+import 'package:session_mate/view/auth/send_otp_method.dart';
 import 'package:session_mate/view/bottomBar/bottom_bar_screen.dart';
 import 'package:session_mate/viewModel/otp_view_model.dart';
 import 'package:session_mate/viewModel/sign_in_view_model.dart';
@@ -23,8 +24,12 @@ class OtpVerificationScreen extends StatefulWidget {
   OtpVerificationScreen(
       {super.key,
       required this.verificationIDFinal,
-      required this.isLoginScreen});
+      required this.isLoginScreen,
+      required this.countryCode,
+      required this.phoneNumber});
   String verificationIDFinal;
+  String countryCode;
+  String phoneNumber;
   bool isLoginScreen;
 
   @override
@@ -33,8 +38,10 @@ class OtpVerificationScreen extends StatefulWidget {
 
 class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
   OtpViewModel otpViewModel = Get.find();
-  SignUpViewModel signUpViewModel = Get.find();
-  SignInViewModel signInViewModel = Get.find();
+  SignUpViewModel signUpViewModel = Get.put(SignUpViewModel());
+  SignInViewModel signInViewModel = Get.put(SignInViewModel());
+  // SignUpViewModel signUpViewModel = Get.find();
+  // SignInViewModel signInViewModel = Get.find();
   UserModel model = UserModel();
 
   @override
@@ -53,6 +60,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
 
   @override
   Widget build(BuildContext context) {
+    logs('logMsg===${'+${widget.countryCode} ${widget.phoneNumber}'}');
     return SafeArea(
       child: Material(
         child: Padding(
@@ -88,9 +96,9 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                   fontSize: 16.sp,
                   textAlign: TextAlign.center,
                 ),
-                // SizeConfig.sH10,
-                // CustomText('+91 - 1245363644',
-                //     fontWeight: FontWeight.w600, fontSize: 15.sp),
+                SizeConfig.sH10,
+                CustomText('+${widget.countryCode} - ${widget.phoneNumber}',
+                    fontWeight: FontWeight.w600, fontSize: 15.sp),
                 SizeConfig.sH50,
                 Pinput(
                   // validator: (val) => ValidationMethod.validateOtp(val),
@@ -132,14 +140,14 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                             .value) >
                         0
                     ? CustomText(
-                        AppStrings.sendAgainTxt,
+                        AppStrings.sendAgainAfterTxt,
                         color: AppColors.primaryColor.withOpacity(0.30),
                         fontSize: 15.sp,
                         fontWeight: FontWeight.w700,
                       )
                     : InkWell(
                         onTap: () {
-                          otpViewModel.resetTimer();
+                          reSendOtp();
                         },
                         child: CustomText(
                           AppStrings.sendAgainTxt,
@@ -151,7 +159,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                 SizeConfig.sH10,
                 CustomBtn(
                     onTap: () {
-                      phoneCredential();
+                      verifyOtp();
                     },
                     title: AppStrings.submit)
               ],
@@ -162,7 +170,8 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
     );
   }
 
-  Future<void> phoneCredential() async {
+  /// verify otp method
+  Future<void> verifyOtp() async {
     try {
       if (otpViewModel.pinPutController.value.text.isEmpty) {
         commonSnackBar(message: "Please enter otp");
@@ -171,7 +180,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
       showLoadingDialog(context: context);
 
       PhoneAuthCredential credential = PhoneAuthProvider.credential(
-          verificationId: widget.verificationIDFinal,
+          verificationId: widget.verificationIDFinal ?? '',
           smsCode: otpViewModel.pinPutController.value.text);
       FirebaseAuth _auth = FirebaseAuth.instance;
       final User? user = (await _auth.signInWithCredential(credential)).user;
@@ -210,14 +219,15 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
         // }
         // commonSnackBar(
         //     message: "Invalid Otp, $remainingAttempt attempts remaining");
-        print(e.toString());
+        print('frg yhythjuyjh${e.toString()}');
       } else {
         commonSnackBar(message: e.toString());
-        print(e.toString());
+        print('invalid code === ${e.code}');
       }
     }
   }
 
+  /// sign up
   signUpOnTap() async {
     model.email = signUpViewModel.signUpEmailController.value.text;
     model.mobileNumber = signUpViewModel.signUpPhoneNoController.value.text;
@@ -245,5 +255,45 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
       hideLoadingDialog(context: context);
       commonSnackBar(message: AppStrings.userExistError);
     }
+  }
+
+  /// resend otp
+  Future<bool?> reSendOtp() async {
+    showLoadingDialog(context: context);
+    FirebaseAuth auth = FirebaseAuth.instance;
+    phoneCodeSent(String verificationID, [int? forceResendinToken]) {
+      hideLoadingDialog(context: context);
+      widget.verificationIDFinal = '$verificationID';
+      otpViewModel.resetTimer();
+    }
+
+    try {
+      await auth.verifyPhoneNumber(
+          phoneNumber: "+${widget.countryCode} ${widget.phoneNumber}",
+          timeout: const Duration(seconds: 100),
+          verificationCompleted: (PhoneAuthCredential credential) {},
+          verificationFailed: (FirebaseAuthException exception) {
+            print('VERI FAILED :${exception.code}');
+            print('VERI FAILED ERROR :$exception');
+            hideLoadingDialog(context: context);
+            // setLoader(false);
+            if (exception.code == 'invalid-phone-number' ||
+                exception.code == "missing-client-identifier") {
+              // hideLoadingDialog(context: context);
+              commonSnackBar(
+                  message: 'The provided phone number is not valid.');
+            } else if (exception.code == "too-many-requests") {
+              // hideLoadingDialog(context: context);
+              commonSnackBar(
+                  message:
+                      'We have blocked all requests from this device due to unusual activity. Try again later.');
+            }
+          },
+          codeSent: phoneCodeSent,
+          codeAutoRetrievalTimeout: (String verificationId) {});
+    } catch (e) {
+      commonSnackBar(message: "Something went wrong, try Again!");
+    }
+    return null;
   }
 }

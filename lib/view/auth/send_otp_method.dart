@@ -4,10 +4,12 @@ import 'package:session_mate/utils/common_methods.dart';
 import 'package:session_mate/utils/loading_dialog.dart';
 import 'package:session_mate/view/auth/otp_verification_screen.dart';
 
-Future<bool?> sendOtp(
-    {required String phoneNumber,
-    required BuildContext context,
-    required bool isLoginScreen}) async {
+Future<bool?> sendOtp({
+  required String phoneNumber,
+  required BuildContext context,
+  required bool isLoginScreen,
+  required String countryCode,
+}) async {
   showLoadingDialog(context: context);
   FirebaseAuth auth = FirebaseAuth.instance;
   phoneCodeSent(String verificationID, [int? forceResendinToken]) {
@@ -18,6 +20,8 @@ Future<bool?> sendOtp(
         builder: (context) => OtpVerificationScreen(
           verificationIDFinal: verificationID,
           isLoginScreen: isLoginScreen,
+          phoneNumber: phoneNumber,
+          countryCode: countryCode,
         ),
       ),
     );
@@ -25,7 +29,7 @@ Future<bool?> sendOtp(
 
   try {
     await auth.verifyPhoneNumber(
-        phoneNumber: "+91 $phoneNumber",
+        phoneNumber: "+$countryCode $phoneNumber",
         timeout: const Duration(seconds: 100),
         verificationCompleted: (PhoneAuthCredential credential) {},
         verificationFailed: (FirebaseAuthException exception) {

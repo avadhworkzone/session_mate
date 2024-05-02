@@ -68,8 +68,16 @@ class AppImageAssets {
       '${AppConstants.baseIconAssetsPath}download.svg';
 
   /// session screen
-  static const String sessionIcn =
-      '${AppConstants.baseIconAssetsPath}sessionIcn.svg';
+  static const String specialEducationIcn =
+      '${AppConstants.baseIconAssetsPath}specialEducationIcn.svg';
+  static const String occupationalTherapyIcn =
+      '${AppConstants.baseIconAssetsPath}occupationalTherapyIcn.svg';
+  static const String sportIcn =
+      '${AppConstants.baseIconAssetsPath}sportIcn.svg';
+  static const String speechIcn =
+      '${AppConstants.baseIconAssetsPath}speechIcn.svg';
+  static const String musicIcn =
+      '${AppConstants.baseIconAssetsPath}musicIcn.svg';
   static const String calenderIcn =
       '${AppConstants.baseIconAssetsPath}calender.svg';
 

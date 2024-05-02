@@ -42,7 +42,6 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _key,
-
       drawer: buildDrawer(),
       body: Column(
         children: [
@@ -53,9 +52,8 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-
                   InkWell(
-                    onTap: (){
+                    onTap: () {
                       _key.currentState?.openDrawer();
                     },
                     child: const LocalAssets(
@@ -65,7 +63,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   SizeConfig.sW40,
                   CustomText(
-                    'Hi, Nitin',
+                    '${AppStrings.hi} Nitin',
                     color: AppColors.black1c,
                     fontSize: 32.sp,
                     fontWeight: FontWeight.w400,
@@ -81,13 +79,13 @@ class _HomeScreenState extends State<HomeScreen> {
               itemBuilder: (context, index) => Padding(
                 padding: EdgeInsets.symmetric(horizontal: 30.w, vertical: 10.h),
                 child: GestureDetector(
-                  onTap: (){
-                    if(index == 0){
-                      Get.to(()=>const AddNewSession());
-                    }else if(index == 1){
-                      Get.to(()=> const RetrieveCounts());
-                    }else{
-                      Get.to(()=> const TherapyPlan());
+                  onTap: () {
+                    if (index == 0) {
+                      Get.to(() => const AddNewSession());
+                    } else if (index == 1) {
+                      Get.to(() => const RetrieveCounts());
+                    } else {
+                      Get.to(() => const TherapyPlan());
                     }
                   },
                   child: Container(
@@ -109,19 +107,17 @@ class _HomeScreenState extends State<HomeScreen> {
                           Column(
                             // mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
-                  
+
                             children: [
                               CustomText(
                                 title[index],
                                 fontWeight: FontWeight.w600,
                                 color: AppColors.black34,
                                 fontSize: 16.sp,
-                  
                               ),
                               SizeConfig.sH8,
                               CustomText(
-                                subtitle[index
-                                ],
+                                subtitle[index],
                                 fontWeight: FontWeight.w500,
                                 color: AppColors.black34,
                                 fontSize: 12.sp,
@@ -130,7 +126,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                           SizeConfig.sW60,
                           LocalAssets(
-                                 imagePath: imageList[index],
+                            imagePath: imageList[index],
                             height: 131.h,
                             width: 93.w,
                           ),
@@ -149,7 +145,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Drawer buildDrawer() {
     return Drawer(
-      width: Get.width/1.3,
+      width: Get.width / 1.3,
       backgroundColor: AppColors.primaryColor.withOpacity(0.8),
       child: SafeArea(
         child: Column(
@@ -157,91 +153,91 @@ class _HomeScreenState extends State<HomeScreen> {
             Expanded(
               child: Column(
                 children: [
-                   Container(
-                     width: Get.width/1.3 ,
-                     decoration: const BoxDecoration(
-                       color: AppColors.primaryColor,
-                     ),
-                     child:
-                     Padding(
-                       padding:  EdgeInsets.symmetric(horizontal:28.w ,vertical: 25.h),
-                       child: Column(
-                         // mainAxisAlignment: MainAxisAlignment.center,
-                         crossAxisAlignment: CrossAxisAlignment.start,
-                         children: [
-                           CircleAvatar(
-                             radius: 30.w,
-                             backgroundImage: const AssetImage(AppImageAssets.profile),
-                           ),
-                           SizedBox(height: 12.h),
-                           CustomText(
-                             "Nitin",
-                             color: AppColors.white,
-                             fontSize: 20.sp,
-                             fontWeight: FontWeight.bold,
-                           ),
-                           SizedBox(height: 7.h),
-                           CustomText(
-                             "User 0987654321",
-                             color:  AppColors.white,
-                             fontSize: 20.sp,
-                             fontWeight: FontWeight.bold,
-                           ),
-
-                         ],
-
-                       ),
-                     ),
-                   ),
+                  Container(
+                    width: Get.width / 1.3,
+                    decoration: const BoxDecoration(
+                      color: AppColors.primaryColor,
+                    ),
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 28.w, vertical: 25.h),
+                      child: Column(
+                        // mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          CircleAvatar(
+                            radius: 30.w,
+                            backgroundImage:
+                                const AssetImage(AppImageAssets.profile),
+                          ),
+                          SizedBox(height: 12.h),
+                          CustomText(
+                            "Nitin",
+                            color: AppColors.white,
+                            fontSize: 20.sp,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          SizedBox(height: 7.h),
+                          CustomText(
+                            "User 0987654321",
+                            color: AppColors.white,
+                            fontSize: 20.sp,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                   Expanded(
                     child: SingleChildScrollView(
                       child: Padding(
-                        padding:  EdgeInsets.only(left: 13.w,right: 29.w),
+                        padding: EdgeInsets.only(left: 13.w, right: 29.w),
                         child: Column(
                           children: [
                             commonDrawerBtn(
-                              image:  AppImageAssets.person,
+                              image: AppImageAssets.person,
                               title: AppStrings.manageSessions,
-                              
-                              ontap: () {Get.to(()=> const ManageSessions());},
-                              
+                              ontap: () {
+                                Get.to(() => const ManageSessions());
+                              },
                             ),
                             const Divider(
                               color: AppColors.white,
                             ),
                             commonDrawerBtn(
-                                image:  AppImageAssets.person,
+                                image: AppImageAssets.person,
                                 title: AppStrings.therapyCentres,
-                                ontap: () {Get.to(()=>const ManageTherapyCenters());}),
+                                ontap: () {
+                                  Get.to(() => const ManageTherapyCenters());
+                                }),
                             const Divider(
                               color: AppColors.white,
                             ),
                             commonDrawerBtn(
-                                image:  AppImageAssets.setting,
+                                image: AppImageAssets.setting,
                                 title: AppStrings.settings,
                                 ontap: () {}),
                             const Divider(
                               color: AppColors.white,
                             ),
                             commonDrawerBtn(
-                                image:  AppImageAssets.person,
+                                image: AppImageAssets.person,
                                 title: AppStrings.myPlan,
                                 ontap: () {}),
                             const Divider(
                               color: AppColors.white,
                             ),
                             commonDrawerBtn(
-                                image:  AppImageAssets.delete,
+                                image: AppImageAssets.delete,
                                 title: AppStrings.delete,
                                 ontap: () {}),
                             const Divider(
                               color: AppColors.white,
                             ),
                             commonDrawerBtn(
-                                image:  AppImageAssets.exit,
+                                image: AppImageAssets.exit,
                                 title: AppStrings.logOut,
                                 ontap: () {}),
-
                           ],
                         ),
                       ),
@@ -250,18 +246,17 @@ class _HomeScreenState extends State<HomeScreen> {
                 ],
               ),
             ),
-        
           ],
         ),
       ),
     );
   }
-  InkWell commonDrawerBtn(
-      {required String image,
-        required String title,
-        required Function ontap,
 
-      }) {
+  InkWell commonDrawerBtn({
+    required String image,
+    required String title,
+    required Function ontap,
+  }) {
     return InkWell(
       borderRadius: const BorderRadius.all(
         Radius.circular(20),
@@ -270,16 +265,24 @@ class _HomeScreenState extends State<HomeScreen> {
       onTap: () {
         ontap();
       },
-      child: ListTile(contentPadding: EdgeInsets.zero,
-          leading: LocalAssets(imagePath: image,width: 30.w,height: 30.w,),
-        title: CustomText(
-          title,
-          fontWeight: FontWeight.bold, fontSize: 17.sp,color: AppColors.white,
-        ),
-        trailing: LocalAssets(imagePath: AppImageAssets.arrow,width: 30.w,height: 30.w,)
-      ),
-
+      child: ListTile(
+          contentPadding: EdgeInsets.zero,
+          leading: LocalAssets(
+            imagePath: image,
+            width: 30.w,
+            height: 30.w,
+          ),
+          title: CustomText(
+            title,
+            fontWeight: FontWeight.bold,
+            fontSize: 17.sp,
+            color: AppColors.white,
+          ),
+          trailing: LocalAssets(
+            imagePath: AppImageAssets.arrow,
+            width: 30.w,
+            height: 30.w,
+          )),
     );
-
   }
 }

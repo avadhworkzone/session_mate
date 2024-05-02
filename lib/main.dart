@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:session_mate/general/connectivity_wrapper.dart';
 import 'package:session_mate/utils/app_colors.dart';
 import 'package:session_mate/utils/app_theme.dart';
+import 'package:session_mate/view/bottomBar/bottom_bar_screen.dart';
 import 'package:session_mate/view/welcomeScreen/welcome_screen.dart';
 import 'package:session_mate/viewModel/otp_view_model.dart';
 
@@ -47,7 +48,7 @@ class MyApp extends StatelessWidget {
               pageTransitionsTheme: const PageTransitionsTheme(),
             ),
             transitionDuration: const Duration(milliseconds: 100),
-            home: const ConnectivityWrapper(child: WelcomeScreen()),
+            home: const ConnectivityWrapper(child: BottomBar()),
           ),
         ),
       ),

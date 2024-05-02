@@ -37,7 +37,8 @@ class AppStrings {
   static String otpVerificationTxt =
       'We Will send you a one time password on\n this  Mobile Number';
   static String otpNotReceivedTxt = 'OTP Not Received  ?';
-  static String sendAgainTxt = 'Send Again After 25 sec';
+  static String sendAgainAfterTxt = 'Send Again After 25 sec';
+  static String sendAgainTxt = 'Send Again';
   static String submit = 'Submit';
   static String verification = 'Verification';
 
@@ -56,6 +57,9 @@ class AppStrings {
   static String music = 'Music';
   static String selectTherapy = 'Select Therapy';
   static String calender = 'Calender';
+  static String sessionCaptured = 'Session Captured';
+  static String sessionSuccessfully =
+      'Session successfully Captured! Do you want to capture more?';
 
   ///APP ERROR MESSAGE
   static String enterValidEmail = "Please Enter Valid Email Address";
@@ -90,4 +94,7 @@ class AppStrings {
   static String childName = "Child Name";
   static String childAge = "Child Age";
   static String back = "Back";
+  static String hi = "Hi, ";
+  static String yes = "YES";
+  static String no = "NO";
 }

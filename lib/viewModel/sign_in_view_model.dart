@@ -11,4 +11,5 @@ class SignInViewModel extends GetxController {
   RxBool signInShowPass = false.obs;
   RxBool isRememberMeChecked = false.obs;
   RxBool signInPhoneIsValidate = false.obs;
+  RxString signInCountryCode = '91'.obs;
 }

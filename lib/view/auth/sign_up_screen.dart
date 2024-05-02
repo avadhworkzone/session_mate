@@ -49,7 +49,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     return WillPopScope(
       onWillPop: () {
         signUpViewModel.signUpPhoneIsValidate.value = false;
-        Get.offAll(() => WelcomeScreen());
+        Get.offAll(() => const WelcomeScreen());
         return Future.value(true);
       },
       child: Material(
@@ -156,6 +156,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                                   .signUpPhoneIsValidate
                                                   .value = false;
                                             }
+                                          },
+                                          onCountryChanged: (val) {
+                                            signUpViewModel.signUpCountryCode
+                                                .value = val.dialCode;
                                           },
                                           style: TextStyle(
                                               fontSize: 14.sp,
@@ -431,6 +435,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                                   .signUpPhoneNoController
                                                   .value
                                                   .text,
+                                              countryCode: signUpViewModel
+                                                  .signUpCountryCode.value,
                                               context: context,
                                               isLoginScreen: false);
                                         }

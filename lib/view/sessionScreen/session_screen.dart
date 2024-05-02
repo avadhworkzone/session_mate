@@ -76,11 +76,11 @@ class _SessionScreenState extends State<SessionScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         CommonSessionContainer(
-                          imageUrl: AppImageAssets.sessionIcn,
+                          imageUrl: AppImageAssets.specialEducationIcn,
                           titleText: AppStrings.specialEducation,
                         ),
                         CommonSessionContainer(
-                          imageUrl: AppImageAssets.sessionIcn,
+                          imageUrl: AppImageAssets.occupationalTherapyIcn,
                           titleText: AppStrings.occupationalTherapy,
                         )
                       ],
@@ -90,18 +90,18 @@ class _SessionScreenState extends State<SessionScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         CommonSessionContainer(
-                          imageUrl: AppImageAssets.sessionIcn,
+                          imageUrl: AppImageAssets.sportIcn,
                           titleText: AppStrings.sports,
                         ),
                         CommonSessionContainer(
-                          imageUrl: AppImageAssets.sessionIcn,
+                          imageUrl: AppImageAssets.speechIcn,
                           titleText: AppStrings.speech,
                         )
                       ],
                     ),
                     SizeConfig.sH35,
                     CommonSessionContainer(
-                      imageUrl: AppImageAssets.sessionIcn,
+                      imageUrl: AppImageAssets.musicIcn,
                       titleText: AppStrings.music,
                     ),
                     SizeConfig.sH25,
@@ -185,7 +185,77 @@ class _SessionScreenState extends State<SessionScreen> {
                     SizeConfig.sH18,
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 25.w),
-                      child: CustomBtn(onTap: () {}, title: AppStrings.submit),
+                      child: CustomBtn(
+                          onTap: () {
+                            showDialog(
+                                context: context,
+                                builder: (context) => SimpleDialog(
+                                      children: [
+                                        Padding(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 25.w),
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              SizeConfig.sH20,
+                                              CustomText(
+                                                AppStrings.sessionCaptured,
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: 20.sp,
+                                                color: AppColors.black,
+                                              ),
+                                              SizeConfig.sH10,
+                                              CustomText(
+                                                AppStrings.sessionSuccessfully,
+                                                fontWeight: FontWeight.w400,
+                                                fontSize: 14.sp,
+                                                color: AppColors.black,
+                                                textAlign: TextAlign.center,
+                                              ),
+                                              SizeConfig.sH15,
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceAround,
+                                                children: [
+                                                  CustomBtn(
+                                                    onTap: () {},
+                                                    height: 33.h,
+                                                    width: 70.w,
+                                                    radius: 13.r,
+                                                    boxShadow: [
+                                                      BoxShadow(
+                                                        color: AppColors.black
+                                                            .withOpacity(0.5),
+                                                        blurRadius: 5,
+                                                      )
+                                                    ],
+                                                    title: AppStrings.yes,
+                                                  ),
+                                                  CustomBtn(
+                                                      onTap: () {},
+                                                      height: 33.h,
+                                                      width: 70.w,
+                                                      radius: 13.r,
+                                                      boxShadow: [
+                                                        BoxShadow(
+                                                          color: AppColors.black
+                                                              .withOpacity(0.5),
+                                                          blurRadius: 5,
+                                                        )
+                                                      ],
+                                                      title: AppStrings.no),
+                                                ],
+                                              ),
+                                              SizeConfig.sH10,
+                                            ],
+                                          ),
+                                        )
+                                      ],
+                                    ));
+                          },
+                          title: AppStrings.submit),
                     ),
                     SizeConfig.sH35,
                   ],

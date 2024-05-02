@@ -10,6 +10,7 @@ class SignUpViewModel extends GetxController {
   Rx<TextEditingController> signUpConfirmPasswordController =
       TextEditingController().obs;
   final Rx<GlobalKey<FormState>> signUpFormKey = GlobalKey<FormState>().obs;
+  RxString signUpCountryCode = '91'.obs;
   RxBool signUpShowPass = false.obs;
   RxBool signUpShowConPass = false.obs;
   RxBool signUpPhoneIsValidate = false.obs;

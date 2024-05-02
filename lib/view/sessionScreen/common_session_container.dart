@@ -39,6 +39,7 @@ class CommonSessionContainer extends StatelessWidget {
                 titleText,
                 fontWeight: FontWeight.w500,
                 fontSize: 12.sp,
+                textAlign: TextAlign.center,
               ),
             )
           ],

@@ -155,6 +155,10 @@ class _SignInScreenState extends State<SignInScreen> {
                                                   .value = false;
                                             }
                                           },
+                                          onCountryChanged: (val) {
+                                            signInViewModel.signInCountryCode
+                                                .value = val.dialCode;
+                                          },
                                           style: TextStyle(
                                               fontSize: 14.sp,
                                               color: AppColors.black,
@@ -433,6 +437,7 @@ class _SignInScreenState extends State<SignInScreen> {
       hideLoadingDialog(context: context);
       sendOtp(
           phoneNumber: signInViewModel.signInPhoneNoController.value.text,
+          countryCode: signInViewModel.signInCountryCode.value,
           context: context,
           isLoginScreen: true);
 
