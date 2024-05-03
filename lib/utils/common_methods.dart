@@ -5,9 +5,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:session_mate/commonWidget/custom_text.dart';
 import 'package:session_mate/utils/app_colors.dart';
-
-import 'app_image_assets.dart';
-import 'app_string.dart';
 import 'local_assets.dart';
 
 ///SHOW SNACK BAR MESSAGES
@@ -59,21 +56,21 @@ unFocus() {
 commonCapitalize(String value) {
   return value.capitalizeFirst;
 }
+
 ///COMMON APPBAR
-commonAppBar({required String title, Color? color,LocalAssets? localAssets}){
+commonAppBar({required String title, Color? color, LocalAssets? localAssets}) {
   return Padding(
-    padding:  EdgeInsets.symmetric(horizontal: 30.w,vertical: 35.w),
+    padding: EdgeInsets.symmetric(horizontal: 30.w, vertical: 35.w),
     child: Row(
       children: [
         Padding(
-          padding:  EdgeInsets.only(right: 10.w),
+          padding: EdgeInsets.only(right: 10.w),
           child: InkWell(
-            onTap: (){Get.back();},
-
-            child: localAssets
-          ),
+              onTap: () {
+                Get.back();
+              },
+              child: localAssets),
         ),
-
         Expanded(
           child: Center(
             child: CustomText(
@@ -89,46 +86,44 @@ commonAppBar({required String title, Color? color,LocalAssets? localAssets}){
       ],
     ),
   );
-
 }
+
 ///COMMON TEXTFIELD
-commonAppTextField({required String text,required TextEditingController textEditingController}){
+commonAppTextField(
+    {required String text,
+    required TextEditingController textEditingController}) {
   return SizedBox(
     height: 44.h,
     width: 239.w,
     child: TextFormField(
-
       controller: textEditingController,
-      decoration:  InputDecoration(
-
-          enabledBorder:const OutlineInputBorder( //Outline border type for TextFeild
+      decoration: InputDecoration(
+          enabledBorder: const OutlineInputBorder(
+              //Outline border type for TextFeild
               borderRadius: BorderRadius.all(Radius.circular(20)),
               borderSide: BorderSide(
-                color:AppColors.white,
+                color: AppColors.white,
                 width: 1.5,
-              )
-          ),
-          hintText: text, hintStyle: TextStyle(color: AppColors.white)
-      ),
-
+              )),
+          hintText: text,
+          hintStyle: TextStyle(color: AppColors.white)),
     ),
   );
 }
-///COMMON CHECKBOX
-commonCheckBox({onChanged, value }){
 
+///COMMON CHECKBOX
+commonCheckBox({onChanged, value}) {
   return Transform.scale(
     scale: 1.5,
     child: Checkbox(
         checkColor: AppColors.white,
-        fillColor:  MaterialStateProperty.resolveWith<Color>(
-              (Set<MaterialState> states) {
+        fillColor: MaterialStateProperty.resolveWith<Color>(
+          (Set<MaterialState> states) {
             if (states.contains(MaterialState.selected)) {
               return AppColors.pink; // Color when checked
             }
             return AppColors.white; // Color when unchecked
           },
-
         ),
         side: BorderSide(color: AppColors.grey),
         value: value,

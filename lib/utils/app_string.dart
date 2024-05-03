@@ -71,6 +71,7 @@ class AppStrings {
   static String passValidation = "password and confirm password must be same";
   static const userExistError = 'User Already Exist!';
   static const loginError = 'User or Password invalid!';
+  static const somethingWrong = 'Something Wrong';
 
   /// DrawerSCREEN
   static String manageSessions = "Manage Sessions";

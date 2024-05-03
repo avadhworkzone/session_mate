@@ -1,14 +1,24 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:session_mate/commonWidget/custom_btn.dart';
 import 'package:session_mate/commonWidget/custom_text.dart';
+import 'package:session_mate/modal/add_service_data_model.dart';
+import 'package:session_mate/service/session_service.dart';
 import 'package:session_mate/utils/app_colors.dart';
+import 'package:session_mate/utils/app_constant.dart';
 import 'package:session_mate/utils/app_image_assets.dart';
 import 'package:session_mate/utils/app_string.dart';
+import 'package:session_mate/utils/common_methods.dart';
+import 'package:session_mate/utils/loading_dialog.dart';
 import 'package:session_mate/utils/local_assets.dart';
+import 'package:session_mate/utils/shared_preference_utils.dart';
 import 'package:session_mate/utils/size_config_utils.dart';
 import 'package:session_mate/view/sessionScreen/common_session_container.dart';
+import 'package:session_mate/view/sessionScreen/session_successfully_dialog.dart';
 import 'package:session_mate/viewModel/session_view_model.dart';
 
 class SessionScreen extends StatefulWidget {
@@ -20,21 +30,28 @@ class SessionScreen extends StatefulWidget {
 
 class _SessionScreenState extends State<SessionScreen> {
   SessionViewModel sessionViewModel = Get.put(SessionViewModel());
+  AddSessionDataModel sessionDataReq = AddSessionDataModel();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.primaryColor,
-      appBar: AppBar(backgroundColor: AppColors.primaryColor),
+      appBar: AppBar(
+        toolbarHeight: 0,
+        systemOverlayStyle:
+            const SystemUiOverlayStyle(statusBarColor: AppColors.primaryColor),
+        leading: const SizedBox(),
+        leadingWidth: 0,
+      ),
       body: Column(
         children: [
           Padding(
-            padding: EdgeInsets.only(left: 30.w, bottom: 30.h),
+            padding: EdgeInsets.only(left: 30.w, bottom: 30.w, top: 20.w),
             child: Row(
               children: [
                 Container(
-                  height: 50.h,
-                  width: 65.w,
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 30.w, vertical: 26.w),
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(25.r),
                       image: const DecorationImage(
@@ -44,122 +61,167 @@ class _SessionScreenState extends State<SessionScreen> {
                 ),
                 SizeConfig.sW15,
                 CustomText(
-                  'Hi, Nitin',
+                  '${AppStrings.hi} Nitin',
                   color: AppColors.white,
-                  fontSize: 32.sp,
+                  fontSize: 20.sp,
                   fontWeight: FontWeight.w400,
                 )
               ],
             ),
           ),
-          Expanded(
-            child: Container(
-              width: Get.width,
-              decoration: BoxDecoration(
-                  color: AppColors.white,
-                  borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(35.r),
-                      topLeft: Radius.circular(35.r))),
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    SizeConfig.sH30,
-                    CustomText(
-                      AppStrings.chooseYourSession,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 20.sp,
-                      color: AppColors.black34,
-                    ),
-                    SizeConfig.sH25,
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        CommonSessionContainer(
-                          imageUrl: AppImageAssets.specialEducationIcn,
-                          titleText: AppStrings.specialEducation,
-                        ),
-                        CommonSessionContainer(
-                          imageUrl: AppImageAssets.occupationalTherapyIcn,
-                          titleText: AppStrings.occupationalTherapy,
-                        )
-                      ],
-                    ),
-                    SizeConfig.sH35,
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        CommonSessionContainer(
-                          imageUrl: AppImageAssets.sportIcn,
-                          titleText: AppStrings.sports,
-                        ),
-                        CommonSessionContainer(
-                          imageUrl: AppImageAssets.speechIcn,
-                          titleText: AppStrings.speech,
-                        )
-                      ],
-                    ),
-                    SizeConfig.sH35,
-                    CommonSessionContainer(
-                      imageUrl: AppImageAssets.musicIcn,
-                      titleText: AppStrings.music,
-                    ),
-                    SizeConfig.sH25,
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 60.w),
-                      child: Container(
-                        height: 45.h,
-                        padding: const EdgeInsets.all(8.0),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(17.r),
-                          border: Border.all(color: Colors.grey),
-                        ),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: DropdownButton<String>(
-                                padding: EdgeInsets.symmetric(horizontal: 20.w),
-                                isExpanded: true,
-                                underline: SizedBox(),
-                                iconEnabledColor: AppColors.color97,
-                                iconDisabledColor: AppColors.color97,
-                                hint: CustomText(
-                                  AppStrings.selectTherapy,
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 15.sp,
-                                  color: AppColors.color97,
-                                ),
-                                items: const [
-                                  DropdownMenuItem(
-                                    value: 'Therapy 1',
-                                    child: Text('Therapy 1'),
-                                  ),
-                                  DropdownMenuItem(
-                                    value: 'Therapy 2',
-                                    child: Text('Therapy 2'),
-                                  ),
-                                ],
-                                onChanged: (value) {},
-                              ),
-                            ),
-                          ],
-                        ),
+          Obx(() {
+            return Expanded(
+              child: Container(
+                width: Get.width,
+                decoration: BoxDecoration(
+                    color: AppColors.white,
+                    borderRadius: BorderRadius.only(
+                        topRight: Radius.circular(35.r),
+                        topLeft: Radius.circular(35.r))),
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SizeConfig.sH30,
+                      CustomText(
+                        AppStrings.chooseYourSession,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 20.sp,
+                        color: AppColors.black34,
                       ),
-                    ),
-                    SizeConfig.sH15,
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 60.w),
-                      child: GestureDetector(
-                        onTap: () => sessionViewModel.selectDate(context),
+                      SizeConfig.sH25,
+                      Wrap(
+                          alignment: WrapAlignment.center,
+                          runSpacing: 30.w,
+                          spacing: 40.w,
+                          children: List.generate(
+                              sessionDataList.length,
+                              (index) => Padding(
+                                    padding: const EdgeInsets.all(
+                                        8.0), // Add some spacing between items
+                                    child: InkWell(
+                                      onTap: () {
+                                        sessionViewModel.sessionSelect.value =
+                                            index;
+                                        sessionViewModel.sessionName.value =
+                                            sessionDataList[index]
+                                                ['session_name'];
+                                      },
+                                      child: CommonSessionContainer(
+                                        imageUrl: sessionDataList[index]
+                                            ['image'],
+                                        titleText: sessionDataList[index]
+                                            ['session_name'],
+                                        color: sessionViewModel
+                                                    .sessionSelect.value ==
+                                                index
+                                            ? AppColors.primaryColor
+                                            : Colors.transparent,
+                                      ),
+                                    ),
+                                  ))
+
+                          // sessionDataList.map((sessionData) {
+                          //   return Padding(
+                          //     padding: const EdgeInsets.all(
+                          //         8.0), // Add some spacing between items
+                          //     child: InkWell(
+                          //       onTap: () {},
+                          //       child: CommonSessionContainer(
+                          //         imageUrl: sessionData['image'],
+                          //         titleText: sessionData['session_name'],
+                          //         color: AppColors.primaryColor,
+                          //       ),
+                          //     ),
+                          //   );
+                          // }).toList(),
+                          ),
+
+                      // Row(
+                      //   mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      //   children: [
+                      //     CommonSessionContainer(
+                      //       imageUrl: AppImageAssets.specialEducationIcn,
+                      //       titleText: AppStrings.specialEducation,
+                      //     ),
+                      //     CommonSessionContainer(
+                      //       imageUrl: AppImageAssets.occupationalTherapyIcn,
+                      //       titleText: AppStrings.occupationalTherapy,
+                      //     )
+                      //   ],
+                      // ),
+                      // SizeConfig.sH35,
+                      // Row(
+                      //   mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      //   children: [
+                      //     CommonSessionContainer(
+                      //       imageUrl: AppImageAssets.sportIcn,
+                      //       titleText: AppStrings.sports,
+                      //     ),
+                      //     CommonSessionContainer(
+                      //       imageUrl: AppImageAssets.speechIcn,
+                      //       titleText: AppStrings.speech,
+                      //     )
+                      //   ],
+                      // ),
+                      // SizeConfig.sH35,
+                      // CommonSessionContainer(
+                      //   imageUrl: AppImageAssets.musicIcn,
+                      //   titleText: AppImageAssets.musicIcn,
+                      // ),
+                      SizeConfig.sH25,
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 60.w),
                         child: Container(
-                          height: 45.h,
-                          padding: const EdgeInsets.all(8.0),
+                          height: Get.width / 9,
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(17.r),
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(15.r),
                             border: Border.all(color: Colors.grey),
                           ),
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 20.w),
+                          child: DropdownButton<String>(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 10.w,
+                            ),
+                            isExpanded: true,
+                            underline: const SizedBox(),
+                            iconEnabledColor: AppColors.color97,
+                            iconDisabledColor: AppColors.color97,
+                            hint: CustomText(
+                              AppStrings.selectTherapy,
+                              fontWeight: FontWeight.w500,
+                              fontSize: 15.sp,
+                              color: AppColors.color97,
+                            ),
+                            items: const [
+                              DropdownMenuItem(
+                                value: 'Therapy 1',
+                                child: Text('Therapy 1'),
+                              ),
+                              DropdownMenuItem(
+                                value: 'Therapy 2',
+                                child: Text('Therapy 2'),
+                              ),
+                            ],
+                            onChanged: (value) {},
+                          ),
+                        ),
+                      ),
+                      SizeConfig.sH15,
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 50.w),
+                        child: GestureDetector(
+                          onTap: () => sessionViewModel.selectDate(context),
+                          child: Container(
+                            // height: 45.h,
+                            // padding: const EdgeInsets.all(8.0),
+                            margin: EdgeInsets.symmetric(horizontal: 20.w),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 15.w, vertical: 10.w),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(15.r),
+                              border: Border.all(color: Colors.grey),
+                            ),
                             child: Obx(
                               () => Row(
                                 mainAxisAlignment:
@@ -173,7 +235,7 @@ class _SessionScreenState extends State<SessionScreen> {
                                     color: AppColors.color97,
                                     fontWeight: FontWeight.w500,
                                   ),
-                                  LocalAssets(
+                                  const LocalAssets(
                                       imagePath: AppImageAssets.calenderIcn)
                                 ],
                               ),
@@ -181,92 +243,46 @@ class _SessionScreenState extends State<SessionScreen> {
                           ),
                         ),
                       ),
-                    ),
-                    SizeConfig.sH18,
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 25.w),
-                      child: CustomBtn(
-                          onTap: () {
-                            showDialog(
-                                context: context,
-                                builder: (context) => SimpleDialog(
-                                      children: [
-                                        Padding(
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 25.w),
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              SizeConfig.sH20,
-                                              CustomText(
-                                                AppStrings.sessionCaptured,
-                                                fontWeight: FontWeight.w500,
-                                                fontSize: 20.sp,
-                                                color: AppColors.black,
-                                              ),
-                                              SizeConfig.sH10,
-                                              CustomText(
-                                                AppStrings.sessionSuccessfully,
-                                                fontWeight: FontWeight.w400,
-                                                fontSize: 14.sp,
-                                                color: AppColors.black,
-                                                textAlign: TextAlign.center,
-                                              ),
-                                              SizeConfig.sH15,
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceAround,
-                                                children: [
-                                                  CustomBtn(
-                                                    onTap: () {},
-                                                    height: 33.h,
-                                                    width: 70.w,
-                                                    radius: 13.r,
-                                                    boxShadow: [
-                                                      BoxShadow(
-                                                        color: AppColors.black
-                                                            .withOpacity(0.5),
-                                                        blurRadius: 2,
-                                                      )
-                                                    ],
-                                                    title: AppStrings.yes,
-                                                  ),
-                                                  CustomBtn(
-                                                      onTap: () {
-                                                        Get.back();
-                                                      },
-                                                      height: 33.h,
-                                                      width: 70.w,
-                                                      radius: 13.r,
-                                                      boxShadow: [
-                                                        BoxShadow(
-                                                          color: AppColors.black
-                                                              .withOpacity(0.5),
-                                                          blurRadius: 2,
-                                                        )
-                                                      ],
-                                                      title: AppStrings.no),
-                                                ],
-                                              ),
-                                              SizeConfig.sH10,
-                                            ],
-                                          ),
-                                        )
-                                      ],
-                                    ));
-                          },
-                          title: AppStrings.submit),
-                    ),
-                    SizeConfig.sH35,
-                  ],
+                      SizeConfig.sH18,
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 25.w),
+                        child: CustomBtn(
+                            onTap: () {
+                              addSessionOnTap();
+                            },
+                            title: AppStrings.submit),
+                      ),
+                      SizeConfig.sH35,
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ),
+            );
+          }),
         ],
       ),
     );
+  }
+
+  Future<void> addSessionOnTap() async {
+    showLoadingDialog(context: context);
+    sessionDataReq.userId = SharedPreferenceUtils.getUserId();
+    sessionDataReq.sessionName = sessionViewModel.sessionName.value;
+    sessionDataReq.sessionSelectedDate = sessionViewModel.date.value;
+
+    final status = await SessionService.addAppointmentData(sessionDataReq);
+
+    print('APPOINTMENT  STATUS :=>$status');
+    if (status) {
+      // hideLoadingDialog(context: context);
+      Get.back();
+      sessionSuccessfullyDialog(context);
+    } else {
+      // hideLoadingDialog(context: context);
+      Get.back();
+
+      /// SOMETHING WENT WRONG
+      commonSnackBar(message: AppStrings.somethingWrong);
+    }
   }
 }

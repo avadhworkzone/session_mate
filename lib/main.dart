@@ -3,15 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:session_mate/general/connectivity_wrapper.dart';
 import 'package:session_mate/utils/app_colors.dart';
 import 'package:session_mate/utils/app_theme.dart';
+import 'package:session_mate/utils/shared_preference_utils.dart';
 import 'package:session_mate/view/bottomBar/bottom_bar_screen.dart';
 import 'package:session_mate/view/welcomeScreen/welcome_screen.dart';
 import 'package:session_mate/viewModel/otp_view_model.dart';
+import 'package:session_mate/utils/shared_preference_utils.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await GetStorage.init();
   await Firebase.initializeApp(
       options: const FirebaseOptions(
           apiKey: "AIzaSyCCPvygb8Emu4AV-9Z0bl8SQq2apISQ2hk",
@@ -19,6 +23,7 @@ Future<void> main() async {
           messagingSenderId: "824473918339",
           projectId: "session-mate-v2"));
   runApp(MyApp());
+
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitUp,
@@ -48,7 +53,10 @@ class MyApp extends StatelessWidget {
               pageTransitionsTheme: const PageTransitionsTheme(),
             ),
             transitionDuration: const Duration(milliseconds: 100),
-            home: const ConnectivityWrapper(child: WelcomeScreen()),
+            home: ConnectivityWrapper(
+                child: SharedPreferenceUtils.getIsLogin() == true
+                    ? const BottomBar()
+                    : const WelcomeScreen()),
           ),
         ),
       ),
