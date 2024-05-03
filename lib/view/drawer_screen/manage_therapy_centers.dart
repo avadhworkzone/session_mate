@@ -6,6 +6,7 @@ import 'package:session_mate/utils/app_colors.dart';
 import 'package:session_mate/utils/app_image_assets.dart';
 import 'package:session_mate/utils/app_string.dart';
 import 'package:session_mate/utils/common_methods.dart';
+import 'package:session_mate/utils/size_config_utils.dart';
 
 import '../../utils/local_assets.dart';
 
@@ -19,32 +20,41 @@ class ManageTherapyCenters extends StatefulWidget {
 class _ManageTherapyCentersState extends State<ManageTherapyCenters> {
   @override
   Widget build(BuildContext context) {
-    return  SafeArea(
+    return SafeArea(
       child: Scaffold(
-
         body: Column(
-
           children: [
-            commonAppBar(localAssets: LocalAssets(
-              imagePath: AppImageAssets.backArrow,height: 23.h,width: 23.w,),
-                title:AppStrings.therapyCentres),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(60),
-                  child: CustomText(AppStrings.noTherapy,color: AppColors.black34,fontSize: 25,textAlign: TextAlign.center,),
+            commonAppBar(
+                localAssets: LocalAssets(
+                  imagePath: AppImageAssets.backArrow,
+                  height: 23.h,
+                  width: 23.w,
                 ),
-                Center(
-                  child: CustomBtn(
-                    width: 353.w,
-                      onTap: (){}, title: AppStrings.add),
+                title: AppStrings.therapyCentres,
+                color: AppColors.black1c),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizeConfig.sH66,
+                CustomText(
+                  AppStrings.noTherapy,
+                  color: AppColors.black34,
+                  fontSize: 25,
+                  fontWeight: FontWeight.w600,
+                  textAlign: TextAlign.center,
+                ),
+                SizedBox(
+                  height: 300.h,
+                ),
+                CustomBtn(
+                  width: 353.w,
+                  onTap: () {},
+                  title: AppStrings.add,
                 ),
               ],
             )
           ],
         ),
-
       ),
     );
   }

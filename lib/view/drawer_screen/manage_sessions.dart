@@ -32,8 +32,10 @@ class _ManageSessionsState extends State<ManageSessions> {
                   height: 23.h,
                   width: 23.w,
                 ),
-                title: AppStrings.manageSessions),
-            Expanded(
+                title: AppStrings.manageSessions,
+                color: AppColors.black1c),
+            SizedBox(
+              height: 300.h,
               child: ListView.builder(
                 itemCount: 2,
                 itemBuilder: (context, index) {
@@ -52,7 +54,7 @@ class _ManageSessionsState extends State<ManageSessions> {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           LocalAssets(
-                            imagePath: AppImageAssets.deleteIcon,
+                            imagePath: AppImageAssets.delete,
                           ),
                           SizeConfig.sW30,
                           LocalAssets(
@@ -66,11 +68,10 @@ class _ManageSessionsState extends State<ManageSessions> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(30),
+              padding: EdgeInsets.symmetric(horizontal: 25.w),
               child: Center(
                 child: CustomBtn(
-                    width: 353.w,
-                    onTap: (){}, title: AppStrings.addsession),
+                    height: 55.h, onTap: () {}, title: AppStrings.addsession),
               ),
             ),
           ],

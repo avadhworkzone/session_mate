@@ -82,7 +82,6 @@ class SizeConfig {
   );
   static Widget sH66 = SizedBox(
     height: 66.h,
-
   );
 
   /// WIDTH

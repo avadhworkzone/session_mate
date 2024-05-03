@@ -228,13 +228,15 @@ class _SessionScreenState extends State<SessionScreen> {
                                                       BoxShadow(
                                                         color: AppColors.black
                                                             .withOpacity(0.5),
-                                                        blurRadius: 5,
+                                                        blurRadius: 2,
                                                       )
                                                     ],
                                                     title: AppStrings.yes,
                                                   ),
                                                   CustomBtn(
-                                                      onTap: () {},
+                                                      onTap: () {
+                                                        Get.back();
+                                                      },
                                                       height: 33.h,
                                                       width: 70.w,
                                                       radius: 13.r,
@@ -242,7 +244,7 @@ class _SessionScreenState extends State<SessionScreen> {
                                                         BoxShadow(
                                                           color: AppColors.black
                                                               .withOpacity(0.5),
-                                                          blurRadius: 5,
+                                                          blurRadius: 2,
                                                         )
                                                       ],
                                                       title: AppStrings.no),

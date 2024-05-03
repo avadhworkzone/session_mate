@@ -103,7 +103,5 @@ class AppStrings {
   static String subCategory = "Sub-Category";
   static String currentLeval = "Current\nLevel";
   static String strategies = "Planned\nStrategies";
-  static String hi = "Hi";
   static String assessmentPlan = "Assessment & Plan";
-
 }

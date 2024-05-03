@@ -48,7 +48,7 @@ class MyApp extends StatelessWidget {
               pageTransitionsTheme: const PageTransitionsTheme(),
             ),
             transitionDuration: const Duration(milliseconds: 100),
-            home: const ConnectivityWrapper(child: BottomBar()),
+            home: const ConnectivityWrapper(child: WelcomeScreen()),
           ),
         ),
       ),

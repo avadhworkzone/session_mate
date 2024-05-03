@@ -48,9 +48,7 @@ class AppImageAssets {
       '${AppConstants.baseImageAssetsPath}setting.png';
 
   /// icons
-  static const String edit = '${AppConstants.baseIconAssetsPath}edit.png';
-  static const String deleteIcon =
-      '${AppConstants.baseIconAssetsPath}delete.png';
+  static const String edit = '${AppConstants.baseIconAssetsPath}edit.svg';
 
   ///sign up screen
   static const String emailIcon = '${AppConstants.baseIconAssetsPath}email.svg';
@@ -88,7 +86,7 @@ class AppImageAssets {
       '${AppConstants.baseImageAssetsPath}Settings.png';
   static const String arrow =
       '${AppConstants.baseImageAssetsPath}Keyboard arrow right.png';
-  static const String delete = '${AppConstants.baseImageAssetsPath}delete.png';
+  static const String delete = '${AppConstants.baseIconAssetsPath}delete.svg';
   static const String exit =
       '${AppConstants.baseImageAssetsPath}Exit to app.png';
   static const String person = '${AppConstants.baseImageAssetsPath}Person.png';
@@ -106,4 +104,6 @@ class AppImageAssets {
       '${AppConstants.baseImageAssetsPath}whatsppIcon.png';
   static const String messageBox =
       '${AppConstants.baseIconAssetsPath}messagebox.svg';
+  static const String deleteIcnDrawer =
+      '${AppConstants.baseIconAssetsPath}deleteIcnDrawer.svg';
 }

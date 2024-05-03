@@ -228,7 +228,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               color: AppColors.white,
                             ),
                             commonDrawerBtn(
-                                image: AppImageAssets.delete,
+                                image: AppImageAssets.deleteIcnDrawer,
                                 title: AppStrings.delete,
                                 ontap: () {}),
                             const Divider(
@@ -241,7 +241,6 @@ class _HomeScreenState extends State<HomeScreen> {
                             const Divider(
                               color: AppColors.white,
                             ),
-
                           ],
                         ),
                       ),
