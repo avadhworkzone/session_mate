@@ -8,11 +8,11 @@ import 'package:session_mate/utils/app_colors.dart';
 import 'package:session_mate/utils/local_assets.dart';
 import 'package:session_mate/utils/size_config_utils.dart';
 
-import '../../commonWidget/custom_btn.dart';
-import '../../commonWidget/custom_text.dart';
-import '../../utils/app_image_assets.dart';
-import '../../utils/app_string.dart';
-import '../../utils/common_methods.dart';
+import '../../../commonWidget/custom_btn.dart';
+import '../../../commonWidget/custom_text.dart';
+import '../../../utils/app_image_assets.dart';
+import '../../../utils/app_string.dart';
+import '../../../utils/common_methods.dart';
 
 class ManageSessions extends StatefulWidget {
   const ManageSessions({super.key});
@@ -54,7 +54,7 @@ class _ManageSessionsState extends State<ManageSessions> {
                           itemBuilder: (context, index) {
                             return Card(
                               color: AppColors.white,
-                              margin: EdgeInsets.symmetric(
+                              margin: const EdgeInsets.symmetric(
                                   horizontal: 20, vertical: 20),
                               elevation: 2,
                               child: ListTile(

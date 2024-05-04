@@ -18,7 +18,7 @@ import 'package:session_mate/utils/local_assets.dart';
 import 'package:session_mate/utils/shared_preference_utils.dart';
 import 'package:session_mate/utils/size_config_utils.dart';
 import 'package:session_mate/view/sessionScreen/common_session_container.dart';
-import 'package:session_mate/view/sessionScreen/session_successfully_dialog.dart';
+import 'package:session_mate/view/dialogs/session_successfully_dialog.dart';
 import 'package:session_mate/viewModel/session_view_model.dart';
 
 class SessionScreen extends StatefulWidget {
