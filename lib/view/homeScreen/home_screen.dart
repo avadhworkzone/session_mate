@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:session_mate/commonWidget/custom_text.dart';
+import 'package:session_mate/general/connectivity_wrapper.dart';
 import 'package:session_mate/utils/app_colors.dart';
 import 'package:session_mate/utils/app_image_assets.dart';
 import 'package:session_mate/utils/local_assets.dart';
@@ -81,11 +82,14 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: GestureDetector(
                   onTap: () {
                     if (index == 0) {
-                      Get.to(() => const AddNewSession());
+                      navigate(view: const AddNewSession());
+                      // Get.to(() => const AddNewSession());
                     } else if (index == 1) {
-                      Get.to(() => const RetrieveCounts());
+                      navigate(view: const RetrieveCounts());
+                      // Get.to(() => const RetrieveCounts());
                     } else {
-                      Get.to(() => const TherapyPlan());
+                      navigate(view: const TherapyPlan());
+                      // Get.to(() => const TherapyPlan());
                     }
                   },
                   child: Container(
@@ -198,7 +202,8 @@ class _HomeScreenState extends State<HomeScreen> {
                               image: AppImageAssets.person,
                               title: AppStrings.manageSessions,
                               ontap: () {
-                                Get.to(() => const ManageSessions());
+                                navigate(view: ManageSessions());
+                                // Get.to(() => const ManageSessions());
                               },
                             ),
                             const Divider(
@@ -208,7 +213,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                 image: AppImageAssets.person,
                                 title: AppStrings.therapyCentres,
                                 ontap: () {
-                                  Get.to(() => const ManageTherapyCenters());
+                                  navigate(view: ManageTherapyCenters());
+                                  // Get.to(() => const ManageTherapyCenters());
                                 }),
                             const Divider(
                               color: AppColors.white,

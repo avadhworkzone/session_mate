@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:pinput/pinput.dart';
 import 'package:session_mate/commonWidget/custom_btn.dart';
 import 'package:session_mate/commonWidget/custom_text.dart';
+import 'package:session_mate/general/connectivity_wrapper.dart';
 import 'package:session_mate/modal/user_model.dart';
 import 'package:session_mate/service/auth_service.dart';
 import 'package:session_mate/utils/app_colors.dart';
@@ -192,7 +193,8 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
           signInViewModel.signInPhoneNoController.value.clear();
           signInViewModel.signInPasswordController.value.clear();
           commonSnackBar(message: AppStrings.loginSuccessfully);
-          Get.to(() => const BottomBar());
+          navigate(view: BottomBar());
+          // Get.to(() => const BottomBar());
           // onLoginTap();
         } else {
           signUpOnTap();
@@ -250,7 +252,8 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
       // PreferenceManagerUtils.setUserId(model.mobileNumber ?? '');
       // PreferenceManagerUtils.setLoginExist('true');
       // Get.offAll(() => DoctorSelectionScreen());
-      Get.to(() => const BottomBar());
+      navigate(view: BottomBar());
+      // Get.to(() => const BottomBar());
     } else {
       hideLoadingDialog(context: context);
       commonSnackBar(message: AppStrings.userExistError);

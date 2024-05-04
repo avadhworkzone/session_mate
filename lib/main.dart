@@ -6,9 +6,14 @@ import 'package:get/get.dart';
 import 'package:session_mate/general/connectivity_wrapper.dart';
 import 'package:session_mate/utils/app_colors.dart';
 import 'package:session_mate/utils/app_theme.dart';
+import 'package:session_mate/view/add_bank_card_screen/add_bank_card_screen.dart';
 import 'package:session_mate/view/bottomBar/bottom_bar_screen.dart';
+import 'package:session_mate/view/internet_error_screen/internet_error_screen.dart';
+import 'package:session_mate/view/payment_screen1/payment_screen1.dart';
 import 'package:session_mate/view/welcomeScreen/welcome_screen.dart';
 import 'package:session_mate/viewModel/otp_view_model.dart';
+
+
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -48,7 +53,7 @@ class MyApp extends StatelessWidget {
               pageTransitionsTheme: const PageTransitionsTheme(),
             ),
             transitionDuration: const Duration(milliseconds: 100),
-            home: const ConnectivityWrapper(child: WelcomeScreen()),
+            home:  ConnectivityWrapper(),
           ),
         ),
       ),

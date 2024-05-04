@@ -106,4 +106,23 @@ class AppImageAssets {
       '${AppConstants.baseIconAssetsPath}messagebox.svg';
   static const String deleteIcnDrawer =
       '${AppConstants.baseIconAssetsPath}deleteIcnDrawer.svg';
+
+  ///SUBSCRIPTION SCREEN
+  static const String tikMarkIcon = "${AppConstants.baseIconAssetsPath}tik_mark.png";
+
+  ///SUBMITTED SUCCESSFULLY SCREEN
+  static const String submittedSuccessfullyImage = "${AppConstants.baseImageAssetsPath}submitted_successfully_image.png";
+
+  ///NO INTERNET SCREEN
+  static const noInternetImage = "${AppConstants.baseImageAssetsPath}no_internet_image.png";
+
+  ///PAYMENT SCREEN IMAGE
+  static const paymentImage = "${AppConstants.baseImageAssetsPath}payment_image.png";
+
+  ///ADD BANK CARD SCREEN
+  static const cameraIcn = "${AppConstants.baseIconAssetsPath}cameraIcn.png";
+  static const bankCard = "${AppConstants.baseIconAssetsPath}bank_card.png";
+
+  ///SCAN BANK CARD SCREEN
+  static const gPayImg = "${AppConstants.baseImageAssetsPath}gPayImg.png";
 }

@@ -4,6 +4,7 @@ import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:session_mate/commonWidget/commom_textfield.dart';
 import 'package:session_mate/commonWidget/custom_btn.dart';
 import 'package:session_mate/commonWidget/custom_text.dart';
+import 'package:session_mate/general/connectivity_wrapper.dart';
 import 'package:session_mate/modal/user_model.dart';
 import 'package:session_mate/service/auth_service.dart';
 import 'package:session_mate/utils/app_colors.dart';
@@ -388,7 +389,8 @@ class _SignInScreenState extends State<SignInScreen> {
                                           signInViewModel
                                               .signInPasswordController.value
                                               .clear();
-                                          Get.to(() => const SignUpScreen());
+                                          navigate(view: SignUpScreen());
+                                          // Get.to(() => const SignUpScreen());
                                         },
                                         child: CustomText(AppStrings.signUp,
                                             fontWeight: FontWeight.w500,

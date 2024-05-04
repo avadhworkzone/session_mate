@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:session_mate/commonWidget/custom_btn.dart';
 import 'package:session_mate/commonWidget/custom_text.dart';
+import 'package:session_mate/general/connectivity_wrapper.dart';
 import 'package:session_mate/utils/app_colors.dart';
 import 'package:session_mate/utils/app_image_assets.dart';
 import 'package:session_mate/utils/app_string.dart';
@@ -113,7 +114,8 @@ class _TherapyPlanState extends State<TherapyPlan> {
                       children: [
                         CustomBtn(
                           onTap: () {
-                            Get.to(()=>AssessMentPlanScreen());
+                            navigate(view: AssessMentPlanScreen());
+                            // Get.to(()=>AssessMentPlanScreen());
                           },
                           height: 55.h,
                           width: 144.w,

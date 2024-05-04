@@ -104,4 +104,56 @@ class AppStrings {
   static String currentLeval = "Current\nLevel";
   static String strategies = "Planned\nStrategies";
   static String assessmentPlan = "Assessment & Plan";
+
+
+  ///SUBSCRIPTION SCREEN
+  static String buySubscription = "Buy Subscription";
+  static String name = "Name";
+  static String emailAddress = "Email Address";
+  static String phoneNumber = "Phone Number";
+  static String freeCapital = "FREE";
+  static String monthly = "Monthly";
+  static String inrTenMonth = "INR 10/Month";
+  static String yearly = "Yearly";
+  static String inr100Year = "INR 100/Year";
+  static String sessionTracking = "Session Tracking";
+  static String therapyPlanDownload = "Therapy Plan Download";
+  static String twoFreeSession = "2- Free  Counseling Sessions";
+  static String freeGuideOnGutHealth = "Free Guide on Comprehensive\nGut Health";
+  static String freeGuideOnAlternativeTherapy = "Free Guide on Alternative Therapies";
+  static String buy = "Buy";
+  static String fourteenDayAsked = "14 Day No Questions Asked";
+  static String moneyBackGuarantee = "Money Back Guarantee";
+  static String subscriptions = "Subscriptions";
+
+  ///SUBMITTED SUCCESSFULLY SCREEN
+  static String submittedSuccessfully = "Submitted Successfully";
+  static String returnHome = "Return Home";
+
+  ///INTERNET ERROR SCREEN
+  static String whoops = "Whoops!";
+  static String itSeemsLikeSomeText = "It seems like some playful Paws";
+  static String disconnectedYouFromTheInternetText = "Disconnected you from the internet.";
+  static String pleaseCheckConnectionText = "Please check your connection and";
+  static String restartAppText = "restart the app";
+  static String goToSettingText = "Go to settings";
+
+  ///PAYMENT SCREEN1
+  static String only = "Only ";
+  static String inrYear1300 = " 1300.00 INR/YEAR";
+  static String claimOffer = "Claim Offer";
+  static String cancelAnytimeBilledAnnually = "Cancel Anytime billed annually";
+  static String termsAndConditionPrivacyPolicy = "Terms & condition  Privacy policy";
+
+  ///ADD BANK CARD SCREEN
+  static String addCreditDebitCard = "Add credit or Debit card";
+  static String cardNumber = "Card Number";
+  static String scan = "Scan";
+  static String save = "Save";
+  static String mmVv = "MM/YY";
+  static String cvv = "CVV";
+
+  ///SCAN CARD SCREEN
+  static String addCard = "Add a Card";
+  static String lineItUpFrame = "Line it up with the frame";
 }

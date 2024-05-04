@@ -15,6 +15,12 @@ class AppColors {
   static const Color color97 = Color(0xff979797);
   static const Color color59 = Color(0xff59B483);
   static const Color color5B = Color(0xff5B72E3);
+  static const Color colorF5 = Color(0xffF5F5F5);
   static const Color grey = Color(0xffE7E7F4);
   static const Color pink = Color(0xffF95675);
+  static const Color blue5Ecc = Color(0xff005ECC);
+  static const Color hintTextClr = Color(0xff979797);
+  static const Color subscriptionBorderColor = Color(0xffcdcdcd);
+  static const Color closeIconColor = Color(0xff898989);
+  static const Color transparent = Colors.transparent;
 }

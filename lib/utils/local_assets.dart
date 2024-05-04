@@ -19,6 +19,7 @@ class LocalAssets extends StatelessWidget {
   final Color? imgColor;
   final BoxFit? boxFix;
   final BoxFit? boxFixSvg;
+
   @override
   Widget build(BuildContext context) {
     return imagePath.split('.').last != 'svg'

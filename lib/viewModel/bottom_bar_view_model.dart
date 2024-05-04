@@ -2,7 +2,7 @@ import 'package:get/get.dart';
 import 'package:session_mate/view/homeScreen/home_screen.dart';
 import 'package:session_mate/view/profile_screen.dart';
 import 'package:session_mate/view/sessionScreen/session_screen.dart';
-import 'package:session_mate/view/setting_screen.dart';
+import 'package:session_mate/view/subScriptionScreen/subScription_screen.dart';
 
 class BottomBarViewModel extends GetxController {
   Rx<int> selectedBottomIndex = 0.obs;
@@ -10,7 +10,8 @@ class BottomBarViewModel extends GetxController {
     const HomeScreen(),
     const SessionScreen(),
     const ProfileScreen(),
-    const SettingScreen(),
+    const SubscriptionsScreen(),
+    // const SettingScreen(),
     // const WelcomeScreen(),
     // const WelcomeScreen(),
     // const WelcomeScreen(),

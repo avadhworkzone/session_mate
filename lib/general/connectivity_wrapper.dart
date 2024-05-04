@@ -1,15 +1,24 @@
 import 'dart:async';
+
 import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:session_mate/utils/app_image_assets.dart';
 import 'package:session_mate/utils/local_assets.dart';
+import 'package:session_mate/view/bottomBar/bottom_bar_screen.dart';
+import 'package:session_mate/view/internet_error_screen/internet_error_screen.dart';
+
+Widget screen = BottomBar();
+
+void navigate({required Widget view}){
+  screen = view;
+  Get.to(()=> view);
+}
 
 /// both time work
 class ConnectivityWrapper extends StatefulWidget {
-  final Widget child;
-
-  const ConnectivityWrapper({required this.child});
+  const ConnectivityWrapper();
 
   @override
   _ConnectivityWrapperState createState() => _ConnectivityWrapperState();
@@ -21,15 +30,33 @@ class _ConnectivityWrapperState extends State<ConnectivityWrapper> {
   bool _isConnected = true;
   bool _isDialogShown = false;
   bool _handleBackButton = false;
+  bool isConnect = true;
 
   @override
   void initState() {
     super.initState();
     _connectivity = Connectivity();
-    _connectivitySubscription =
-        _connectivity.onConnectivityChanged.listen((result) {
+    _connectivitySubscription = _connectivity.onConnectivityChanged.listen((result) {
       setState(() {
         _isConnected = result != ConnectivityResult.none;
+      });
+      if (!_isConnected) {
+        // Navigate to the desired screen when internet is disconnected
+        Get.offAll(InternetErrorScreen());
+      } else {
+        Get.to(screen);
+      }
+      /*  ConnectivityResult connectivityResult = result;
+          switch(connectivityResult){
+            case ConnectivityResult.none:
+              isConnect = false;
+            case ConnectivityResult.wifi:
+              isConnect = true;
+            case ConnectivityResult.mobile:
+              isConnect = true;
+          }*/
+      setState(() {
+        /*  _isConnected = result != ConnectivityResult.none;
         if (!_isConnected && !_isDialogShown) {
           _isDialogShown = true;
           _handleBackButton = true;
@@ -43,7 +70,7 @@ class _ConnectivityWrapperState extends State<ConnectivityWrapper> {
                     height: 300.h,
                     child: const Center(
                         child:
-                            LocalAssets(imagePath: AppImageAssets.noInternet)),
+                            LocalAssets(imagePath: AppImageAssets.noInternet,),),
                   ),
                 ),
               );
@@ -54,7 +81,7 @@ class _ConnectivityWrapperState extends State<ConnectivityWrapper> {
           Navigator.of(context).pop();
           _isDialogShown = false;
           _handleBackButton = false;
-        }
+        }*/
       });
     });
 
@@ -82,8 +109,9 @@ class _ConnectivityWrapperState extends State<ConnectivityWrapper> {
               child: AlertDialog(
                 content: SizedBox(
                   height: 300.h,
-                  child: Center(
-                      child: LocalAssets(imagePath: AppImageAssets.noInternet)),
+                  child: const Center(
+                    child: LocalAssets(imagePath: AppImageAssets.noInternet),
+                  ),
                 ),
               ),
             );
@@ -103,7 +131,7 @@ class _ConnectivityWrapperState extends State<ConnectivityWrapper> {
         }
         return true;
       },
-      child: widget.child,
+      child: isConnect ? screen : InternetErrorScreen(),
     );
   }
 }

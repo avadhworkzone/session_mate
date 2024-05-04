@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:session_mate/commonWidget/custom_btn.dart';
 import 'package:session_mate/commonWidget/custom_text.dart';
+import 'package:session_mate/general/connectivity_wrapper.dart';
 import 'package:session_mate/utils/app_colors.dart';
 import 'package:session_mate/utils/app_image_assets.dart';
 import 'package:session_mate/utils/app_string.dart';
@@ -61,7 +62,8 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
               title: AppStrings.createAccount,
               fontSize: 18.sp,
               onTap: () {
-                Get.to(() => const SignUpScreen());
+                navigate(view: SignUpScreen());
+                // Get.to(() => const SignUpScreen());
               },
             ),
             SizeConfig.sH25,
@@ -72,7 +74,8 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
               fontSize: 18.sp,
               textColor: AppColors.primaryColor,
               onTap: () {
-                Get.to(() => const SignInScreen());
+                navigate(view: SignInScreen());
+                // Get.to(() => const SignInScreen());
               },
             ),
             SizeConfig.sH30,

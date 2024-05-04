@@ -7,6 +7,7 @@ import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:session_mate/commonWidget/commom_textfield.dart';
 import 'package:session_mate/commonWidget/custom_btn.dart';
 import 'package:session_mate/commonWidget/custom_text.dart';
+import 'package:session_mate/general/connectivity_wrapper.dart';
 import 'package:session_mate/modal/user_model.dart';
 import 'package:session_mate/service/auth_service.dart';
 import 'package:session_mate/utils/app_colors.dart';
@@ -356,10 +357,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                             children: [
                                               InkWell(
                                                 onTap: () {
-                                                  Get.to(const WebViewExample(
+                                                  navigate(view: const WebViewExample(
                                                     url: AppStrings
                                                         .privacyPolicyUrl,
                                                   ));
+                                                 /* Get.to(const WebViewExample(
+                                                    url: AppStrings
+                                                        .privacyPolicyUrl,
+                                                  ));*/
                                                 },
                                                 child: CustomText(
                                                   AppStrings.termsConditionTxt,
@@ -376,10 +381,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                               SizeConfig.sW5,
                                               InkWell(
                                                 onTap: () {
-                                                  Get.to(const WebViewExample(
+                                                  navigate(view: const WebViewExample(
                                                     url: AppStrings
                                                         .privacyPolicyUrl,
                                                   ));
+                                                /*  Get.to(const WebViewExample(
+                                                    url: AppStrings
+                                                        .privacyPolicyUrl,
+                                                  ));*/
                                                 },
                                                 child: CustomText(
                                                   AppStrings.privacyPoliceTxt,
