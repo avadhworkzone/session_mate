@@ -41,7 +41,7 @@ sessionSuccessfullyDialog(BuildContext context) {
                           onTap: () {
                             Get.find<SessionViewModel>().sessionSelect.value =
                                 -1;
-                            Get.find<SessionViewModel>().sessionName.value = '';
+                            // Get.find<SessionViewModel>().sessionName.value = '';
                             Get.back();
                           },
                           height: 33.h,
@@ -59,8 +59,8 @@ sessionSuccessfullyDialog(BuildContext context) {
                             onTap: () {
                               Get.find<SessionViewModel>().sessionSelect.value =
                                   -1;
-                              Get.find<SessionViewModel>().sessionName.value =
-                                  '';
+                              // Get.find<SessionViewModel>().sessionName.value =
+                              //     '';
                               Get.back();
                             },
                             height: 33.h,

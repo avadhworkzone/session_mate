@@ -2,11 +2,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:session_mate/modal/add_service_data_model.dart';
 import 'package:session_mate/service/session_service.dart';
 import 'package:session_mate/utils/app_colors.dart';
 import 'package:session_mate/utils/local_assets.dart';
+import 'package:session_mate/utils/shared_preference_utils.dart';
 import 'package:session_mate/utils/size_config_utils.dart';
+import 'package:session_mate/view/bottomBar/bottom_bar_screen.dart';
+import 'package:session_mate/viewModel/bottom_bar_view_model.dart';
 
 import '../../../commonWidget/custom_btn.dart';
 import '../../../commonWidget/custom_text.dart';
@@ -24,6 +28,8 @@ class ManageSessions extends StatefulWidget {
 List<AddSessionDataModel>? snapshotData;
 
 class _ManageSessionsState extends State<ManageSessions> {
+  BottomBarViewModel bottomBarViewModel = Get.find();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -69,12 +75,30 @@ class _ManageSessionsState extends State<ManageSessions> {
                                 trailing: Row(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    const LocalAssets(
-                                      imagePath: AppImageAssets.delete,
+                                    InkWell(
+                                      onTap: () {
+                                        SessionService.deleteSessionData(
+                                            snapshotData![index].sessionId ??
+                                                '');
+                                      },
+                                      child: const LocalAssets(
+                                        imagePath: AppImageAssets.delete,
+                                      ),
                                     ),
-                                    SizeConfig.sW20,
-                                    const LocalAssets(
-                                      imagePath: AppImageAssets.edit,
+                                    SizeConfig.sW30,
+                                    InkWell(
+                                      onTap: () async {
+                                        bottomBarViewModel
+                                            .selectedBottomIndex.value = 1;
+                                        await SharedPreferenceUtils
+                                            .setSessionId(snapshotData![index]
+                                                    .sessionId ??
+                                                '');
+                                        Get.to(() => const BottomBar());
+                                      },
+                                      child: const LocalAssets(
+                                        imagePath: AppImageAssets.edit,
+                                      ),
                                     ),
                                   ],
                                 ),

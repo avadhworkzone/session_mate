@@ -14,7 +14,6 @@ class SessionService {
   }
 
   /// get session data
-  /// get All Doctor
   static Stream<List<AddSessionDataModel>> getSessionData() {
     return CollectionUtils.sessionCollection
         .where('userId', isEqualTo: SharedPreferenceUtils.getUserId())
@@ -22,5 +21,40 @@ class SessionService {
         .map((event) => event.docs
             .map((e) => AddSessionDataModel.fromJson(e.data()))
             .toList());
+  }
+
+  /// delete session data
+  static Future<bool> deleteSessionData(String id) async {
+    return CollectionUtils.sessionCollection
+        .doc(id)
+        .delete()
+        .then((value) => true)
+        .catchError((e) {
+      print(' delete ERROR :=>$e');
+      return false;
+    });
+  }
+
+  /// get session data detail
+  // ///get  doctor detail
+  // static Future<DoctorDetailResponseModel?> getDoctorDetail() async {
+  //   return await CollectionUtils.doctorCollection
+  //       .doc(PreferenceManagerUtils.getDoctorId())
+  //       .get()
+  //       .then((value) => DoctorDetailResponseModel.fromJson(value.data()!))
+  //       .catchError((e) {
+  //     print('getPatientDetail error :=>$e');
+  //     return null;
+  //   });
+  // }
+  static Future<AddSessionDataModel> getEditSessionDataDetail() async {
+    return await CollectionUtils.sessionCollection
+        .doc(SharedPreferenceUtils.getSessionId())
+        .get()
+        .then((value) => AddSessionDataModel.fromJson(value.data()!))
+        .catchError((e) {
+      print('getSessionDataDetail error :=>$e');
+      return null;
+    });
   }
 }

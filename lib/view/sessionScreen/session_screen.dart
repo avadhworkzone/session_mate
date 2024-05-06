@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -31,6 +29,36 @@ class SessionScreen extends StatefulWidget {
 class _SessionScreenState extends State<SessionScreen> {
   SessionViewModel sessionViewModel = Get.put(SessionViewModel());
   AddSessionDataModel sessionDataReq = AddSessionDataModel();
+
+  @override
+  void initState() {
+    getSessionData();
+    // TODO: implement initState
+    super.initState();
+  }
+
+  getSessionData() async {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      sessionViewModel.selectedSession.clear();
+      if (SharedPreferenceUtils.getSessionId() != '') {
+        sessionViewModel.isLoadingData.value = true;
+        final snapshot = await SessionService.getEditSessionDataDetail();
+        // if (snapshot != null) {
+        if (!sessionViewModel.selectedSession.any(
+            (element) => element['id'] == int.parse(snapshot.id.toString()))) {
+          sessionViewModel.selectedSession.add({
+            'id': int.parse(snapshot.id.toString()),
+            'session_name': snapshot.sessionName ?? '',
+          });
+        }
+        sessionViewModel.date.value = snapshot.sessionSelectedDate ?? '';
+        sessionViewModel.isLoadingData.value = false;
+        // } else {
+        //   sessionViewModel.isLoadingData.value = false;
+        // }
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -78,184 +106,218 @@ class _SessionScreenState extends State<SessionScreen> {
                     borderRadius: BorderRadius.only(
                         topRight: Radius.circular(35.r),
                         topLeft: Radius.circular(35.r))),
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      SizeConfig.sH30,
-                      CustomText(
-                        AppStrings.chooseYourSession,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 20.sp,
-                        color: AppColors.black34,
-                      ),
-                      SizeConfig.sH25,
-                      Wrap(
-                          alignment: WrapAlignment.center,
-                          runSpacing: 30.w,
-                          spacing: 40.w,
-                          children: List.generate(
-                              sessionDataList.length,
-                              (index) => Padding(
-                                    padding: const EdgeInsets.all(
-                                        8.0), // Add some spacing between items
-                                    child: InkWell(
-                                      onTap: () {
-                                        sessionViewModel.sessionSelect.value =
-                                            index;
-                                        sessionViewModel.sessionName.value =
-                                            sessionDataList[index]
-                                                ['session_name'];
-                                      },
-                                      child: CommonSessionContainer(
-                                        imageUrl: sessionDataList[index]
-                                            ['image'],
-                                        titleText: sessionDataList[index]
-                                            ['session_name'],
-                                        color: sessionViewModel
-                                                    .sessionSelect.value ==
-                                                index
-                                            ? AppColors.primaryColor
-                                            : Colors.transparent,
-                                      ),
-                                    ),
-                                  ))
+                child: sessionViewModel.isLoadingData.value == true
+                    ? const Center(child: CircularProgressIndicator())
+                    : SingleChildScrollView(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            SizeConfig.sH30,
+                            CustomText(
+                              AppStrings.chooseYourSession,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 20.sp,
+                              color: AppColors.black34,
+                            ),
+                            SizeConfig.sH25,
+                            Wrap(
+                                alignment: WrapAlignment.center,
+                                runSpacing: 30.w,
+                                spacing: 40.w,
+                                children: List.generate(
+                                    sessionDataList.length,
+                                    (index) => Padding(
+                                          padding: const EdgeInsets.all(
+                                              8.0), // Add some spacing between items
+                                          child: InkWell(
+                                            onTap: () {
+                                              /// selected session id
+                                              // final getIndex = sessionDataList
+                                              //     .indexWhere((element) =>
+                                              //         element['id'] ==
+                                              //         sessionDataList[index]['id']);
+                                              // if (getIndex != -1) {
+                                              if (!sessionViewModel
+                                                  .selectedSession
+                                                  .any((element) =>
+                                                      element['id'] ==
+                                                      sessionDataList[index]
+                                                          ['id'])) {
+                                                sessionViewModel.selectedSession
+                                                    .add({
+                                                  'id': sessionDataList[index]
+                                                      ['id'],
+                                                  'session_name':
+                                                      sessionDataList[index]
+                                                          ['session_name']
+                                                });
+                                              } else {
+                                                sessionViewModel.selectedSession
+                                                    .removeWhere((element) =>
+                                                        element['id'] ==
+                                                        sessionDataList[index]
+                                                            ['id']);
+                                              }
+                                            },
+                                            child: CommonSessionContainer(
+                                              imageUrl: sessionDataList[index]
+                                                  ['image'],
+                                              titleText: sessionDataList[index]
+                                                  ['session_name'],
+                                              color: sessionViewModel
+                                                      .selectedSession
+                                                      .any((element) =>
+                                                          element['id'] ==
+                                                          sessionDataList[index]
+                                                              ['id'])
+                                                  ? AppColors.primaryColor
+                                                  : Colors.transparent,
+                                            ),
+                                          ),
+                                        ))
 
-                          // sessionDataList.map((sessionData) {
-                          //   return Padding(
-                          //     padding: const EdgeInsets.all(
-                          //         8.0), // Add some spacing between items
-                          //     child: InkWell(
-                          //       onTap: () {},
-                          //       child: CommonSessionContainer(
-                          //         imageUrl: sessionData['image'],
-                          //         titleText: sessionData['session_name'],
-                          //         color: AppColors.primaryColor,
-                          //       ),
-                          //     ),
-                          //   );
-                          // }).toList(),
-                          ),
+                                // sessionDataList.map((sessionData) {
+                                //   return Padding(
+                                //     padding: const EdgeInsets.all(
+                                //         8.0), // Add some spacing between items
+                                //     child: InkWell(
+                                //       onTap: () {},
+                                //       child: CommonSessionContainer(
+                                //         imageUrl: sessionData['image'],
+                                //         titleText: sessionData['session_name'],
+                                //         color: AppColors.primaryColor,
+                                //       ),
+                                //     ),
+                                //   );
+                                // }).toList(),
+                                ),
 
-                      // Row(
-                      //   mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      //   children: [
-                      //     CommonSessionContainer(
-                      //       imageUrl: AppImageAssets.specialEducationIcn,
-                      //       titleText: AppStrings.specialEducation,
-                      //     ),
-                      //     CommonSessionContainer(
-                      //       imageUrl: AppImageAssets.occupationalTherapyIcn,
-                      //       titleText: AppStrings.occupationalTherapy,
-                      //     )
-                      //   ],
-                      // ),
-                      // SizeConfig.sH35,
-                      // Row(
-                      //   mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      //   children: [
-                      //     CommonSessionContainer(
-                      //       imageUrl: AppImageAssets.sportIcn,
-                      //       titleText: AppStrings.sports,
-                      //     ),
-                      //     CommonSessionContainer(
-                      //       imageUrl: AppImageAssets.speechIcn,
-                      //       titleText: AppStrings.speech,
-                      //     )
-                      //   ],
-                      // ),
-                      // SizeConfig.sH35,
-                      // CommonSessionContainer(
-                      //   imageUrl: AppImageAssets.musicIcn,
-                      //   titleText: AppImageAssets.musicIcn,
-                      // ),
-                      SizeConfig.sH25,
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 60.w),
-                        child: Container(
-                          height: Get.width / 9,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(15.r),
-                            border: Border.all(color: Colors.grey),
-                          ),
-                          child: DropdownButton<String>(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: 10.w,
-                            ),
-                            isExpanded: true,
-                            underline: const SizedBox(),
-                            iconEnabledColor: AppColors.color97,
-                            iconDisabledColor: AppColors.color97,
-                            hint: CustomText(
-                              AppStrings.selectTherapy,
-                              fontWeight: FontWeight.w500,
-                              fontSize: 15.sp,
-                              color: AppColors.color97,
-                            ),
-                            items: const [
-                              DropdownMenuItem(
-                                value: 'Therapy 1',
-                                child: Text('Therapy 1'),
-                              ),
-                              DropdownMenuItem(
-                                value: 'Therapy 2',
-                                child: Text('Therapy 2'),
-                              ),
-                            ],
-                            onChanged: (value) {},
-                          ),
-                        ),
-                      ),
-                      SizeConfig.sH15,
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 50.w),
-                        child: GestureDetector(
-                          onTap: () => sessionViewModel.selectDate(context),
-                          child: Container(
-                            // height: 45.h,
-                            // padding: const EdgeInsets.all(8.0),
-                            margin: EdgeInsets.symmetric(horizontal: 20.w),
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 15.w, vertical: 10.w),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(15.r),
-                              border: Border.all(color: Colors.grey),
-                            ),
-                            child: Obx(
-                              () => Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  CustomText(
-                                    sessionViewModel.isSelected.value == true
-                                        ? sessionViewModel.date.value
-                                        : AppStrings.calender,
+                            // Row(
+                            //   mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            //   children: [
+                            //     CommonSessionContainer(
+                            //       imageUrl: AppImageAssets.specialEducationIcn,
+                            //       titleText: AppStrings.specialEducation,
+                            //     ),
+                            //     CommonSessionContainer(
+                            //       imageUrl: AppImageAssets.occupationalTherapyIcn,
+                            //       titleText: AppStrings.occupationalTherapy,
+                            //     )
+                            //   ],
+                            // ),
+                            // SizeConfig.sH35,
+                            // Row(
+                            //   mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            //   children: [
+                            //     CommonSessionContainer(
+                            //       imageUrl: AppImageAssets.sportIcn,
+                            //       titleText: AppStrings.sports,
+                            //     ),
+                            //     CommonSessionContainer(
+                            //       imageUrl: AppImageAssets.speechIcn,
+                            //       titleText: AppStrings.speech,
+                            //     )
+                            //   ],
+                            // ),
+                            // SizeConfig.sH35,
+                            // CommonSessionContainer(
+                            //   imageUrl: AppImageAssets.musicIcn,
+                            //   titleText: AppImageAssets.musicIcn,
+                            // ),
+                            SizeConfig.sH25,
+                            Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 60.w),
+                              child: Container(
+                                height: Get.width / 9,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(15.r),
+                                  border: Border.all(color: Colors.grey),
+                                ),
+                                child: DropdownButton<String>(
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: 10.w,
+                                  ),
+                                  isExpanded: true,
+                                  underline: const SizedBox(),
+                                  iconEnabledColor: AppColors.color97,
+                                  iconDisabledColor: AppColors.color97,
+                                  hint: CustomText(
+                                    AppStrings.selectTherapy,
+                                    fontWeight: FontWeight.w500,
                                     fontSize: 15.sp,
                                     color: AppColors.color97,
-                                    fontWeight: FontWeight.w500,
                                   ),
-                                  const LocalAssets(
-                                      imagePath: AppImageAssets.calenderIcn)
-                                ],
+                                  items: const [
+                                    DropdownMenuItem(
+                                      value: 'Therapy 1',
+                                      child: Text('Therapy 1'),
+                                    ),
+                                    DropdownMenuItem(
+                                      value: 'Therapy 2',
+                                      child: Text('Therapy 2'),
+                                    ),
+                                  ],
+                                  onChanged: (value) {},
+                                ),
                               ),
                             ),
-                          ),
+                            SizeConfig.sH15,
+                            Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 50.w),
+                              child: GestureDetector(
+                                onTap: () =>
+                                    sessionViewModel.selectDate(context),
+                                child: Container(
+                                  // height: 45.h,
+                                  // padding: const EdgeInsets.all(8.0),
+                                  margin:
+                                      EdgeInsets.symmetric(horizontal: 20.w),
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 15.w, vertical: 10.w),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(15.r),
+                                    border: Border.all(color: Colors.grey),
+                                  ),
+                                  child: Obx(
+                                    () => Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        CustomText(
+                                          // sessionViewModel.isSelected.value ==
+                                          //         true
+                                          //     ?
+                                          sessionViewModel.date.value == ''
+                                              ? AppStrings.calender
+                                              : sessionViewModel.date.value,
+                                          // : AppStrings.calender,
+                                          fontSize: 15.sp,
+                                          color: AppColors.color97,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                        const LocalAssets(
+                                            imagePath:
+                                                AppImageAssets.calenderIcn)
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            SizeConfig.sH18,
+                            Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 25.w),
+                              child: CustomBtn(
+                                  onTap: () {
+                                    addSessionOnTap();
+                                  },
+                                  title: AppStrings.submit),
+                            ),
+                            SizeConfig.sH35,
+                          ],
                         ),
                       ),
-                      SizeConfig.sH18,
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 25.w),
-                        child: CustomBtn(
-                            onTap: () {
-                              addSessionOnTap();
-                            },
-                            title: AppStrings.submit),
-                      ),
-                      SizeConfig.sH35,
-                    ],
-                  ),
-                ),
               ),
             );
           }),
@@ -266,15 +328,24 @@ class _SessionScreenState extends State<SessionScreen> {
 
   Future<void> addSessionOnTap() async {
     showLoadingDialog(context: context);
-    sessionDataReq.userId = SharedPreferenceUtils.getUserId();
-    sessionDataReq.sessionName = sessionViewModel.sessionName.value;
-    sessionDataReq.sessionSelectedDate = sessionViewModel.date.value;
+    bool? status;
+    if (SharedPreferenceUtils.getSessionId() != '') {
+      SessionService.deleteSessionData(SharedPreferenceUtils.getSessionId());
+    }
+    for (int i = 0; i < sessionViewModel.selectedSession.length; i++) {
+      sessionDataReq.id = sessionViewModel.selectedSession[i]['id'].toString();
+      sessionDataReq.userId = SharedPreferenceUtils.getUserId();
+      sessionDataReq.sessionName =
+          sessionViewModel.selectedSession[i]['session_name'];
+      sessionDataReq.sessionSelectedDate = sessionViewModel.date.value;
 
-    final status = await SessionService.addAppointmentData(sessionDataReq);
+      status = await SessionService.addAppointmentData(sessionDataReq);
+    }
 
     print('APPOINTMENT  STATUS :=>$status');
-    if (status) {
+    if (status!) {
       // hideLoadingDialog(context: context);
+      await SharedPreferenceUtils.setSessionId('');
       Get.back();
       sessionSuccessfullyDialog(context);
     } else {

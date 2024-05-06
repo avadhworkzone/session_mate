@@ -11,7 +11,6 @@ import 'package:session_mate/utils/shared_preference_utils.dart';
 import 'package:session_mate/view/bottomBar/bottom_bar_screen.dart';
 import 'package:session_mate/view/welcomeScreen/welcome_screen.dart';
 import 'package:session_mate/viewModel/otp_view_model.dart';
-import 'package:session_mate/utils/shared_preference_utils.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

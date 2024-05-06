@@ -30,16 +30,27 @@ List<String> homeSubtitle = [
 
 List<Map<String, dynamic>> sessionDataList = [
   {
+    'id': 0,
     'image': AppImageAssets.specialEducationIcn,
     'session_name': AppStrings.specialEducation
   },
   {
+    'id': 1,
     'image': AppImageAssets.occupationalTherapyIcn,
     'session_name': AppStrings.occupationalTherapy,
   },
-  {'image': AppImageAssets.sportIcn, 'session_name': AppStrings.sports},
-  {'image': AppImageAssets.speechIcn, 'session_name': AppStrings.speech},
   {
+    'id': 2,
+    'image': AppImageAssets.sportIcn,
+    'session_name': AppStrings.sports
+  },
+  {
+    'id': 3,
+    'image': AppImageAssets.speechIcn,
+    'session_name': AppStrings.speech
+  },
+  {
+    'id': 4,
     'image': AppImageAssets.musicIcn,
     'session_name': AppStrings.music,
   }

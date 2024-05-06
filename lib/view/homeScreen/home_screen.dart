@@ -6,6 +6,7 @@ import 'package:session_mate/utils/app_colors.dart';
 import 'package:session_mate/utils/app_constant.dart';
 import 'package:session_mate/utils/app_image_assets.dart';
 import 'package:session_mate/utils/local_assets.dart';
+import 'package:session_mate/utils/shared_preference_utils.dart';
 import 'package:session_mate/utils/size_config_utils.dart';
 import 'package:session_mate/view/bottomBar/bottom_bar_screen.dart';
 import 'package:session_mate/view/drawer/drawer_screen.dart';
@@ -65,10 +66,11 @@ class _HomeScreenState extends State<HomeScreen> {
               itemBuilder: (context, index) => Padding(
                 padding: EdgeInsets.symmetric(horizontal: 30.w, vertical: 10.h),
                 child: GestureDetector(
-                  onTap: () {
+                  onTap: () async {
                     if (index == 0) {
                       Get.find<BottomBarViewModel>().selectedBottomIndex.value =
                           1;
+                      await SharedPreferenceUtils.setSessionId('');
                       Get.to(() => const BottomBar());
                     } else if (index == 1) {
                       Get.to(() => const RetrieveCounts());

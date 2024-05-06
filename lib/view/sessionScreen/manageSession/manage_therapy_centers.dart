@@ -125,11 +125,18 @@ class _ManageTherapyCentersState extends State<ManageTherapyCenters> {
       var permission = await Geolocator.checkPermission();
       if (permission == LocationPermission.always ||
           permission == LocationPermission.whileInUse) {
+        logs('===========logMsg =-=---------}');
         Position position = await Geolocator.getCurrentPosition(
-            desiredAccuracy: LocationAccuracy.high);
+                desiredAccuracy: LocationAccuracy.high)
+            .catchError((e) {
+          print('LOCATION ERROR :=>$e');
+        });
+
         if (position.latitude == 0 && position.longitude == 0) {
+          logs('logMsg =-=---------}');
           requestLocationPermission();
         } else {
+          logs('logMsg =-=---------}');
           Get.to(MapScreen(
             lat: position.latitude.toString(),
             long: position.longitude.toString(),
@@ -150,6 +157,7 @@ class _ManageTherapyCentersState extends State<ManageTherapyCenters> {
         await Permission.locationWhenInUse.request().isGranted) {
       try {
         final position = await Geolocator.getCurrentPosition();
+        logs('logMsg =-=---MapScreen------}');
         Get.to(MapScreen(
           lat: position.latitude.toString(),
           long: position.longitude.toString(),
