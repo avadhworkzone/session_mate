@@ -28,8 +28,8 @@ class _ManageTherapyCentersState extends State<ManageTherapyCenters> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(
-        body: Column(
+      child: Material(
+        child: Column(
           children: [
             commonAppBar(
                 localAssets: LocalAssets(
@@ -133,10 +133,8 @@ class _ManageTherapyCentersState extends State<ManageTherapyCenters> {
         });
 
         if (position.latitude == 0 && position.longitude == 0) {
-          logs('logMsg =-=---------}');
           requestLocationPermission();
         } else {
-          logs('logMsg =-=---------}');
           Get.to(MapScreen(
             lat: position.latitude.toString(),
             long: position.longitude.toString(),

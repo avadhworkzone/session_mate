@@ -3,20 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:session_mate/commonWidget/custom_btn.dart';
+import 'package:session_mate/commonWidget/custom_text.dart';
 import 'package:session_mate/modal/add_service_data_model.dart';
 import 'package:session_mate/service/session_service.dart';
 import 'package:session_mate/utils/app_colors.dart';
+import 'package:session_mate/utils/app_image_assets.dart';
+import 'package:session_mate/utils/app_string.dart';
+import 'package:session_mate/utils/common_methods.dart';
 import 'package:session_mate/utils/local_assets.dart';
 import 'package:session_mate/utils/shared_preference_utils.dart';
 import 'package:session_mate/utils/size_config_utils.dart';
 import 'package:session_mate/view/bottomBar/bottom_bar_screen.dart';
 import 'package:session_mate/viewModel/bottom_bar_view_model.dart';
-
-import '../../../commonWidget/custom_btn.dart';
-import '../../../commonWidget/custom_text.dart';
-import '../../../utils/app_image_assets.dart';
-import '../../../utils/app_string.dart';
-import '../../../utils/common_methods.dart';
 
 class ManageSessions extends StatefulWidget {
   const ManageSessions({super.key});

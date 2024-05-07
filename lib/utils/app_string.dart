@@ -61,6 +61,16 @@ class AppStrings {
   static String sessionSuccessfully =
       'Session successfully Captured! Do you want to capture more?';
 
+  /// Retrieve Counts Screen
+  static String retrieveCountTxt =
+      'Which Session do you want to\n the Count for?';
+
+  /// retrieve count detail screen
+  static String sessionCount = 'Session Count';
+  static String sessionName = 'Session Name';
+  static String count = 'Counts';
+  static String therapyCenter = 'Therapy Center';
+
   ///APP ERROR MESSAGE
   static String enterValidEmail = "Please Enter Valid Email Address";
   static String emailIsRequired = "email address is Required";

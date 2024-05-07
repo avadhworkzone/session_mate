@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:session_mate/modal/add_service_data_model.dart';
 import 'package:session_mate/utils/collection_utils.dart';
 import 'package:session_mate/utils/shared_preference_utils.dart';
@@ -56,5 +57,27 @@ class SessionService {
       print('getSessionDataDetail error :=>$e');
       return null;
     });
+  }
+
+  /// get session count
+
+  Future<int> fetchFilteredDataCount(
+      String sessionName, int selectedDate) async {
+    // Create a reference to your Firestore collection
+    CollectionReference sessionsRef =
+        FirebaseFirestore.instance.collection('UserSessionData');
+
+    // Construct a query to filter documents based on session name and selected date
+    Query query = sessionsRef
+        .where('session_name', isEqualTo: sessionName)
+        .where('session_date',
+            isGreaterThanOrEqualTo:
+                DateTime(2024, selectedDate, 1)); // Filter for a single day
+
+    // Fetch documents that match the query
+    QuerySnapshot querySnapshot = await query.get();
+
+    // Return the count of documents fetched
+    return querySnapshot.docs.length;
   }
 }

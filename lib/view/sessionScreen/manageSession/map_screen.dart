@@ -5,6 +5,8 @@ import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:session_mate/commonWidget/custom_btn.dart';
+import 'package:session_mate/utils/size_config_utils.dart';
 
 class MapScreen extends StatefulWidget {
   final String? lat;
@@ -45,7 +47,6 @@ class _MapScreenState extends State<MapScreen> {
       });
       var addresses = await placemarkFromCoordinates(
           double.parse(widget.lat!), double.parse(widget.long!));
-      print('addresses-->>${addresses}');
 
       ///currLocation.longitude
       var first = addresses.first;
@@ -75,6 +76,7 @@ class _MapScreenState extends State<MapScreen> {
 
     currentLatLng = LatLng(
         double.parse(latitude.toString()), double.parse(longitude.toString()));
+    print('currentLatLng -=------->> ${currentLatLng}');
     _marker = Marker(
       markerId: const MarkerId('currentLocation'),
       position: LatLng(latitude, longitude),
@@ -88,11 +90,10 @@ class _MapScreenState extends State<MapScreen> {
     cityName = first.locality;
     state = first.administrativeArea;
     pinCode = first.postalCode;
-    address = '${first.street} $cityName, ${state}, ${country}';
+    address = '${first.street} $cityName, $state, $country';
     // area = first.subLocality;
     lat = latitude.toString() ?? "";
     long = longitude.toString() ?? "";
-    print('update pinCode----==>>..${pinCode}');
 
     setState(() {});
     // });
@@ -106,61 +107,62 @@ class _MapScreenState extends State<MapScreen> {
           : SizedBox(
               height: MediaQuery.of(context).size.height,
               width: MediaQuery.of(context).size.width,
-              child: Stack(
+              child: Column(
                 children: [
-                  Column(
-                    children: [
-                      Expanded(
-                        child: Stack(
-                          // alignment: Alignment.center,
-                          children: [
-                            GoogleMap(
-                              initialCameraPosition: CameraPosition(
-                                  target: currentLatLng!, zoom: 17),
-                              markers: _marker != null
-                                  ? Set<Marker>.of([_marker!])
-                                  : {},
-                              mapType: MapType.normal,
-                              onTap: (tappedPoint) {
-                                _handleMapTap(tappedPoint);
-                              },
-                              zoomGesturesEnabled: true,
-                              // markers: _markers.toSet(),
-                              zoomControlsEnabled: true,
-                              // myLocationEnabled: true,
-                              // myLocationButtonEnabled: false,
-                              onMapCreated: (GoogleMapController controller) {
-                                _controller.complete(controller);
-                              },
-                              padding: const EdgeInsets.only(
-                                top: 40.0,
-                              ),
-                              onCameraMove: (position) {
-                                // _debouncer.run(() {
-                                // setState(() {
-                                // _isLoading = true;
-                                // print('_markers.first===${_markers}');
-                                // _markers.first = _markers.first
-                                //     .copyWith(positionParam: position.target);
-
-                                // lat = position.target.latitude;
-                                // lng = position.target.longitude;
-                                // printData("My Latitude : ",
-                                //     position.target.latitude.toString());
-                                // printData("My Longitude : ",
-                                //     position.target.longitude.toString());
-
-                                // getAddress(position.target.latitude,
-                                //     position.target.longitude);
-                                // });
-                                //});
-                              },
-                            ),
-                          ],
-                        ),
+                  Expanded(
+                    child: GoogleMap(
+                      initialCameraPosition:
+                          CameraPosition(target: currentLatLng!, zoom: 17),
+                      markers:
+                          _marker != null ? Set<Marker>.of([_marker!]) : {},
+                      mapType: MapType.normal,
+                      onTap: (tappedPoint) {
+                        _handleMapTap(tappedPoint);
+                      },
+                      zoomGesturesEnabled: true,
+                      // markers: _markers.toSet(),
+                      zoomControlsEnabled: true,
+                      // myLocationEnabled: true,
+                      // myLocationButtonEnabled: false,
+                      onMapCreated: (GoogleMapController controller) {
+                        _controller.complete(controller);
+                      },
+                      padding: const EdgeInsets.only(
+                        top: 40.0,
                       ),
-                    ],
+                      onCameraMove: (position) {
+                        // _debouncer.run(() {
+                        // setState(() {
+                        // _isLoading = true;
+                        // print('_markers.first===${_markers}');
+                        // _markers.first = _markers.first
+                        //     .copyWith(positionParam: position.target);
+
+                        // lat = position.target.latitude;
+                        // lng = position.target.longitude;
+                        // printData("My Latitude : ",
+                        //     position.target.latitude.toString());
+                        // printData("My Longitude : ",
+                        //     position.target.longitude.toString());
+
+                        // getAddress(position.target.latitude,
+                        //     position.target.longitude);
+                        // });
+                        //});
+                      },
+                    ),
                   ),
+                  SizeConfig.sH20,
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: CustomBtn(
+                        height: 50,
+                        onTap: () {
+                          Get.back();
+                        },
+                        title: 'Submit'),
+                  ),
+                  SizeConfig.sH20,
                 ],
               ),
             ),

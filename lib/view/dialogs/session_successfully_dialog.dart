@@ -6,6 +6,8 @@ import 'package:session_mate/commonWidget/custom_text.dart';
 import 'package:session_mate/utils/app_colors.dart';
 import 'package:session_mate/utils/app_string.dart';
 import 'package:session_mate/utils/size_config_utils.dart';
+import 'package:session_mate/view/bottomBar/bottom_bar_screen.dart';
+import 'package:session_mate/viewModel/bottom_bar_view_model.dart';
 import 'package:session_mate/viewModel/session_view_model.dart';
 
 sessionSuccessfullyDialog(BuildContext context) {
@@ -39,8 +41,10 @@ sessionSuccessfullyDialog(BuildContext context) {
                       children: [
                         CustomBtn(
                           onTap: () {
-                            Get.find<SessionViewModel>().sessionSelect.value =
-                                -1;
+                            Get.find<SessionViewModel>()
+                                .selectedSession
+                                .clear();
+                            Get.find<SessionViewModel>().sessionDate.value = '';
                             // Get.find<SessionViewModel>().sessionName.value = '';
                             Get.back();
                           },
@@ -57,11 +61,13 @@ sessionSuccessfullyDialog(BuildContext context) {
                         ),
                         CustomBtn(
                             onTap: () {
-                              Get.find<SessionViewModel>().sessionSelect.value =
-                                  -1;
+                              Get.find<BottomBarViewModel>()
+                                  .selectedBottomIndex
+                                  .value = 0;
+                              Get.offAll(() => const BottomBar());
                               // Get.find<SessionViewModel>().sessionName.value =
                               //     '';
-                              Get.back();
+                              // Get.back();
                             },
                             height: 33.h,
                             width: 70.w,

@@ -27,7 +27,7 @@ class SessionScreen extends StatefulWidget {
 }
 
 class _SessionScreenState extends State<SessionScreen> {
-  SessionViewModel sessionViewModel = Get.put(SessionViewModel());
+  SessionViewModel sessionViewModel = Get.find();
   AddSessionDataModel sessionDataReq = AddSessionDataModel();
 
   @override
@@ -51,7 +51,7 @@ class _SessionScreenState extends State<SessionScreen> {
             'session_name': snapshot.sessionName ?? '',
           });
         }
-        sessionViewModel.date.value = snapshot.sessionSelectedDate ?? '';
+        sessionViewModel.sessionDate.value = snapshot.sessionSelectedDate ?? '';
         sessionViewModel.isLoadingData.value = false;
         // } else {
         //   sessionViewModel.isLoadingData.value = false;
@@ -288,9 +288,11 @@ class _SessionScreenState extends State<SessionScreen> {
                                           // sessionViewModel.isSelected.value ==
                                           //         true
                                           //     ?
-                                          sessionViewModel.date.value == ''
+                                          sessionViewModel.sessionDate.value ==
+                                                  ''
                                               ? AppStrings.calender
-                                              : sessionViewModel.date.value,
+                                              : sessionViewModel
+                                                  .sessionDate.value,
                                           // : AppStrings.calender,
                                           fontSize: 15.sp,
                                           color: AppColors.color97,
@@ -337,12 +339,11 @@ class _SessionScreenState extends State<SessionScreen> {
       sessionDataReq.userId = SharedPreferenceUtils.getUserId();
       sessionDataReq.sessionName =
           sessionViewModel.selectedSession[i]['session_name'];
-      sessionDataReq.sessionSelectedDate = sessionViewModel.date.value;
+      sessionDataReq.sessionSelectedDate = sessionViewModel.sessionDate.value;
 
       status = await SessionService.addAppointmentData(sessionDataReq);
     }
 
-    print('APPOINTMENT  STATUS :=>$status');
     if (status!) {
       // hideLoadingDialog(context: context);
       await SharedPreferenceUtils.setSessionId('');
