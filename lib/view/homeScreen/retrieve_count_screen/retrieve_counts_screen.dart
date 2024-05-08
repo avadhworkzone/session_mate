@@ -9,6 +9,7 @@ import 'package:session_mate/utils/app_colors.dart';
 import 'package:session_mate/utils/app_constant.dart';
 import 'package:session_mate/utils/app_image_assets.dart';
 import 'package:session_mate/utils/app_string.dart';
+import 'package:session_mate/utils/common_methods.dart';
 import 'package:session_mate/utils/local_assets.dart';
 import 'package:session_mate/utils/size_config_utils.dart';
 import 'package:session_mate/view/homeScreen/retrieve_count_screen/retrieve_count_detail_screen.dart';
@@ -24,6 +25,8 @@ class RetrieveCounts extends StatefulWidget {
 
 class _RetrieveCountsState extends State<RetrieveCounts> {
   SessionViewModel sessionViewModel = Get.find();
+  int? selectedDataIndex;
+  String? selectedSessionName;
 
   @override
   Widget build(BuildContext context) {
@@ -39,9 +42,26 @@ class _RetrieveCountsState extends State<RetrieveCounts> {
       body: Column(
         children: [
           Padding(
-            padding: EdgeInsets.only(left: 30.w, bottom: 30.w, top: 20.w),
+            padding: EdgeInsets.symmetric(horizontal: 30.w, vertical: 20.w),
             child: Row(
               children: [
+                InkWell(
+                  onTap: () {
+                    Get.back();
+                  },
+                  child: const Icon(
+                    Icons.arrow_back_ios,
+                    color: AppColors.white,
+                  ),
+                ),
+                SizeConfig.sW15,
+                CustomText(
+                  '${AppStrings.hi} Nitin',
+                  color: AppColors.white,
+                  fontSize: 20.sp,
+                  fontWeight: FontWeight.w400,
+                ),
+                Spacer(),
                 Container(
                   padding:
                       EdgeInsets.symmetric(horizontal: 30.w, vertical: 26.w),
@@ -52,13 +72,6 @@ class _RetrieveCountsState extends State<RetrieveCounts> {
                           image: NetworkImage(
                               'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSu0gYR-As9-_w2_fjRc895mD_91WQ5p7N_9Q&s'))),
                 ),
-                SizeConfig.sW15,
-                CustomText(
-                  '${AppStrings.hi} Nitin',
-                  color: AppColors.white,
-                  fontSize: 20.sp,
-                  fontWeight: FontWeight.w400,
-                )
               ],
             ),
           ),
@@ -93,12 +106,20 @@ class _RetrieveCountsState extends State<RetrieveCounts> {
                                   padding: const EdgeInsets.all(
                                       8.0), // Add some spacing between items
                                   child: InkWell(
-                                    onTap: () {},
+                                    onTap: () {
+                                      selectedDataIndex = index;
+                                      selectedSessionName =
+                                          sessionDataList[index]
+                                              ['session_name'];
+                                      setState(() {});
+                                    },
                                     child: CommonSessionContainer(
                                       imageUrl: sessionDataList[index]['image'],
                                       titleText: sessionDataList[index]
                                           ['session_name'],
-                                      color: Colors.transparent,
+                                      color: selectedDataIndex == index
+                                          ? AppColors.primaryColor
+                                          : Colors.transparent,
                                     ),
                                   ),
                                 ))),
@@ -120,10 +141,9 @@ class _RetrieveCountsState extends State<RetrieveCounts> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 CustomText(
-                                  sessionViewModel.retrieveCountDate.value == ''
+                                  sessionViewModel.retrieveCountMonthIs.value == ''
                                       ? AppStrings.calender
-                                      : sessionViewModel
-                                          .retrieveCountDate.value,
+                                      : sessionViewModel.retrieveCountMonthIs.value,
                                   // : AppStrings.calender,
                                   fontSize: 15.sp,
                                   color: AppColors.color97,
@@ -142,11 +162,16 @@ class _RetrieveCountsState extends State<RetrieveCounts> {
                       padding: EdgeInsets.symmetric(horizontal: 25.w),
                       child: CustomBtn(
                           onTap: () async {
-                            // int count = await SessionService()
-                            //     .fetchFilteredDataCount('Special Education',
-                            //         sessionViewModel.monthIs!);
-                            // print('count----=......${count}');
-                            Get.to(() => const RetrieveCountDetailScreen());
+                            if (selectedSessionName == '' ||
+                                sessionViewModel.retrieveCountMonthIs.value.isEmpty) {
+                              commonSnackBar(message: 'Please Select Data');
+                            } else {
+                              Get.to(() => RetrieveCountDetailScreen(
+                                    sessionName: selectedSessionName!,
+                                    sessionSelectedMonth:
+                                        sessionViewModel.retrieveCountMonthIs.value,
+                                  ));
+                            }
                           },
                           title: AppStrings.submit),
                     ),

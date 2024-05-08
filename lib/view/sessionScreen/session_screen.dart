@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:session_mate/commonWidget/custom_btn.dart';
 import 'package:session_mate/commonWidget/custom_text.dart';
 import 'package:session_mate/modal/add_service_data_model.dart';
+import 'package:session_mate/modal/therapy_center_location_data_model.dart';
 import 'package:session_mate/service/session_service.dart';
 import 'package:session_mate/utils/app_colors.dart';
 import 'package:session_mate/utils/app_constant.dart';
@@ -29,10 +30,22 @@ class SessionScreen extends StatefulWidget {
 class _SessionScreenState extends State<SessionScreen> {
   SessionViewModel sessionViewModel = Get.find();
   AddSessionDataModel sessionDataReq = AddSessionDataModel();
+  List<TherapyCenterLocationDataModel> locationData = [];
 
   @override
   void initState() {
     getSessionData();
+    SessionService().getTherapyDropdownCenter().then((data) {
+      if (data != null) {
+        setState(() {
+          locationData = data;
+        });
+      } else {
+        print('Data is null');
+      }
+    }).catchError((error) {
+      print('Error fetching data: $error');
+    });
     // TODO: implement initState
     super.initState();
   }
@@ -40,6 +53,7 @@ class _SessionScreenState extends State<SessionScreen> {
   getSessionData() async {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       sessionViewModel.selectedSession.clear();
+      sessionViewModel.sessionDate.value = '';
       if (SharedPreferenceUtils.getSessionId() != '') {
         sessionViewModel.isLoadingData.value = true;
         final snapshot = await SessionService.getEditSessionDataDetail();
@@ -51,7 +65,8 @@ class _SessionScreenState extends State<SessionScreen> {
             'session_name': snapshot.sessionName ?? '',
           });
         }
-        sessionViewModel.sessionDate.value = snapshot.sessionSelectedDate ?? '';
+        sessionViewModel.sessionDate.value =
+            formatMilliseconds(snapshot.sessionSelectedDate ?? 0);
         sessionViewModel.isLoadingData.value = false;
         // } else {
         //   sessionViewModel.isLoadingData.value = false;
@@ -59,6 +74,10 @@ class _SessionScreenState extends State<SessionScreen> {
       }
     });
   }
+
+  TherapyCenterLocationDataModel? selectedValue;
+  bool isLocationNotSelected = false;
+  // List<TherapyCenterLocationDataModel>? snapshotData;
 
   @override
   Widget build(BuildContext context) {
@@ -131,12 +150,6 @@ class _SessionScreenState extends State<SessionScreen> {
                                               8.0), // Add some spacing between items
                                           child: InkWell(
                                             onTap: () {
-                                              /// selected session id
-                                              // final getIndex = sessionDataList
-                                              //     .indexWhere((element) =>
-                                              //         element['id'] ==
-                                              //         sessionDataList[index]['id']);
-                                              // if (getIndex != -1) {
                                               if (!sessionViewModel
                                                   .selectedSession
                                                   .any((element) =>
@@ -174,93 +187,65 @@ class _SessionScreenState extends State<SessionScreen> {
                                                   : Colors.transparent,
                                             ),
                                           ),
-                                        ))
-
-                                // sessionDataList.map((sessionData) {
-                                //   return Padding(
-                                //     padding: const EdgeInsets.all(
-                                //         8.0), // Add some spacing between items
-                                //     child: InkWell(
-                                //       onTap: () {},
-                                //       child: CommonSessionContainer(
-                                //         imageUrl: sessionData['image'],
-                                //         titleText: sessionData['session_name'],
-                                //         color: AppColors.primaryColor,
-                                //       ),
-                                //     ),
-                                //   );
-                                // }).toList(),
-                                ),
-
-                            // Row(
-                            //   mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            //   children: [
-                            //     CommonSessionContainer(
-                            //       imageUrl: AppImageAssets.specialEducationIcn,
-                            //       titleText: AppStrings.specialEducation,
-                            //     ),
-                            //     CommonSessionContainer(
-                            //       imageUrl: AppImageAssets.occupationalTherapyIcn,
-                            //       titleText: AppStrings.occupationalTherapy,
-                            //     )
-                            //   ],
-                            // ),
-                            // SizeConfig.sH35,
-                            // Row(
-                            //   mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            //   children: [
-                            //     CommonSessionContainer(
-                            //       imageUrl: AppImageAssets.sportIcn,
-                            //       titleText: AppStrings.sports,
-                            //     ),
-                            //     CommonSessionContainer(
-                            //       imageUrl: AppImageAssets.speechIcn,
-                            //       titleText: AppStrings.speech,
-                            //     )
-                            //   ],
-                            // ),
-                            // SizeConfig.sH35,
-                            // CommonSessionContainer(
-                            //   imageUrl: AppImageAssets.musicIcn,
-                            //   titleText: AppImageAssets.musicIcn,
-                            // ),
+                                        ))),
                             SizeConfig.sH25,
                             Padding(
                               padding: EdgeInsets.symmetric(horizontal: 60.w),
                               child: Container(
-                                height: Get.width / 9,
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(15.r),
-                                  border: Border.all(color: Colors.grey),
-                                ),
-                                child: DropdownButton<String>(
-                                  padding: EdgeInsets.symmetric(
-                                    horizontal: 10.w,
+                                  height: Get.width / 9,
+                                  width: Get.width,
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(15.r),
+                                    border: Border.all(color: Colors.grey),
                                   ),
-                                  isExpanded: true,
-                                  underline: const SizedBox(),
-                                  iconEnabledColor: AppColors.color97,
-                                  iconDisabledColor: AppColors.color97,
-                                  hint: CustomText(
-                                    AppStrings.selectTherapy,
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 15.sp,
-                                    color: AppColors.color97,
-                                  ),
-                                  items: const [
-                                    DropdownMenuItem(
-                                      value: 'Therapy 1',
-                                      child: Text('Therapy 1'),
+                                  child: Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: DropdownButton<
+                                        TherapyCenterLocationDataModel>(
+                                      isExpanded: true,
+                                      hint: Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: CustomText(
+                                          AppStrings.selectTherapyCenter,
+                                          color: AppColors.color97,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 20.w),
+                                      alignment: Alignment.center,
+                                      value: selectedValue,
+                                      underline: Container(),
+                                      icon: const Icon(
+                                        Icons.keyboard_arrow_down,
+                                      ),
+                                      items: locationData.map<
+                                              DropdownMenuItem<
+                                                  TherapyCenterLocationDataModel>>(
+                                          (TherapyCenterLocationDataModel
+                                              serviceData) {
+                                        return DropdownMenuItem<
+                                            TherapyCenterLocationDataModel>(
+                                          value: serviceData,
+                                          child: CustomText(
+                                            '${serviceData.city!}, ${serviceData.state!}',
+                                            fontSize: 16.sp,
+                                            fontWeight: FontWeight.w500,
+                                            color: AppColors.color97,
+                                          ),
+                                          // label: serviceData.serviceTypeName!,
+                                        );
+                                      }).toList(),
+                                      onChanged:
+                                          (TherapyCenterLocationDataModel?
+                                              serviceData) {
+                                        setState(() {
+                                          selectedValue = serviceData;
+                                        });
+                                      },
                                     ),
-                                    DropdownMenuItem(
-                                      value: 'Therapy 2',
-                                      child: Text('Therapy 2'),
-                                    ),
-                                  ],
-                                  onChanged: (value) {},
-                                ),
-                              ),
+                                  )),
                             ),
                             SizeConfig.sH15,
                             Padding(
@@ -285,14 +270,7 @@ class _SessionScreenState extends State<SessionScreen> {
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         CustomText(
-                                          // sessionViewModel.isSelected.value ==
-                                          //         true
-                                          //     ?
-                                          sessionViewModel.sessionDate.value ==
-                                                  ''
-                                              ? AppStrings.calender
-                                              : sessionViewModel
-                                                  .sessionDate.value,
+                                          '${sessionViewModel.sessionDate.value == '' ? AppStrings.calender : sessionViewModel.sessionDate.value}',
                                           // : AppStrings.calender,
                                           fontSize: 15.sp,
                                           color: AppColors.color97,
@@ -329,32 +307,45 @@ class _SessionScreenState extends State<SessionScreen> {
   }
 
   Future<void> addSessionOnTap() async {
-    showLoadingDialog(context: context);
-    bool? status;
-    if (SharedPreferenceUtils.getSessionId() != '') {
-      SessionService.deleteSessionData(SharedPreferenceUtils.getSessionId());
-    }
-    for (int i = 0; i < sessionViewModel.selectedSession.length; i++) {
-      sessionDataReq.id = sessionViewModel.selectedSession[i]['id'].toString();
-      sessionDataReq.userId = SharedPreferenceUtils.getUserId();
-      sessionDataReq.sessionName =
-          sessionViewModel.selectedSession[i]['session_name'];
-      sessionDataReq.sessionSelectedDate = sessionViewModel.sessionDate.value;
-
-      status = await SessionService.addAppointmentData(sessionDataReq);
-    }
-
-    if (status!) {
-      // hideLoadingDialog(context: context);
-      await SharedPreferenceUtils.setSessionId('');
-      Get.back();
-      sessionSuccessfullyDialog(context);
+    if (sessionViewModel.sessionDate.value == 0 ||
+        sessionViewModel.selectedSession.isEmpty ||
+        selectedValue == null) {
+      commonSnackBar(message: 'Please Select data');
     } else {
-      // hideLoadingDialog(context: context);
-      Get.back();
+      showLoadingDialog(context: context);
+      bool? status;
+      if (SharedPreferenceUtils.getSessionId() != '') {
+        SessionService.deleteSessionData(SharedPreferenceUtils.getSessionId());
+      }
+      for (int i = 0; i < sessionViewModel.selectedSession.length; i++) {
+        sessionDataReq.id =
+            sessionViewModel.selectedSession[i]['id'].toString();
+        sessionDataReq.userId = SharedPreferenceUtils.getUserId();
+        sessionDataReq.sessionName =
+            sessionViewModel.selectedSession[i]['session_name'];
+        sessionDataReq.sessionSelectedDate =
+            sessionViewModel.sessionDateMilliSecond.value;
+        sessionDataReq.therapyCenter =
+            '${selectedValue!.city}, ${selectedValue!.state}';
+        sessionDataReq.createdAt = DateTime.now().millisecondsSinceEpoch;
+        sessionDataReq.selectedMonth = sessionViewModel.selectedMonth;
 
-      /// SOMETHING WENT WRONG
-      commonSnackBar(message: AppStrings.somethingWrong);
+        status = await SessionService.addSessionData(sessionDataReq);
+      }
+
+      if (status!) {
+        // hideLoadingDialog(context: context);
+        await SharedPreferenceUtils.setSessionId('');
+
+        Get.back();
+        sessionSuccessfullyDialog(context);
+      } else {
+        // hideLoadingDialog(context: context);
+        Get.back();
+
+        /// SOMETHING WENT WRONG
+        commonSnackBar(message: AppStrings.somethingWrong);
+      }
     }
   }
 }

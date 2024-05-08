@@ -8,6 +8,7 @@ import 'package:session_mate/commonWidget/custom_text.dart';
 import 'package:session_mate/modal/add_service_data_model.dart';
 import 'package:session_mate/service/session_service.dart';
 import 'package:session_mate/utils/app_colors.dart';
+import 'package:session_mate/utils/app_constant.dart';
 import 'package:session_mate/utils/app_image_assets.dart';
 import 'package:session_mate/utils/app_string.dart';
 import 'package:session_mate/utils/common_methods.dart';
@@ -69,8 +70,7 @@ class _ManageSessionsState extends State<ManageSessions> {
                                   fontSize: 18,
                                 ),
                                 subtitle: CustomText(
-                                    snapshotData![index].sessionSelectedDate ??
-                                        ''),
+                                    '${formatMilliseconds(snapshotData![index].sessionSelectedDate ?? 0)}'),
                                 trailing: Row(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [

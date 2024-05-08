@@ -1,15 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:session_mate/modal/add_service_data_model.dart';
+import 'package:session_mate/modal/therapy_center_location_data_model.dart';
 import 'package:session_mate/utils/collection_utils.dart';
 import 'package:session_mate/utils/shared_preference_utils.dart';
 
 class SessionService {
   /// add session data
-  static Future<bool> addAppointmentData(AddSessionDataModel model) async {
+  static Future<bool> addSessionData(AddSessionDataModel model) async {
     final doc = CollectionUtils.sessionCollection.doc();
     model.sessionId = doc.id;
     return doc.set(model.toJson()).then((value) => true).catchError((e) {
-      print('APPOINTMENT ERROR :=>$e');
+      print('SESSION ERROR :=>$e');
       return false;
     });
   }
@@ -37,17 +38,6 @@ class SessionService {
   }
 
   /// get session data detail
-  // ///get  doctor detail
-  // static Future<DoctorDetailResponseModel?> getDoctorDetail() async {
-  //   return await CollectionUtils.doctorCollection
-  //       .doc(PreferenceManagerUtils.getDoctorId())
-  //       .get()
-  //       .then((value) => DoctorDetailResponseModel.fromJson(value.data()!))
-  //       .catchError((e) {
-  //     print('getPatientDetail error :=>$e');
-  //     return null;
-  //   });
-  // }
   static Future<AddSessionDataModel> getEditSessionDataDetail() async {
     return await CollectionUtils.sessionCollection
         .doc(SharedPreferenceUtils.getSessionId())
@@ -60,24 +50,75 @@ class SessionService {
   }
 
   /// get session count
-
-  Future<int> fetchFilteredDataCount(
-      String sessionName, int selectedDate) async {
-    // Create a reference to your Firestore collection
-    CollectionReference sessionsRef =
-        FirebaseFirestore.instance.collection('UserSessionData');
-
-    // Construct a query to filter documents based on session name and selected date
-    Query query = sessionsRef
+  static Future<List<AddSessionDataModel>> fetchFilteredData(
+      {required String sessionName, required String selectedMonth}) async {
+    final snapshot = await CollectionUtils.sessionCollection
         .where('session_name', isEqualTo: sessionName)
-        .where('session_date',
-            isGreaterThanOrEqualTo:
-                DateTime(2024, selectedDate, 1)); // Filter for a single day
+        .where('session_month', isEqualTo: selectedMonth)
+        .get(); // Filter for a single day
+    if (snapshot.docs.isNotEmpty) {
+      return snapshot.docs.map((doc) {
+        final data = doc.data();
+        return AddSessionDataModel.fromJson(data);
+      }).toList();
+    } else {
+      return []; // Return an empty list if no data found
+    }
+  }
 
-    // Fetch documents that match the query
-    QuerySnapshot querySnapshot = await query.get();
+  /// add therapy center
+  static Future<bool> addTherapyCenter(
+      TherapyCenterLocationDataModel model) async {
+    final doc = CollectionUtils.therapyCenterCollection.doc();
+    model.locationId = doc.id;
+    return doc.set(model.toJson()).then((value) => true).catchError((e) {
+      print('SESSION ERROR :=>$e');
+      return false;
+    });
+  }
 
-    // Return the count of documents fetched
-    return querySnapshot.docs.length;
+  /// get therapy center
+  static Stream<List<TherapyCenterLocationDataModel>>
+      getTherapyCenterLocationData() {
+    return CollectionUtils.therapyCenterCollection
+        .where('userId', isEqualTo: SharedPreferenceUtils.getUserId())
+        .snapshots()
+        .map((event) => event.docs
+            .map((e) => TherapyCenterLocationDataModel.fromJson(e.data()))
+            .toList());
+  }
+
+  /// get therapy center for dropdown
+  Future<List<TherapyCenterLocationDataModel>>
+      getTherapyDropdownCenter() async {
+    try {
+      final snapshot = await CollectionUtils.therapyCenterCollection
+          .where('userId', isEqualTo: SharedPreferenceUtils.getUserId())
+          .get();
+
+      if (snapshot.docs.isNotEmpty) {
+        return snapshot.docs.map((doc) {
+          final data = doc.data();
+          return TherapyCenterLocationDataModel.fromJson(data);
+        }).toList();
+      } else {
+        return []; // Return an empty list if no data found
+      }
+    } catch (e) {
+      print('get therapy center error :=>$e');
+      throw e; // Rethrow the error to be handled elsewhere if needed
+    }
+  }
+
+  /// delete therapy center
+  static Future<bool> deleteTherapyCenterData(String id) async {
+    return CollectionUtils.therapyCenterCollection
+        .doc(id)
+        .delete()
+        .then((value) => true)
+        .catchError((e) {
+      print(' delete ERROR :=>$e');
+      return false;
+    });
   }
 }

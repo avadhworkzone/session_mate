@@ -58,6 +58,7 @@ class AppStrings {
   static String selectTherapy = 'Select Therapy';
   static String calender = 'Calender';
   static String sessionCaptured = 'Session Captured';
+  static String selectTherapyCenter = 'Select Therapy Center';
   static String sessionSuccessfully =
       'Session successfully Captured! Do you want to capture more?';
 
@@ -83,19 +84,21 @@ class AppStrings {
   static const loginError = 'User or Password invalid!';
   static const somethingWrong = 'Something Wrong';
 
-  /// DrawerSCREEN
+  /// DRAWER SCREEN
   static String manageSessions = "Manage Sessions";
-  static String therapyCentres = "Manage Therapy Centres";
+  static String therapyCentres = "Manage Therapy Centers";
   static String setting = "Setting";
   static String myPlan = "My Plan";
   static String delete = "Delete User Data";
   static String logOut = "Log out";
   static String plans = "Therapy Plans";
   static String search = "Search For exchange rate";
-  static String noTherapy = "No therapy centers \n Try adding one!";
   static String add = "Add Therapy Center";
 
-  /// homescreen
+  /// MANAGE THERAPY CENTER
+  static String noTherapy = "No therapy centers \n Try adding one!";
+
+  /// HOME SCREEN
   static String retrieveCounts = "Retrieve Counts";
   static String addsession = "Add new Session";
   static String therepyPlan = "Therapy Plan";

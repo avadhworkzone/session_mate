@@ -6,6 +6,11 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:session_mate/commonWidget/custom_btn.dart';
+import 'package:session_mate/modal/therapy_center_location_data_model.dart';
+import 'package:session_mate/service/session_service.dart';
+import 'package:session_mate/utils/app_string.dart';
+import 'package:session_mate/utils/loading_dialog.dart';
+import 'package:session_mate/utils/shared_preference_utils.dart';
 import 'package:session_mate/utils/size_config_utils.dart';
 
 class MapScreen extends StatefulWidget {
@@ -24,12 +29,9 @@ class _MapScreenState extends State<MapScreen> {
   Marker? _marker;
   LatLng? currentLatLng;
 
-  var country;
-  var countryCode;
   var cityName;
   var state;
   var address;
-  var pinCode;
   var lat;
   var long;
 
@@ -50,12 +52,11 @@ class _MapScreenState extends State<MapScreen> {
 
       ///currLocation.longitude
       var first = addresses.first;
-      country = first.country;
-      countryCode = first.isoCountryCode;
+
       cityName = first.locality;
       state = first.administrativeArea;
-      pinCode = first.postalCode;
-      address = '${first.street} ${cityName}, ${state}, ${country}, ${pinCode}';
+
+      address = '${first.street} ${cityName}, ${state}';
       lat = widget.lat ?? "";
       long = widget.long ?? "";
       _marker = Marker(
@@ -85,18 +86,14 @@ class _MapScreenState extends State<MapScreen> {
     address = await placemarkFromCoordinates(
         double.parse(latitude.toString()), double.parse(longitude.toString()));
     var first = address.first;
-    country = first.country;
-    countryCode = first.isoCountryCode;
+
     cityName = first.locality;
     state = first.administrativeArea;
-    pinCode = first.postalCode;
-    address = '${first.street} $cityName, $state, $country';
-    // area = first.subLocality;
+    address = '${first.street} $cityName, $state';
     lat = latitude.toString() ?? "";
     long = longitude.toString() ?? "";
 
     setState(() {});
-    // });
   }
 
   @override
@@ -120,36 +117,14 @@ class _MapScreenState extends State<MapScreen> {
                         _handleMapTap(tappedPoint);
                       },
                       zoomGesturesEnabled: true,
-                      // markers: _markers.toSet(),
                       zoomControlsEnabled: true,
-                      // myLocationEnabled: true,
-                      // myLocationButtonEnabled: false,
                       onMapCreated: (GoogleMapController controller) {
                         _controller.complete(controller);
                       },
                       padding: const EdgeInsets.only(
                         top: 40.0,
                       ),
-                      onCameraMove: (position) {
-                        // _debouncer.run(() {
-                        // setState(() {
-                        // _isLoading = true;
-                        // print('_markers.first===${_markers}');
-                        // _markers.first = _markers.first
-                        //     .copyWith(positionParam: position.target);
-
-                        // lat = position.target.latitude;
-                        // lng = position.target.longitude;
-                        // printData("My Latitude : ",
-                        //     position.target.latitude.toString());
-                        // printData("My Longitude : ",
-                        //     position.target.longitude.toString());
-
-                        // getAddress(position.target.latitude,
-                        //     position.target.longitude);
-                        // });
-                        //});
-                      },
+                      onCameraMove: (position) {},
                     ),
                   ),
                   SizeConfig.sH20,
@@ -158,14 +133,32 @@ class _MapScreenState extends State<MapScreen> {
                     child: CustomBtn(
                         height: 50,
                         onTap: () {
-                          Get.back();
+                          addLocation();
                         },
-                        title: 'Submit'),
+                        title: AppStrings.submit),
                   ),
                   SizeConfig.sH20,
                 ],
               ),
             ),
     );
+  }
+
+  TherapyCenterLocationDataModel locationModel =
+      TherapyCenterLocationDataModel();
+
+  addLocation() async {
+    locationModel.city = cityName;
+    locationModel.state = state;
+    locationModel.userId = SharedPreferenceUtils.getUserId();
+    showLoadingDialog(context: context);
+
+    final status = await SessionService.addTherapyCenter(locationModel);
+    if (status) {
+      hideLoadingDialog(context: context);
+      Get.back();
+    } else {
+      hideLoadingDialog(context: context);
+    }
   }
 }

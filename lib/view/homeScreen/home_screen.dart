@@ -75,6 +75,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       await SharedPreferenceUtils.setSessionId('');
                       Get.to(() => const BottomBar());
                     } else if (index == 1) {
+                      sessionViewModel.retrieveCountMonthIs.value = '';
                       Get.to(() => const RetrieveCounts());
                     } else {
                       Get.to(() => const TherapyPlan());

@@ -55,3 +55,12 @@ List<Map<String, dynamic>> sessionDataList = [
     'session_name': AppStrings.music,
   }
 ];
+
+String formatMilliseconds(int millisecondsSinceEpoch) {
+  DateTime dateTime =
+      DateTime.fromMillisecondsSinceEpoch(millisecondsSinceEpoch);
+  String formattedDate = '${dateTime.month.toString().padLeft(2, '0')}/'
+      '${dateTime.day.toString().padLeft(2, '0')}/'
+      '${dateTime.year.toString()}';
+  return formattedDate;
+}
