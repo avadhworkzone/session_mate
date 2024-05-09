@@ -15,12 +15,11 @@ class SessionViewModel extends GetxController {
   RxBool isLoadingData = false.obs;
   Rx<bool> isLocationNotSelected = false.obs;
   String? selectedMonth;
-  Rx<TherapyCenterLocationDataModel> locationData =
-      TherapyCenterLocationDataModel().obs;
+  DateTime? combinedDateTime;
 
   /// DATE PICKER
   Future<void> selectDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
+    final DateTime? pickedDate = await showDatePicker(
       context: context,
       initialDate: selectedDate.value,
       firstDate: DateTime.now(),
@@ -38,19 +37,38 @@ class SessionViewModel extends GetxController {
       },
     );
 
-    if (picked != null && picked != selectedDate.value) {
-      int formatDate = picked.millisecondsSinceEpoch;
+    if (pickedDate != null && pickedDate != selectedDate.value) {
+      // int formatDate = picked.millisecondsSinceEpoch;
 
       ///"${picked.month}/${picked.day}/${picked.year}";
-      sessionDate.value = "${picked.month}/${picked.day}/${picked.year}";
-      sessionDateMilliSecond.value = formatDate;
+      sessionDate.value =
+          "${pickedDate.month}/${pickedDate.day}/${pickedDate.year}";
       DateTime dateTime =
           DateTime.fromMillisecondsSinceEpoch(sessionDateMilliSecond.value);
       selectedMonth = DateFormat('MMMM').format(dateTime);
 
-      print('selectedMonth is a ====-->> ${selectedMonth}');
+      final TimeOfDay? pickedTime =
+          await showTimePicker(context: context, initialTime: TimeOfDay.now());
+      if (pickedTime != null) {
+        combinedDateTime = DateTime(
+          pickedDate.year,
+          pickedDate.month,
+          pickedDate.day,
+          pickedTime.hour,
+          pickedTime.minute,
+        );
+      } else {
+        combinedDateTime = DateTime(
+          pickedDate.year,
+          pickedDate.month,
+          pickedDate.day,
+          TimeOfDay.now().hour,
+          TimeOfDay.now().minute,
+        );
+      }
+
+      sessionDateMilliSecond.value = combinedDateTime!.millisecondsSinceEpoch;
     }
-    // isSelected.value = true;
   }
 
   /// RETRIEVE COUNT SCREEN

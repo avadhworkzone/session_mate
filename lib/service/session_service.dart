@@ -1,5 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:session_mate/modal/add_service_data_model.dart';
+import 'package:session_mate/modal/add_session_data_model.dart';
 import 'package:session_mate/modal/therapy_center_location_data_model.dart';
 import 'package:session_mate/utils/collection_utils.dart';
 import 'package:session_mate/utils/shared_preference_utils.dart';
@@ -106,7 +105,7 @@ class SessionService {
       }
     } catch (e) {
       print('get therapy center error :=>$e');
-      throw e; // Rethrow the error to be handled elsewhere if needed
+      throw e;
     }
   }
 
@@ -121,4 +120,10 @@ class SessionService {
       return false;
     });
   }
+
+  /// get sessions list
+  // static Stream<List<SessionListData>> getSessionList() {
+  //   return CollectionUtils.session.snapshots().map((event) =>
+  //       event.docs.map((e) => SessionListData.fromJson(e.data())).toList());
+  // }
 }

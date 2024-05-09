@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:session_mate/commonWidget/custom_text.dart';
-import 'package:session_mate/modal/add_service_data_model.dart';
+import 'package:session_mate/modal/add_session_data_model.dart';
 import 'package:session_mate/service/session_service.dart';
 import 'package:session_mate/utils/app_colors.dart';
 import 'package:session_mate/utils/app_image_assets.dart';
@@ -74,114 +74,118 @@ class _RetrieveCountDetailScreenState extends State<RetrieveCountDetailScreen> {
       child: Material(
         child: isLoadingData == true
             ? const Center(child: CircularProgressIndicator())
-            : Column(
-                children: [
-                  commonAppBar(
-                      localAssets: LocalAssets(
-                        imagePath: AppImageAssets.backArrow,
-                        height: 23.h,
-                        width: 23.w,
-                      ),
-                      title: AppStrings.sessionCount,
-                      color: AppColors.black1c),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20.w),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        CustomText(
-                          AppStrings.sessionName,
-                          color: AppColors.black1c,
-                          fontSize: 17.sp,
-                          fontWeight: FontWeight.w500,
+            : SingleChildScrollView(
+                child: Column(
+                  children: [
+                    commonAppBar(
+                        localAssets: LocalAssets(
+                          imagePath: AppImageAssets.backArrow,
+                          height: 23.h,
+                          width: 23.w,
                         ),
-                        SizeConfig.sH15,
-                        CustomText(
-                          widget.sessionName,
-                          color: AppColors.grey88,
-                          fontSize: 15.sp,
-                          fontWeight: FontWeight.w500,
-                        ),
-                        Divider(),
-                        SizeConfig.sH18,
-                        CustomText(
-                          AppStrings.count,
-                          color: AppColors.black1c,
-                          fontSize: 17.sp,
-                          fontWeight: FontWeight.w500,
-                        ),
-                        SizeConfig.sH15,
-                        CustomText(
-                          sessionData.length.toString(),
-                          color: AppColors.grey88,
-                          fontSize: 15.sp,
-                          fontWeight: FontWeight.w500,
-                        ),
-                        Divider(),
-                        ListView.builder(
-                          shrinkWrap: true,
-                          itemCount: sessionData.length,
-                          itemBuilder: (context, index) {
-                            return Padding(
-                              padding: EdgeInsets.symmetric(vertical: 20.w),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  // SizeConfig.sH20,
-                                  CustomText(
-                                    AppStrings.therapyCenter,
-                                    color: AppColors.black1c,
-                                    fontSize: 17.sp,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                  SizeConfig.sH10,
-                                  CustomText(
-                                    sessionData[index].therapyCenter ?? '',
-                                    color: AppColors.grey88,
-                                    fontSize: 15.sp,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                  Divider(),
-                                  SizeConfig.sH10,
-                                  CustomText(
-                                    'Date & Time',
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 16.sp,
-                                    color: AppColors.black1c,
-                                  ),
-                                  SizeConfig.sH10,
-                                  Container(
-                                    margin: EdgeInsets.only(left: 30.w),
-                                    decoration: BoxDecoration(
-                                        color: AppColors.primaryColor,
-                                        borderRadius: BorderRadius.circular(7)),
-                                    child: Padding(
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: 23.w, vertical: 5.w),
-                                      child: Row(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          CustomText(
-                                            formatMilliseconds(
-                                                sessionData[index]
-                                                        .sessionSelectedDate ??
-                                                    0),
-                                            color: AppColors.white,
-                                            fontWeight: FontWeight.w600,
-                                          )
-                                        ],
-                                      ),
+                        title: AppStrings.sessionCount,
+                        color: AppColors.black1c),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 20.w),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          CustomText(
+                            AppStrings.sessionName,
+                            color: AppColors.black1c,
+                            fontSize: 17.sp,
+                            fontWeight: FontWeight.w500,
+                          ),
+                          SizeConfig.sH15,
+                          CustomText(
+                            widget.sessionName,
+                            color: AppColors.grey88,
+                            fontSize: 15.sp,
+                            fontWeight: FontWeight.w500,
+                          ),
+                          Divider(),
+                          SizeConfig.sH18,
+                          CustomText(
+                            AppStrings.count,
+                            color: AppColors.black1c,
+                            fontSize: 17.sp,
+                            fontWeight: FontWeight.w500,
+                          ),
+                          SizeConfig.sH15,
+                          CustomText(
+                            sessionData.length.toString(),
+                            color: AppColors.grey88,
+                            fontSize: 15.sp,
+                            fontWeight: FontWeight.w500,
+                          ),
+                          Divider(),
+                          ListView.builder(
+                            shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
+                            itemCount: sessionData.length,
+                            itemBuilder: (context, index) {
+                              return Padding(
+                                padding: EdgeInsets.symmetric(vertical: 20.w),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    // SizeConfig.sH20,
+                                    CustomText(
+                                      AppStrings.therapyCenter,
+                                      color: AppColors.black1c,
+                                      fontSize: 17.sp,
+                                      fontWeight: FontWeight.w500,
                                     ),
-                                  )
-                                ],
-                              ),
-                            );
-                          },
-                        )
-                      ],
-                    ),
-                  )
-                ],
+                                    SizeConfig.sH10,
+                                    CustomText(
+                                      sessionData[index].therapyCenter ?? '',
+                                      color: AppColors.grey88,
+                                      fontSize: 15.sp,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                    Divider(),
+                                    SizeConfig.sH10,
+                                    CustomText(
+                                      'Date & Time',
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 16.sp,
+                                      color: AppColors.black1c,
+                                    ),
+                                    SizeConfig.sH10,
+                                    Container(
+                                      margin: EdgeInsets.only(left: 30.w),
+                                      decoration: BoxDecoration(
+                                          color: AppColors.primaryColor,
+                                          borderRadius:
+                                              BorderRadius.circular(7)),
+                                      child: Padding(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 23.w, vertical: 5.w),
+                                        child: Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            CustomText(
+                                              formatMilliseconds(sessionData[
+                                                          index]
+                                                      .sessionSelectedDate ??
+                                                  0),
+                                              color: AppColors.white,
+                                              fontWeight: FontWeight.w600,
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              );
+                            },
+                          )
+                        ],
+                      ),
+                    )
+                  ],
+                ),
               ),
       ),
     );
@@ -191,7 +195,7 @@ class _RetrieveCountDetailScreenState extends State<RetrieveCountDetailScreen> {
     DateTime dateTime =
         DateTime.fromMillisecondsSinceEpoch(millisecondsSinceEpoch);
 
-    String time = DateFormat('h a').format(dateTime);
+    String time = DateFormat('h:mm a').format(dateTime);
 
     String date = DateFormat('MM/dd/yyyy').format(dateTime);
 

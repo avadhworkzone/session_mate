@@ -21,7 +21,7 @@ class AddSessionDataModel {
   AddSessionDataModel.fromJson(Map<String, dynamic> json) {
     id = json['id'] ?? "";
     userId = json['userId'] ?? "";
-    sessionId = json['sessionId'] ?? "";
+    sessionId = json['session_id'] ?? "";
     sessionSelectedDate = json['session_date'] ?? "";
     sessionName = json['session_name'] ?? "";
     therapyCenter = json['therapy_center'] ?? "";
@@ -32,7 +32,7 @@ class AddSessionDataModel {
   Map<String, dynamic> toJson() => {
         'id': id,
         'userId': userId,
-        'sessionId': sessionId,
+        'session_id': sessionId,
         'session_date': sessionSelectedDate,
         'session_name': sessionName,
         'therapy_center': therapyCenter,

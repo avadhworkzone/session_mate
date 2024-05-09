@@ -4,6 +4,7 @@ class TextConfig {
   static const user = 'User';
   static const userSessionData = 'UserSessionData';
   static const therapyCenter = 'TherapyCenters';
+  static const session = 'Session';
 }
 
 class CollectionUtils {
@@ -13,4 +14,6 @@ class CollectionUtils {
       FirebaseFirestore.instance.collection(TextConfig.userSessionData);
   static final therapyCenterCollection =
       FirebaseFirestore.instance.collection(TextConfig.therapyCenter);
+  static final session =
+      FirebaseFirestore.instance.collection(TextConfig.session);
 }

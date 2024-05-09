@@ -1,5 +1,4 @@
 import 'dart:core';
-import 'package:flutter/material.dart';
 import 'package:session_mate/utils/app_image_assets.dart';
 import 'package:session_mate/utils/app_string.dart';
 
