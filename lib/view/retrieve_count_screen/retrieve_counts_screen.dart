@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:session_mate/commonWidget/common_snackbar.dart';
 import 'package:session_mate/commonWidget/custom_btn.dart';
 import 'package:session_mate/commonWidget/custom_text.dart';
+import 'package:session_mate/commonWidget/no_data_found_widget.dart';
+import 'package:session_mate/modal/get_session_list_model.dart';
 import 'package:session_mate/service/session_service.dart';
 import 'package:session_mate/utils/app_colors.dart';
 import 'package:session_mate/utils/app_constant.dart';
@@ -12,7 +15,7 @@ import 'package:session_mate/utils/app_string.dart';
 import 'package:session_mate/utils/common_methods.dart';
 import 'package:session_mate/utils/local_assets.dart';
 import 'package:session_mate/utils/size_config_utils.dart';
-import 'package:session_mate/view/homeScreen/retrieve_count_screen/retrieve_count_detail_screen.dart';
+import 'package:session_mate/view/retrieve_count_screen/retrieve_count_detail_screen.dart';
 import 'package:session_mate/view/sessionScreen/common_session_container.dart';
 import 'package:session_mate/viewModel/session_view_model.dart';
 
@@ -27,6 +30,7 @@ class _RetrieveCountsState extends State<RetrieveCounts> {
   SessionViewModel sessionViewModel = Get.find();
   int? selectedDataIndex;
   String? selectedSessionName;
+  List<SessionListData>? snapshotData;
 
   @override
   Widget build(BuildContext context) {
@@ -96,33 +100,46 @@ class _RetrieveCountsState extends State<RetrieveCounts> {
                       textAlign: TextAlign.center,
                     ),
                     SizeConfig.sH25,
-                    Wrap(
-                        alignment: WrapAlignment.center,
-                        runSpacing: 30.w,
-                        spacing: 40.w,
-                        children: List.generate(
-                            sessionDataList.length,
-                            (index) => Padding(
-                                  padding: const EdgeInsets.all(
-                                      8.0), // Add some spacing between items
-                                  child: InkWell(
-                                    onTap: () {
-                                      selectedDataIndex = index;
-                                      selectedSessionName =
-                                          sessionDataList[index]
-                                              ['session_name'];
-                                      setState(() {});
-                                    },
-                                    child: CommonSessionContainer(
-                                      imageUrl: sessionDataList[index]['image'],
-                                      titleText: sessionDataList[index]
-                                          ['session_name'],
-                                      color: selectedDataIndex == index
-                                          ? AppColors.primaryColor
-                                          : Colors.transparent,
-                                    ),
-                                  ),
-                                ))),
+                    StreamBuilder(
+                      stream: SessionService.getSessionList(),
+                      builder: (context, snapshot) {
+                        if (!snapshot.hasData) {
+                          return const Center(
+                              child: CircularProgressIndicator());
+                        }
+                        if (snapshot.hasError) {
+                          return noDataFound();
+                        }
+                        snapshotData = snapshot.data;
+                        return Wrap(
+                            alignment: WrapAlignment.center,
+                            runSpacing: 30.w,
+                            spacing: 40.w,
+                            children: List.generate(
+                                snapshotData!.length,
+                                (index) => Padding(
+                                      padding: const EdgeInsets.all(
+                                          8.0), // Add some spacing between items
+                                      child: InkWell(
+                                        onTap: () {
+                                          selectedDataIndex = index;
+                                          selectedSessionName =
+                                              snapshotData![index].sessionName;
+                                          setState(() {});
+                                        },
+                                        child: CommonSessionContainer(
+                                          imageUrl: sessionDataList[index]
+                                              ['image'],
+                                          titleText:
+                                              snapshotData![index].sessionName!,
+                                          color: selectedDataIndex == index
+                                              ? AppColors.primaryColor
+                                              : Colors.transparent,
+                                        ),
+                                      ),
+                                    )));
+                      },
+                    ),
                     SizeConfig.sH25,
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 50.w),
@@ -141,9 +158,11 @@ class _RetrieveCountsState extends State<RetrieveCounts> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 CustomText(
-                                  sessionViewModel.retrieveCountMonthIs.value == ''
+                                  sessionViewModel.retrieveCountMonthIs.value ==
+                                          ''
                                       ? AppStrings.calender
-                                      : sessionViewModel.retrieveCountMonthIs.value,
+                                      : sessionViewModel
+                                          .retrieveCountMonthIs.value,
                                   // : AppStrings.calender,
                                   fontSize: 15.sp,
                                   color: AppColors.color97,
@@ -163,13 +182,14 @@ class _RetrieveCountsState extends State<RetrieveCounts> {
                       child: CustomBtn(
                           onTap: () async {
                             if (selectedSessionName == '' ||
-                                sessionViewModel.retrieveCountMonthIs.value.isEmpty) {
+                                sessionViewModel
+                                    .retrieveCountMonthIs.value.isEmpty) {
                               commonSnackBar(message: 'Please Select Data');
                             } else {
                               Get.to(() => RetrieveCountDetailScreen(
                                     sessionName: selectedSessionName!,
-                                    sessionSelectedMonth:
-                                        sessionViewModel.retrieveCountMonthIs.value,
+                                    sessionSelectedMonth: sessionViewModel
+                                        .retrieveCountMonthIs.value,
                                   ));
                             }
                           },

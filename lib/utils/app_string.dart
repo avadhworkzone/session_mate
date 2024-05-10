@@ -118,4 +118,18 @@ class AppStrings {
   static String currentLeval = "Current\nLevel";
   static String strategies = "Planned\nStrategies";
   static String assessmentPlan = "Assessment & Plan";
+
+  /// Assessment And Plan
+  static String assessmentAndPlan = 'Assessment & Plan';
+  static String childAgeGroup = 'Child Age Group';
+  static String selectYourGoal = 'Select Your Goal';
+  static String selectYourSubGoal = 'Select Your Sub Goal';
+  static String selectYourCurrentLevel = 'Select Your Current Level';
+  static String selectYourStrategies = 'Select Your Strategies';
+
+  ///-------DropDown Data-------///
+  static String zeroTo3YearTxt = '0 to 3 years';
+  static String threeTo7YearTxt = '3 to 7 years';
+  static String sevenTo14YearTxt = '7 to 14 Years';
+  static String fortinPlus = '14+';
 }

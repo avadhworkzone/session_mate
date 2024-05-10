@@ -10,8 +10,9 @@ import 'package:session_mate/utils/shared_preference_utils.dart';
 import 'package:session_mate/utils/size_config_utils.dart';
 import 'package:session_mate/view/bottomBar/bottom_bar_screen.dart';
 import 'package:session_mate/view/drawer/drawer_screen.dart';
-import 'package:session_mate/view/homeScreen/retrieve_count_screen/retrieve_counts_screen.dart';
-import 'package:session_mate/view/homeScreen/therapy_plan_screen/therapy_plan_screen.dart';
+import 'package:session_mate/view/retrieve_count_screen/retrieve_counts_screen.dart';
+import 'package:session_mate/view/therapyPlanScreen/assessment_plan_screen.dart';
+import 'package:session_mate/view/therapyPlanScreen/therapy_plan_screen.dart';
 import 'package:session_mate/viewModel/bottom_bar_view_model.dart';
 import 'package:session_mate/viewModel/session_view_model.dart';
 import '../../utils/app_string.dart';
@@ -78,7 +79,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       sessionViewModel.retrieveCountMonthIs.value = '';
                       Get.to(() => const RetrieveCounts());
                     } else {
-                      Get.to(() => const TherapyPlan());
+                      Get.to(() => const AssessmentAndPlanScreen());
                     }
                   },
                   child: Container(

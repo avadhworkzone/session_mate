@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:session_mate/commonWidget/commom_textfield.dart';
+import 'package:session_mate/commonWidget/common_appbar.dart';
 import 'package:session_mate/commonWidget/custom_btn.dart';
 import 'package:session_mate/commonWidget/custom_text.dart';
 import 'package:session_mate/utils/app_colors.dart';
@@ -11,7 +13,7 @@ import 'package:session_mate/utils/app_string.dart';
 import 'package:session_mate/utils/common_methods.dart';
 import 'package:session_mate/utils/local_assets.dart';
 import 'package:session_mate/utils/size_config_utils.dart';
-import 'package:session_mate/view/homeScreen/therapy_plan_screen/assessment_plan_screen.dart';
+import 'package:session_mate/view/therapyPlanScreen/assessment_plan_screen.dart';
 
 class TherapyPlan extends StatefulWidget {
   const TherapyPlan({super.key});
@@ -32,14 +34,8 @@ class _TherapyPlanState extends State<TherapyPlan> {
         body: Column(
           children: [
             commonAppBar(
-              localAssets: LocalAssets(
-                imagePath: AppImageAssets.backArrow,
-                height: 23.h,
-                width: 23.w,
-                imgColor: AppColors.white,
-              ),
               title: AppStrings.therepyPlan,
-              color: AppColors.white,
+              textColor: AppColors.white,
             ),
             Expanded(
               child: SingleChildScrollView(
@@ -47,11 +43,11 @@ class _TherapyPlanState extends State<TherapyPlan> {
                   padding: EdgeInsets.symmetric(horizontal: 20.w),
                   child: Column(
                     children: [
-                      commonAppTextField(
+                      commonRoundedTextField(
                           text: AppStrings.childName,
                           textEditingController: childNameController),
                       SizeConfig.sH10,
-                      commonAppTextField(
+                      commonRoundedTextField(
                           text: AppStrings.childAge,
                           textEditingController: ageNameController),
                       SizeConfig.sH10,
@@ -120,7 +116,7 @@ class _TherapyPlanState extends State<TherapyPlan> {
                         children: [
                           CustomBtn(
                             onTap: () {
-                              Get.to(() => const AssessMentPlanScreen());
+                              Get.to(() => const AssessmentAndPlanScreen());
                             },
                             height: 55.h,
                             width: 144.w,

@@ -4,6 +4,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:session_mate/commonWidget/common_appbar.dart';
+import 'package:session_mate/commonWidget/common_snackbar.dart';
 import 'package:session_mate/commonWidget/custom_btn.dart';
 import 'package:session_mate/commonWidget/custom_text.dart';
 import 'package:session_mate/modal/therapy_center_location_data_model.dart';
@@ -13,8 +15,8 @@ import 'package:session_mate/utils/app_image_assets.dart';
 import 'package:session_mate/utils/app_string.dart';
 import 'package:session_mate/utils/common_methods.dart';
 import 'package:session_mate/utils/local_assets.dart';
-import 'package:session_mate/view/sessionScreen/manageSession/location_screen.dart';
-import 'package:session_mate/view/sessionScreen/manageSession/map_screen.dart';
+import 'package:session_mate/view/manageTherapyCenters/location_screen.dart';
+import 'package:session_mate/view/manageTherapyCenters/map_screen.dart';
 
 class ManageTherapyCenters extends StatefulWidget {
   const ManageTherapyCenters({super.key});
@@ -33,13 +35,8 @@ class _ManageTherapyCentersState extends State<ManageTherapyCenters> {
         child: Column(
           children: [
             commonAppBar(
-                localAssets: LocalAssets(
-                  imagePath: AppImageAssets.backArrow,
-                  height: 23.h,
-                  width: 23.w,
-                ),
-                title: AppStrings.therapyCentres,
-                color: AppColors.black1c),
+              title: AppStrings.therapyCentres,
+            ),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,

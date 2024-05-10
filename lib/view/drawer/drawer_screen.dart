@@ -8,8 +8,8 @@ import 'package:session_mate/utils/app_string.dart';
 import 'package:session_mate/utils/local_assets.dart';
 import 'package:session_mate/utils/shared_preference_utils.dart';
 import 'package:session_mate/utils/size_config_utils.dart';
-import 'package:session_mate/view/sessionScreen/manageSession/manage_sessions.dart';
-import 'package:session_mate/view/sessionScreen/manageSession/manage_therapy_centers.dart';
+import 'package:session_mate/view/manageSession/manage_sessions.dart';
+import 'package:session_mate/view/manageTherapyCenters/manage_therapy_centers.dart';
 import 'package:session_mate/view/welcomeScreen/welcome_screen.dart';
 
 Drawer buildDrawer() {

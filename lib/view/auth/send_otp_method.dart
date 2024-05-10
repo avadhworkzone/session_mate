@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:session_mate/commonWidget/common_snackbar.dart';
 import 'package:session_mate/utils/common_methods.dart';
 import 'package:session_mate/utils/loading_dialog.dart';
 import 'package:session_mate/view/auth/otp_verification_screen.dart';

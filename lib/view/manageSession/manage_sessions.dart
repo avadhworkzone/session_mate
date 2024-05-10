@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:session_mate/commonWidget/common_appbar.dart';
 import 'package:session_mate/commonWidget/custom_btn.dart';
 import 'package:session_mate/commonWidget/custom_text.dart';
+import 'package:session_mate/commonWidget/no_data_found_widget.dart';
 import 'package:session_mate/modal/add_session_data_model.dart';
 import 'package:session_mate/service/session_service.dart';
 import 'package:session_mate/utils/app_colors.dart';
@@ -32,16 +34,13 @@ class _ManageSessionsState extends State<ManageSessions> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
+    return SafeArea(
+      child: Material(
         child: Column(
           children: [
             commonAppBar(
-                localAssets: const LocalAssets(
-                  imagePath: AppImageAssets.backArrow,
-                ),
-                title: AppStrings.manageSessions,
-                color: AppColors.black1c),
+              title: AppStrings.manageSessions,
+            ),
             Expanded(
               child: StreamBuilder(
                 stream: SessionService.getSessionData(),
@@ -77,8 +76,7 @@ class _ManageSessionsState extends State<ManageSessions> {
                                     InkWell(
                                       onTap: () {
                                         SessionService.deleteSessionData(
-                                            snapshotData![index].sessionId ??
-                                                '');
+                                            snapshotData![index].id ?? '');
                                       },
                                       child: const LocalAssets(
                                         imagePath: AppImageAssets.delete,
@@ -90,9 +88,8 @@ class _ManageSessionsState extends State<ManageSessions> {
                                         bottomBarViewModel
                                             .selectedBottomIndex.value = 1;
                                         await SharedPreferenceUtils
-                                            .setSessionId(snapshotData![index]
-                                                    .sessionId ??
-                                                '');
+                                            .setSessionId(
+                                                snapshotData![index].id ?? '');
                                         Get.to(() => const BottomBar());
                                       },
                                       child: const LocalAssets(
@@ -109,22 +106,22 @@ class _ManageSessionsState extends State<ManageSessions> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 25.w),
+              padding: EdgeInsets.symmetric(horizontal: 25.w, vertical: 30.w),
               child: Center(
                 child: CustomBtn(
-                    height: 55.h, onTap: () {}, title: AppStrings.addsession),
+                    height: 55.h,
+                    onTap: () async {
+                      Get.find<BottomBarViewModel>().selectedBottomIndex.value =
+                          1;
+                      await SharedPreferenceUtils.setSessionId('');
+                      Get.to(() => const BottomBar());
+                    },
+                    title: AppStrings.addsession),
               ),
             ),
           ],
         ),
       ),
     );
-  }
-
-  Widget noDataFound() {
-    return const Center(
-        child: CustomText(
-      'No Data Found',
-    ));
   }
 }

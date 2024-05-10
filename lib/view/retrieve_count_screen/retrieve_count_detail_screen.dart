@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:session_mate/commonWidget/common_appbar.dart';
 import 'package:session_mate/commonWidget/custom_text.dart';
 import 'package:session_mate/modal/add_session_data_model.dart';
 import 'package:session_mate/service/session_service.dart';
@@ -78,13 +79,8 @@ class _RetrieveCountDetailScreenState extends State<RetrieveCountDetailScreen> {
                 child: Column(
                   children: [
                     commonAppBar(
-                        localAssets: LocalAssets(
-                          imagePath: AppImageAssets.backArrow,
-                          height: 23.h,
-                          width: 23.w,
-                        ),
-                        title: AppStrings.sessionCount,
-                        color: AppColors.black1c),
+                      title: AppStrings.sessionCount,
+                    ),
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 20.w),
                       child: Column(

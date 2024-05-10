@@ -1,4 +1,5 @@
 import 'package:session_mate/modal/add_session_data_model.dart';
+import 'package:session_mate/modal/get_session_list_model.dart';
 import 'package:session_mate/modal/therapy_center_location_data_model.dart';
 import 'package:session_mate/utils/collection_utils.dart';
 import 'package:session_mate/utils/shared_preference_utils.dart';
@@ -7,7 +8,7 @@ class SessionService {
   /// add session data
   static Future<bool> addSessionData(AddSessionDataModel model) async {
     final doc = CollectionUtils.sessionCollection.doc();
-    model.sessionId = doc.id;
+    model.id = doc.id;
     return doc.set(model.toJson()).then((value) => true).catchError((e) {
       print('SESSION ERROR :=>$e');
       return false;
@@ -122,8 +123,8 @@ class SessionService {
   }
 
   /// get sessions list
-  // static Stream<List<SessionListData>> getSessionList() {
-  //   return CollectionUtils.session.snapshots().map((event) =>
-  //       event.docs.map((e) => SessionListData.fromJson(e.data())).toList());
-  // }
+  static Stream<List<SessionListData>> getSessionList() {
+    return CollectionUtils.session.snapshots().map((event) =>
+        event.docs.map((e) => SessionListData.fromJson(e.data())).toList());
+  }
 }

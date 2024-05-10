@@ -90,8 +90,7 @@ class AppImageAssets {
   static const String exit =
       '${AppConstants.baseImageAssetsPath}Exit to app.png';
   static const String person = '${AppConstants.baseImageAssetsPath}Person.png';
-  static const String backArrow =
-      '${AppConstants.baseIconAssetsPath}arrow-down-sign-to-navigate.svg';
+
   static const String menuDrawer =
       '${AppConstants.baseImageAssetsPath}drawer_icon.png';
   static const String addNewSession =
@@ -106,4 +105,8 @@ class AppImageAssets {
       '${AppConstants.baseIconAssetsPath}messagebox.svg';
   static const String deleteIcnDrawer =
       '${AppConstants.baseIconAssetsPath}deleteIcnDrawer.svg';
+
+  /// Assessment And Plan
+  static const String dropDownArrowIcn =
+      '${AppConstants.baseIconAssetsPath}dropDownArrowIcn.svg';
 }

@@ -387,3 +387,32 @@ class CommonReadableTextField extends StatelessWidget {
     );
   }
 }
+
+///COMMON ROUNDED TEXTFIELD
+commonRoundedTextField(
+    {required String text,
+    required TextEditingController textEditingController}) {
+  return SizedBox(
+    width: Get.width / 1.5,
+    child: TextFormField(
+      controller: textEditingController,
+      cursorColor: AppColors.white,
+      decoration: InputDecoration(
+          contentPadding: EdgeInsets.symmetric(vertical: 5.w, horizontal: 15.w),
+          enabledBorder: const OutlineInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(20)),
+              borderSide: BorderSide(
+                color: AppColors.white,
+                width: 1.5,
+              )),
+          focusedBorder: const OutlineInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(20)),
+              borderSide: BorderSide(
+                color: AppColors.white,
+                width: 1.5,
+              )),
+          hintText: text,
+          hintStyle: TextStyle(color: AppColors.white)),
+    ),
+  );
+}

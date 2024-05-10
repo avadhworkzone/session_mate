@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:session_mate/view/sessionScreen/manageSession/map_screen.dart';
+import 'package:session_mate/view/manageTherapyCenters/map_screen.dart';
 
 class LocationSettingScreen extends StatefulWidget {
   const LocationSettingScreen({Key? key}) : super(key: key);
