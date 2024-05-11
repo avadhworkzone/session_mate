@@ -58,8 +58,19 @@ class AppStrings {
   static String selectTherapy = 'Select Therapy';
   static String calender = 'Calender';
   static String sessionCaptured = 'Session Captured';
+  static String selectTherapyCenter = 'Select Therapy Center';
   static String sessionSuccessfully =
       'Session successfully Captured! Do you want to capture more?';
+
+  /// Retrieve Counts Screen
+  static String retrieveCountTxt =
+      'Which Session do you want to\n the Count for?';
+
+  /// retrieve count detail screen
+  static String sessionCount = 'Session Count';
+  static String sessionName = 'Session Name';
+  static String count = 'Counts';
+  static String therapyCenter = 'Therapy Center';
 
   ///APP ERROR MESSAGE
   static String enterValidEmail = "Please Enter Valid Email Address";
@@ -71,20 +82,23 @@ class AppStrings {
   static String passValidation = "password and confirm password must be same";
   static const userExistError = 'User Already Exist!';
   static const loginError = 'User or Password invalid!';
+  static const somethingWrong = 'Something Wrong';
 
-  /// DrawerSCREEN
+  /// DRAWER SCREEN
   static String manageSessions = "Manage Sessions";
-  static String therapyCentres = "Manage Therapy Centres";
+  static String therapyCentres = "Manage Therapy Centers";
   static String setting = "Setting";
   static String myPlan = "My Plan";
   static String delete = "Delete User Data";
   static String logOut = "Log out";
   static String plans = "Therapy Plans";
   static String search = "Search For exchange rate";
-  static String noTherapy = "No therapy centers \n Try adding one!";
   static String add = "Add Therapy Center";
 
-  /// homescreen
+  /// MANAGE THERAPY CENTER
+  static String noTherapy = "No therapy centers \n Try adding one!";
+
+  /// HOME SCREEN
   static String retrieveCounts = "Retrieve Counts";
   static String addsession = "Add new Session";
   static String therepyPlan = "Therapy Plan";
@@ -104,6 +118,20 @@ class AppStrings {
   static String currentLeval = "Current\nLevel";
   static String strategies = "Planned\nStrategies";
   static String assessmentPlan = "Assessment & Plan";
+
+  /// Assessment And Plan
+  static String assessmentAndPlan = 'Assessment & Plan';
+  static String childAgeGroup = 'Child Age Group';
+  static String selectYourGoal = 'Select Your Goal';
+  static String selectYourSubGoal = 'Select Your Sub Goal';
+  static String selectYourCurrentLevel = 'Select Your Current Level';
+  static String selectYourStrategies = 'Select Your Strategies';
+
+  ///-------DropDown Data-------///
+  static String zeroTo3YearTxt = '0 to 3 years';
+  static String threeTo7YearTxt = '3 to 7 years';
+  static String sevenTo14YearTxt = '7 to 14 Years';
+  static String fortinPlus = '14+';
 
 
   ///SUBSCRIPTION SCREEN

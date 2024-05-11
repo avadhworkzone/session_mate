@@ -24,6 +24,13 @@ dependencies:
   cloud_firestore: ^4.1.0
   firebase_auth: ^4.10.0
   firebase_core:
+  get_storage: ^2.1.1
+  google_maps_flutter: ^2.2.5
+  permission_handler: ^10.2.0
+  geolocator: ^11.0.0
+  geocoding: ^2.1.0
+  month_picker_dialog: ^2.11.2
+  intl: ^0.18.0
   carousel_slider: ^4.2.1
   credit_card_scanner: ^1.0.5
 
@@ -51,10 +58,4 @@ flutter:
           weight: 600
         - asset: assets/fonts/Inter-Bold.otf
           weight: 700
-    - family: Poppins
-      fonts:
-        - asset: assets/fonts/Poppins-Regular.ttf
-    - family: Open Sans
-      fonts:
-        - asset: assets/fonts/OpenSans-Regular.ttf
 

@@ -4,16 +4,19 @@ import 'package:get/get.dart';
 import 'package:session_mate/commonWidget/custom_text.dart';
 import 'package:session_mate/general/connectivity_wrapper.dart';
 import 'package:session_mate/utils/app_colors.dart';
+import 'package:session_mate/utils/app_constant.dart';
 import 'package:session_mate/utils/app_image_assets.dart';
 import 'package:session_mate/utils/local_assets.dart';
+import 'package:session_mate/utils/shared_preference_utils.dart';
 import 'package:session_mate/utils/size_config_utils.dart';
-import 'package:session_mate/view/homeScreen/retrieve_counts_screen.dart';
-import 'package:session_mate/view/homeScreen/therapy_plan_screen/therapy_plan_screen.dart';
-
+import 'package:session_mate/view/bottomBar/bottom_bar_screen.dart';
+import 'package:session_mate/view/drawer/drawer_screen.dart';
+import 'package:session_mate/view/retrieve_count_screen/retrieve_counts_screen.dart';
+import 'package:session_mate/view/therapyPlanScreen/assessment_plan_screen.dart';
+import 'package:session_mate/view/therapyPlanScreen/therapy_plan_screen.dart';
+import 'package:session_mate/viewModel/bottom_bar_view_model.dart';
+import 'package:session_mate/viewModel/session_view_model.dart';
 import '../../utils/app_string.dart';
-import '../drawer_screen/manage_sessions.dart';
-import '../drawer_screen/manage_therapy_centers.dart';
-import 'add_new_session_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -23,22 +26,9 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  SessionViewModel sessionViewModel = Get.put(SessionViewModel());
   final GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
-  List<String> imageList = [
-    AppImageAssets.addNewSession,
-    AppImageAssets.retriveCount,
-    AppImageAssets.therapyPlan
-  ];
-  List<String> title = [
-    AppStrings.addsession,
-    AppStrings.retrieveCounts,
-    AppStrings.therepyPlan
-  ];
-  List<String> subtitle = [
-    AppStrings.searchforbranch,
-    AppStrings.searchForinterestRate,
-    AppStrings.searchForExchangeRate
-  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -80,16 +70,17 @@ class _HomeScreenState extends State<HomeScreen> {
               itemBuilder: (context, index) => Padding(
                 padding: EdgeInsets.symmetric(horizontal: 30.w, vertical: 10.h),
                 child: GestureDetector(
-                  onTap: () {
+                  onTap: () async {
                     if (index == 0) {
-                      navigate(view: const AddNewSession());
-                      // Get.to(() => const AddNewSession());
+                      Get.find<BottomBarViewModel>().selectedBottomIndex.value =
+                          1;
+                      await SharedPreferenceUtils.setSessionId('');
+                      Get.to(() => const BottomBar());
                     } else if (index == 1) {
-                      navigate(view: const RetrieveCounts());
-                      // Get.to(() => const RetrieveCounts());
+                      sessionViewModel.retrieveCountMonthIs.value = '';
+                      Get.to(() => const RetrieveCounts());
                     } else {
-                      navigate(view: const TherapyPlan());
-                      // Get.to(() => const TherapyPlan());
+                      Get.to(() => const AssessmentAndPlanScreen());
                     }
                   },
                   child: Container(
@@ -109,19 +100,17 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: Row(
                         children: [
                           Column(
-                            // mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
-
                             children: [
                               CustomText(
-                                title[index],
+                                homeTitle[index],
                                 fontWeight: FontWeight.w600,
                                 color: AppColors.black34,
                                 fontSize: 16.sp,
                               ),
                               SizeConfig.sH8,
                               CustomText(
-                                subtitle[index],
+                                homeSubtitle[index],
                                 fontWeight: FontWeight.w500,
                                 color: AppColors.black34,
                                 fontSize: 12.sp,
@@ -130,8 +119,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                           SizeConfig.sW60,
                           LocalAssets(
-                            imagePath: imageList[index],
-                            height: 115.h,
+                            imagePath: homeImageList[index],
+                            height: 115.w,
                             width: 93.w,
                           ),
                         ],
@@ -144,154 +133,6 @@ class _HomeScreenState extends State<HomeScreen> {
           )
         ],
       ),
-    );
-  }
-
-  Drawer buildDrawer() {
-    return Drawer(
-      width: Get.width / 1.3,
-      backgroundColor: AppColors.primaryColor.withOpacity(0.8),
-      child: SafeArea(
-        child: Column(
-          children: [
-            Expanded(
-              child: Column(
-                children: [
-                  Container(
-                    width: Get.width / 1.3,
-                    decoration: const BoxDecoration(
-                      color: AppColors.primaryColor,
-                    ),
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: 28.w, vertical: 25.h),
-                      child: Column(
-                        // mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          CircleAvatar(
-                            radius: 30.w,
-                            backgroundImage:
-                                const AssetImage(AppImageAssets.profile),
-                          ),
-                          SizedBox(height: 12.h),
-                          CustomText(
-                            "Nitin",
-                            color: AppColors.white,
-                            fontSize: 20.sp,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          SizedBox(height: 7.h),
-                          CustomText(
-                            "User 0987654321",
-                            color: AppColors.white,
-                            fontSize: 20.sp,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: SingleChildScrollView(
-                      child: Padding(
-                        padding: EdgeInsets.only(left: 13.w, right: 29.w),
-                        child: Column(
-                          children: [
-                            commonDrawerBtn(
-                              image: AppImageAssets.person,
-                              title: AppStrings.manageSessions,
-                              ontap: () {
-                                navigate(view: ManageSessions());
-                                // Get.to(() => const ManageSessions());
-                              },
-                            ),
-                            const Divider(
-                              color: AppColors.white,
-                            ),
-                            commonDrawerBtn(
-                                image: AppImageAssets.person,
-                                title: AppStrings.therapyCentres,
-                                ontap: () {
-                                  navigate(view: ManageTherapyCenters());
-                                  // Get.to(() => const ManageTherapyCenters());
-                                }),
-                            const Divider(
-                              color: AppColors.white,
-                            ),
-                            commonDrawerBtn(
-                                image: AppImageAssets.setting,
-                                title: AppStrings.settings,
-                                ontap: () {}),
-                            const Divider(
-                              color: AppColors.white,
-                            ),
-                            commonDrawerBtn(
-                                image: AppImageAssets.person,
-                                title: AppStrings.myPlan,
-                                ontap: () {}),
-                            const Divider(
-                              color: AppColors.white,
-                            ),
-                            commonDrawerBtn(
-                                image: AppImageAssets.deleteIcnDrawer,
-                                title: AppStrings.delete,
-                                ontap: () {}),
-                            const Divider(
-                              color: AppColors.white,
-                            ),
-                            commonDrawerBtn(
-                                image: AppImageAssets.exit,
-                                title: AppStrings.logOut,
-                                ontap: () {}),
-                            const Divider(
-                              color: AppColors.white,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  InkWell commonDrawerBtn({
-    required String image,
-    required String title,
-    required Function ontap,
-  }) {
-    return InkWell(
-      borderRadius: const BorderRadius.all(
-        Radius.circular(20),
-      ),
-      focusColor: Colors.cyan,
-      onTap: () {
-        ontap();
-      },
-      child: ListTile(
-          contentPadding: EdgeInsets.zero,
-          leading: LocalAssets(
-            imagePath: image,
-            width: 30.w,
-            height: 30.w,
-          ),
-          title: CustomText(
-            title,
-            fontWeight: FontWeight.bold,
-            fontSize: 17.sp,
-            color: AppColors.white,
-          ),
-          trailing: LocalAssets(
-            imagePath: AppImageAssets.arrow,
-            width: 30.w,
-            height: 30.w,
-          )),
     );
   }
 }

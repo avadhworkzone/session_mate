@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:pinput/pinput.dart';
+import 'package:session_mate/commonWidget/common_snackbar.dart';
 import 'package:session_mate/commonWidget/custom_btn.dart';
 import 'package:session_mate/commonWidget/custom_text.dart';
-import 'package:session_mate/general/connectivity_wrapper.dart';
 import 'package:session_mate/modal/user_model.dart';
 import 'package:session_mate/service/auth_service.dart';
 import 'package:session_mate/utils/app_colors.dart';
@@ -14,6 +14,7 @@ import 'package:session_mate/utils/app_string.dart';
 import 'package:session_mate/utils/common_methods.dart';
 import 'package:session_mate/utils/loading_dialog.dart';
 import 'package:session_mate/utils/local_assets.dart';
+import 'package:session_mate/utils/shared_preference_utils.dart';
 import 'package:session_mate/utils/size_config_utils.dart';
 import 'package:session_mate/view/auth/send_otp_method.dart';
 import 'package:session_mate/view/bottomBar/bottom_bar_screen.dart';
@@ -61,111 +62,116 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
 
   @override
   Widget build(BuildContext context) {
-    logs('logMsg===${'+${widget.countryCode} ${widget.phoneNumber}'}');
     return SafeArea(
-      child: Material(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.w),
-          child: Obx(() {
-            return Column(
-              children: [
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20.w),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Icon(Icons.arrow_back_ios),
-                      CustomText(
-                        AppStrings.verification,
-                        fontWeight: FontWeight.w500,
-                        fontSize: 26.sp,
-                      ),
-                      SizedBox(
-                        width: 20.w,
-                      )
-                    ],
+      child: WillPopScope(
+        onWillPop: () {
+          otpViewModel.pinPutController.value.clear();
+          return Future.value(true);
+        },
+        child: Material(
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.w),
+            child: Obx(() {
+              return Column(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 20.w),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        // const Icon(Icons.arrow_back_ios),
+                        CustomText(
+                          AppStrings.verification,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 26.sp,
+                        ),
+                        SizedBox(
+                          width: 20.w,
+                        )
+                      ],
+                    ),
                   ),
-                ),
-                SizeConfig.sH20,
-                LocalAssets(
-                  imagePath: AppImageAssets.otpVerificationImage,
-                  height: Get.width / 1.5,
-                  width: Get.width / 1.5,
-                ),
-                CustomText(
-                  AppStrings.otpVerificationTxt,
-                  fontSize: 16.sp,
-                  textAlign: TextAlign.center,
-                ),
-                SizeConfig.sH10,
-                CustomText('+${widget.countryCode} - ${widget.phoneNumber}',
-                    fontWeight: FontWeight.w600, fontSize: 15.sp),
-                SizeConfig.sH50,
-                Pinput(
-                  // validator: (val) => ValidationMethod.validateOtp(val),
-                  controller: otpViewModel.pinPutController.value,
-                  length: 6,
-                  showCursor: true,
-                  keyboardType: TextInputType.number,
-                  defaultPinTheme: PinTheme(
-                      height: 45.h,
-                      width: 45.w,
-                      textStyle: TextStyle(fontSize: 15.sp),
-                      decoration: BoxDecoration(
-                          color: AppColors.whiteF6,
-                          borderRadius: BorderRadius.circular(30.r),
-                          border: Border.all(color: AppColors.primaryColor))),
-                  onChanged: (val) {},
-                ),
-                SizeConfig.sH35,
-                if (int.parse(otpViewModel
-                        .strDigits(otpViewModel.myDuration.value.inSeconds
-                            .remainder(60))
-                        .value) >
-                    0)
+                  SizeConfig.sH20,
+                  LocalAssets(
+                    imagePath: AppImageAssets.otpVerificationImage,
+                    height: Get.width / 1.5,
+                    width: Get.width / 1.5,
+                  ),
                   CustomText(
-                    '${otpViewModel.strDigits(otpViewModel.myDuration.value.inMinutes.remainder(60))}:${otpViewModel.strDigits(otpViewModel.myDuration.value.inSeconds.remainder(60))}',
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.black1c,
+                    AppStrings.otpVerificationTxt,
+                    fontSize: 16.sp,
+                    textAlign: TextAlign.center,
                   ),
-                SizeConfig.sH15,
-                CustomText(
-                  AppStrings.otpNotReceivedTxt,
-                  color: AppColors.black.withOpacity(0.30),
-                  fontSize: 16.sp,
-                ),
-                SizeConfig.sH5,
-                int.parse(otpViewModel
-                            .strDigits(otpViewModel.myDuration.value.inSeconds
-                                .remainder(60))
-                            .value) >
-                        0
-                    ? CustomText(
-                        AppStrings.sendAgainAfterTxt,
-                        color: AppColors.primaryColor.withOpacity(0.30),
-                        fontSize: 15.sp,
-                        fontWeight: FontWeight.w700,
-                      )
-                    : InkWell(
-                        onTap: () {
-                          reSendOtp();
-                        },
-                        child: CustomText(
-                          AppStrings.sendAgainTxt,
-                          color: AppColors.primaryColor,
+                  SizeConfig.sH10,
+                  CustomText('+${widget.countryCode} - ${widget.phoneNumber}',
+                      fontWeight: FontWeight.w600, fontSize: 15.sp),
+                  SizeConfig.sH50,
+                  Pinput(
+                    // validator: (val) => ValidationMethod.validateOtp(val),
+                    controller: otpViewModel.pinPutController.value,
+                    length: 6,
+                    showCursor: true,
+                    keyboardType: TextInputType.number,
+                    defaultPinTheme: PinTheme(
+                        height: 45.h,
+                        width: 45.w,
+                        textStyle: TextStyle(fontSize: 15.sp),
+                        decoration: BoxDecoration(
+                            color: AppColors.whiteF6,
+                            borderRadius: BorderRadius.circular(30.r),
+                            border: Border.all(color: AppColors.primaryColor))),
+                    onChanged: (val) {},
+                  ),
+                  SizeConfig.sH35,
+                  if (int.parse(otpViewModel
+                          .strDigits(otpViewModel.myDuration.value.inSeconds
+                              .remainder(60))
+                          .value) >
+                      0)
+                    CustomText(
+                      '${otpViewModel.strDigits(otpViewModel.myDuration.value.inMinutes.remainder(60))}:${otpViewModel.strDigits(otpViewModel.myDuration.value.inSeconds.remainder(60))}',
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.black1c,
+                    ),
+                  SizeConfig.sH15,
+                  CustomText(
+                    AppStrings.otpNotReceivedTxt,
+                    color: AppColors.black.withOpacity(0.30),
+                    fontSize: 16.sp,
+                  ),
+                  SizeConfig.sH5,
+                  int.parse(otpViewModel
+                              .strDigits(otpViewModel.myDuration.value.inSeconds
+                                  .remainder(60))
+                              .value) >
+                          0
+                      ? CustomText(
+                          AppStrings.sendAgainAfterTxt,
+                          color: AppColors.primaryColor.withOpacity(0.30),
                           fontSize: 15.sp,
                           fontWeight: FontWeight.w700,
+                        )
+                      : InkWell(
+                          onTap: () {
+                            reSendOtp();
+                          },
+                          child: CustomText(
+                            AppStrings.sendAgainTxt,
+                            color: AppColors.primaryColor,
+                            fontSize: 15.sp,
+                            fontWeight: FontWeight.w700,
+                          ),
                         ),
-                      ),
-                SizeConfig.sH10,
-                CustomBtn(
-                    onTap: () {
-                      verifyOtp();
-                    },
-                    title: AppStrings.submit)
-              ],
-            );
-          }),
+                  SizeConfig.sH10,
+                  CustomBtn(
+                      onTap: () {
+                        verifyOtp();
+                      },
+                      title: AppStrings.submit)
+                ],
+              );
+            }),
+          ),
         ),
       ),
     );
@@ -189,14 +195,19 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
       if (user != null) {
         print(FirebaseAuth.instance.currentUser!.phoneNumber);
         if (widget.isLoginScreen) {
+          commonSnackBar(message: AppStrings.loginSuccessfully);
+          await SharedPreferenceUtils.setIsLogin(true);
+          await SharedPreferenceUtils.setUserId(
+              signInViewModel.signInPhoneNoController.value.text);
           signInViewModel.signInEmailController.value.clear();
           signInViewModel.signInPhoneNoController.value.clear();
           signInViewModel.signInPasswordController.value.clear();
-          commonSnackBar(message: AppStrings.loginSuccessfully);
-          navigate(view: BottomBar());
-          // Get.to(() => const BottomBar());
+          hideLoadingDialog(context: context);
+
+          Get.to(() => const BottomBar());
           // onLoginTap();
         } else {
+          hideLoadingDialog(context: context);
           signUpOnTap();
         }
 
@@ -252,8 +263,10 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
       // PreferenceManagerUtils.setUserId(model.mobileNumber ?? '');
       // PreferenceManagerUtils.setLoginExist('true');
       // Get.offAll(() => DoctorSelectionScreen());
-      navigate(view: BottomBar());
-      // Get.to(() => const BottomBar());
+      await SharedPreferenceUtils.setIsLogin(true);
+      await SharedPreferenceUtils.setUserId(
+          signUpViewModel.signUpPhoneNoController.value.text);
+      Get.to(() => const BottomBar());
     } else {
       hideLoadingDialog(context: context);
       commonSnackBar(message: AppStrings.userExistError);

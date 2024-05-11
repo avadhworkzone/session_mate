@@ -6,7 +6,9 @@ import 'package:session_mate/utils/app_colors.dart';
 import 'package:session_mate/utils/app_image_assets.dart';
 import 'package:session_mate/utils/app_string.dart';
 import 'package:session_mate/utils/local_assets.dart';
+import 'package:session_mate/utils/shared_preference_utils.dart';
 import 'package:session_mate/viewModel/bottom_bar_view_model.dart';
+import 'package:session_mate/viewModel/session_view_model.dart';
 
 class BottomBar extends StatefulWidget {
   const BottomBar({super.key});
@@ -66,8 +68,13 @@ class _BottomBarState extends State<BottomBar> {
     required String selectedIcon,
   }) {
     return InkWell(
-      onTap: () {
+      onTap: () async {
         bottomBarViewModel.selectedBottomIndex.value = index;
+        if (bottomBarViewModel.selectedBottomIndex.value != 1) {
+          if (SharedPreferenceUtils.getSessionId() != '') {
+            await SharedPreferenceUtils.setSessionId('');
+          }
+        }
       },
       child: Column(
         mainAxisSize: MainAxisSize.min,
