@@ -72,8 +72,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: GestureDetector(
                   onTap: () async {
                     if (index == 0) {
-                      Get.find<BottomBarViewModel>().selectedBottomIndex.value =
-                          1;
+                      Get.find<BottomBarViewModel>().selectedBottomIndex.value = 1;
                       await SharedPreferenceUtils.setSessionId('');
                       Get.to(() => const BottomBar());
                     } else if (index == 1) {

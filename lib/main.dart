@@ -15,8 +15,6 @@ import 'package:session_mate/view/payment_screen1/payment_screen1.dart';
 import 'package:session_mate/view/welcomeScreen/welcome_screen.dart';
 import 'package:session_mate/viewModel/otp_view_model.dart';
 
-
-
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await GetStorage.init();
@@ -58,9 +56,11 @@ class MyApp extends StatelessWidget {
             ),
             transitionDuration: const Duration(milliseconds: 100),
             home: ConnectivityWrapper(
-                child: SharedPreferenceUtils.getIsLogin() == true
-                    ? const BottomBar()
-                    : const WelcomeScreen()),
+              // child: BottomBar()
+              child: SharedPreferenceUtils.getIsLogin() == true
+                  ? const BottomBar()
+                  : const WelcomeScreen(),
+            ),
           ),
         ),
       ),

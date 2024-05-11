@@ -124,8 +124,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                   ),
                   SizeConfig.sH35,
                   if (int.parse(otpViewModel
-                          .strDigits(otpViewModel.myDuration.value.inSeconds
-                              .remainder(60))
+                          .strDigits(otpViewModel.myDuration.value.inSeconds.remainder(60))
                           .value) >
                       0)
                     CustomText(
@@ -141,8 +140,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                   ),
                   SizeConfig.sH5,
                   int.parse(otpViewModel
-                              .strDigits(otpViewModel.myDuration.value.inSeconds
-                                  .remainder(60))
+                              .strDigits(otpViewModel.myDuration.value.inSeconds.remainder(60))
                               .value) >
                           0
                       ? CustomText(
@@ -197,8 +195,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
         if (widget.isLoginScreen) {
           commonSnackBar(message: AppStrings.loginSuccessfully);
           await SharedPreferenceUtils.setIsLogin(true);
-          await SharedPreferenceUtils.setUserId(
-              signInViewModel.signInPhoneNoController.value.text);
+          await SharedPreferenceUtils.setUserId(signInViewModel.signInPhoneNoController.value.text);
           signInViewModel.signInEmailController.value.clear();
           signInViewModel.signInPhoneNoController.value.clear();
           signInViewModel.signInPasswordController.value.clear();
@@ -245,10 +242,11 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
     model.email = signUpViewModel.signUpEmailController.value.text;
     model.mobileNumber = signUpViewModel.signUpPhoneNoController.value.text;
     model.password = signUpViewModel.signUpPasswordController.value.text;
+    model.subscriptionType = AppStrings.freeSubscription;
+    model.isSubscription = false;
     showLoadingDialog(context: context);
 
-    final checkUserExistStatus =
-        await AuthService.checkUserExist(model.mobileNumber!);
+    final checkUserExistStatus = await AuthService.checkUserExist(model.mobileNumber!);
     if (checkUserExistStatus) {
       /// LOADING FALSE
       /// SHOW TOAST M<SG USER ALREADY EXIST
@@ -264,8 +262,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
       // PreferenceManagerUtils.setLoginExist('true');
       // Get.offAll(() => DoctorSelectionScreen());
       await SharedPreferenceUtils.setIsLogin(true);
-      await SharedPreferenceUtils.setUserId(
-          signUpViewModel.signUpPhoneNoController.value.text);
+      await SharedPreferenceUtils.setUserId(signUpViewModel.signUpPhoneNoController.value.text);
       Get.to(() => const BottomBar());
     } else {
       hideLoadingDialog(context: context);
@@ -296,8 +293,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
             if (exception.code == 'invalid-phone-number' ||
                 exception.code == "missing-client-identifier") {
               // hideLoadingDialog(context: context);
-              commonSnackBar(
-                  message: 'The provided phone number is not valid.');
+              commonSnackBar(message: 'The provided phone number is not valid.');
             } else if (exception.code == "too-many-requests") {
               // hideLoadingDialog(context: context);
               commonSnackBar(

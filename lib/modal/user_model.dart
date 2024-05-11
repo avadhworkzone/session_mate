@@ -3,12 +3,20 @@ class UserModel {
   String? email;
   String? mobileNumber;
   String? password;
+  String? subscriptionType;
+  String? subscriptionStartDate;
+  String? subscriptionEndDate;
+  bool? isSubscription;
 
   UserModel({
     this.email,
     this.password,
     this.id,
     this.mobileNumber,
+    this.subscriptionType,
+    this.subscriptionStartDate,
+    this.subscriptionEndDate,
+    this.isSubscription,
   });
 
   UserModel.fromJson(Map<String, dynamic> json) {
@@ -16,6 +24,10 @@ class UserModel {
     email = json['email'] ?? "";
     password = json['password'] ?? "";
     mobileNumber = json['mobileNumber'] ?? "";
+    subscriptionType = json['subscriptionType'] ?? "";
+    subscriptionStartDate = json['subscriptionStartDate'] ?? "";
+    subscriptionEndDate = json['subscriptionEndDate'] ?? "";
+    isSubscription = json['isSubscription'] ?? "";
   }
 
   Map<String, dynamic> toJson() => {
@@ -23,5 +35,9 @@ class UserModel {
         'email': email,
         'password': password,
         'mobileNumber': mobileNumber,
+        'subscriptionType': subscriptionType,
+        'subscriptionStartDate': subscriptionStartDate,
+        'subscriptionEndDate': subscriptionEndDate,
+        'isSubscription': isSubscription,
       };
 }

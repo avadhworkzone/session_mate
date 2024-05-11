@@ -3,15 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:session_mate/commonWidget/commom_textfield.dart';
+import 'package:session_mate/commonWidget/common_appbar.dart';
 import 'package:session_mate/commonWidget/custom_btn.dart';
 import 'package:session_mate/commonWidget/custom_text.dart';
-import 'package:session_mate/general/connectivity_wrapper.dart';
 import 'package:session_mate/utils/app_colors.dart';
 import 'package:session_mate/utils/app_image_assets.dart';
 import 'package:session_mate/utils/app_string.dart';
 import 'package:session_mate/utils/local_assets.dart';
+import 'package:session_mate/utils/regex.dart';
 import 'package:session_mate/utils/size_config_utils.dart';
-import 'package:session_mate/view/homeScreen/therapy_plan_screen/assessment_plan_screen.dart';
 
 import '../../../utils/common_methods.dart';
 
@@ -33,20 +34,24 @@ class _TherapyPlanState extends State<TherapyPlan> {
         backgroundColor: AppColors.primaryColor,
         body: Column(
           children: [
-            commonAppBar(localAssets: LocalAssets(imagePath: AppImageAssets.backArrow,height: 23.h,width: 23.w,imgColor: AppColors.white,),
-              title: AppStrings.therepyPlan, color: AppColors.white,),
+            commonAppBar(
+              title: AppStrings.therepyPlan,
+            ),
             Expanded(
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    commonAppTextField(
-                        text: AppStrings.childName,
-
-                        textEditingController: childNameController),
+                    CommonTextField(
+                      hintText: AppStrings.childName,
+                      textEditController: childNameController,
+                      regularExpression: RegularExpressionUtils.text,
+                    ),
                     SizeConfig.sH10,
-                    commonAppTextField(
-                        text: AppStrings.childAge,
-                        textEditingController: ageNameController),
+                    CommonTextField(
+                      hintText: AppStrings.childAge,
+                      textEditController: ageNameController,
+                      regularExpression: RegularExpressionUtils.digitsPattern,
+                    ),
                     SizeConfig.sH10,
                     Stack(
                       children: [
@@ -54,15 +59,13 @@ class _TherapyPlanState extends State<TherapyPlan> {
                           height: 499.78.h,
                           width: 367.w,
                           decoration: BoxDecoration(
-                              color: AppColors.white,
-                              borderRadius: BorderRadius.circular(10)),
+                              color: AppColors.white, borderRadius: BorderRadius.circular(10)),
                           child: Column(
                             children: [
                               Padding(
                                 padding: const EdgeInsets.only(top: 15),
                                 child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
+                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                                   children: [
                                     CustomText(
                                       AppStrings.category,
@@ -74,14 +77,20 @@ class _TherapyPlanState extends State<TherapyPlan> {
                                         fontWeight: FontWeight.w700,
                                         color: AppColors.color59,
                                         fontSize: 14),
-                                    CustomText(AppStrings.currentLeval,
-                                        fontWeight: FontWeight.w700,
-                                        color: AppColors.color5B,
-                                        fontSize: 14,textAlign: TextAlign.center,),
-                                    CustomText(AppStrings.strategies,
-                                        fontWeight: FontWeight.w700,
-                                        color: AppColors.color59,
-                                        fontSize: 14,textAlign: TextAlign.center,),
+                                    CustomText(
+                                      AppStrings.currentLeval,
+                                      fontWeight: FontWeight.w700,
+                                      color: AppColors.color5B,
+                                      fontSize: 14,
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    CustomText(
+                                      AppStrings.strategies,
+                                      fontWeight: FontWeight.w700,
+                                      color: AppColors.color59,
+                                      fontSize: 14,
+                                      textAlign: TextAlign.center,
+                                    ),
                                   ],
                                 ),
                               ),
@@ -114,8 +123,7 @@ class _TherapyPlanState extends State<TherapyPlan> {
                       children: [
                         CustomBtn(
                           onTap: () {
-                            navigate(view: AssessMentPlanScreen());
-                            // Get.to(()=>AssessMentPlanScreen());
+                            // Get.to(() => AssessMentPlanScreen());
                           },
                           height: 55.h,
                           width: 144.w,
@@ -148,8 +156,7 @@ class _TherapyPlanState extends State<TherapyPlan> {
                                   color: AppColors.white,
                                   borderRadius: BorderRadius.circular(10),
                                 ),
-                                child: LocalAssets(
-                                    imagePath: AppImageAssets.download)),
+                                child: LocalAssets(imagePath: AppImageAssets.download)),
                           ),
                         ),
                         SizeConfig.sW15,
@@ -169,8 +176,7 @@ class _TherapyPlanState extends State<TherapyPlan> {
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(20),
                               color: AppColors.primaryColor,
-                              border:
-                                  Border.all(width: 2, color: AppColors.white)),
+                              border: Border.all(width: 2, color: AppColors.white)),
                           child: Padding(
                             padding: const EdgeInsets.all(10),
                             child: CustomText(

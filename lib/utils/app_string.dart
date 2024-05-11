@@ -20,8 +20,7 @@ class AppStrings {
   static String passwordHintTxt = '*********';
   static String alreadyHaveAccount = 'Already have an Account ! ';
   static String registerWith = 'Or Register with';
-  static String privacyAndTermsCheckTxt =
-      'By creating an account you agree to our';
+  static String privacyAndTermsCheckTxt = 'By creating an account you agree to our';
   static String termsConditionTxt = 'Terms and Conditions';
   static String and = '&';
   static String privacyPoliceTxt = 'Privacy Policy';
@@ -59,12 +58,10 @@ class AppStrings {
   static String calender = 'Calender';
   static String sessionCaptured = 'Session Captured';
   static String selectTherapyCenter = 'Select Therapy Center';
-  static String sessionSuccessfully =
-      'Session successfully Captured! Do you want to capture more?';
+  static String sessionSuccessfully = 'Session successfully Captured! Do you want to capture more?';
 
   /// Retrieve Counts Screen
-  static String retrieveCountTxt =
-      'Which Session do you want to\n the Count for?';
+  static String retrieveCountTxt = 'Which Session do you want to\n the Count for?';
 
   /// retrieve count detail screen
   static String sessionCount = 'Session Count';
@@ -133,7 +130,6 @@ class AppStrings {
   static String sevenTo14YearTxt = '7 to 14 Years';
   static String fortinPlus = '14+';
 
-
   ///SUBSCRIPTION SCREEN
   static String buySubscription = "Buy Subscription";
   static String name = "Name";
@@ -184,4 +180,9 @@ class AppStrings {
   ///SCAN CARD SCREEN
   static String addCard = "Add a Card";
   static String lineItUpFrame = "Line it up with the frame";
+
+  ///SUBSCRIPTION TYPES
+  static String freeSubscription = "free";
+  static String monthlySubscription = "monthly";
+  static String yearlySubscription = "yearly";
 }

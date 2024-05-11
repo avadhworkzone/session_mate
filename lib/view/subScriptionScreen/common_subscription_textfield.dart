@@ -26,7 +26,27 @@ class CommonSubscriptionTextField extends StatefulWidget {
   final FocusNode? focusNode;
   final void Function(String)? onFieldSubmitted;
   final void Function(String)? onChanged;
-   const CommonSubscriptionTextField({super.key, this.hintText, this.controller, this.keyboardType, this.validator, this.isValidate = true, this.validationMessage, this.validationType, this.prefixIcon, this.focusedBorderColor, this.labelText, this.labelStyle, this.height, this.width, this.focusNode, this.onChanged, this.suffixIcon, this.prefix, this.suffix, this.onFieldSubmitted});
+  const CommonSubscriptionTextField(
+      {super.key,
+      this.hintText,
+      this.controller,
+      this.keyboardType,
+      this.validator,
+      this.isValidate = true,
+      this.validationMessage,
+      this.validationType,
+      this.prefixIcon,
+      this.focusedBorderColor,
+      this.labelText,
+      this.labelStyle,
+      this.height,
+      this.width,
+      this.focusNode,
+      this.onChanged,
+      this.suffixIcon,
+      this.prefix,
+      this.suffix,
+      this.onFieldSubmitted});
 
   @override
   State<CommonSubscriptionTextField> createState() => _CommonSubscriptionTextFieldState();
@@ -42,22 +62,22 @@ class _CommonSubscriptionTextFieldState extends State<CommonSubscriptionTextFiel
         focusNode: widget.focusNode,
         controller: widget.controller,
         keyboardType: widget.keyboardType,
-        onChanged: widget.onChanged ,
+        onChanged: widget.onChanged,
         onFieldSubmitted: widget.onFieldSubmitted,
         validator: (value) {
           return widget.isValidate == false
               ? null
               : value!.isEmpty
-              ? widget.validationMessage ?? AppStrings.isRequired
-              : widget.validationType == ValidationTypeEnum.email
-              ? ValidationMethod.validateEmail(value)
-          : widget.validationType == ValidationTypeEnum.name
-              ? ValidationMethod.validateName(value)
-              : widget.validationType == ValidationTypeEnum.address
-                  ? ValidationMethod.validateAddress(value)
-              : null;
+                  ? widget.validationMessage ?? AppStrings.isRequired
+                  : widget.validationType == ValidationTypeEnum.email
+                      ? ValidationMethod.validateEmail(value)
+                      : widget.validationType == ValidationTypeEnum.name
+                          ? ValidationMethod.validateName(value)
+                          : widget.validationType == ValidationTypeEnum.address
+                              ? ValidationMethod.validateAddress(value)
+                              : null;
         },
-        style:  TextStyle(
+        style: TextStyle(
           fontSize: 12.sp,
           fontWeight: FontWeight.w500,
           fontFamily: AppConstants.poppins,
@@ -67,22 +87,18 @@ class _CommonSubscriptionTextFieldState extends State<CommonSubscriptionTextFiel
           contentPadding: EdgeInsets.only(left: 12.w),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(20.r),
-            borderSide: const BorderSide(
-                color: AppColors.subscriptionBorderColor
-            ),
+            borderSide: const BorderSide(color: AppColors.colorCbCb),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(20.r),
-            borderSide: BorderSide(
-                color: widget.focusedBorderColor ?? AppColors.black1c
-            ),
+            borderSide: BorderSide(color: widget.focusedBorderColor ?? AppColors.black1c),
           ),
           hintText: widget.hintText,
           hintStyle: TextStyle(
             fontSize: 12.sp,
             fontWeight: FontWeight.w600,
             fontFamily: AppConstants.poppins,
-            color: AppColors.hintTextClr,
+            color: AppColors.color97,
           ),
           labelText: widget.labelText,
           labelStyle: widget.labelStyle,

@@ -62,8 +62,8 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
               title: AppStrings.createAccount,
               fontSize: 18.sp,
               onTap: () {
-                navigate(view: SignUpScreen());
-                // Get.to(() => const SignUpScreen());
+                // navigate(view: SignUpScreen());
+                Get.to(() => const SignUpScreen());
               },
             ),
             SizeConfig.sH25,
@@ -74,8 +74,8 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
               fontSize: 18.sp,
               textColor: AppColors.primaryColor,
               onTap: () {
-                navigate(view: SignInScreen());
-                // Get.to(() => const SignInScreen());
+                // navigate(view: SignInScreen());
+                Get.to(() => const SignInScreen());
               },
             ),
             SizeConfig.sH30,

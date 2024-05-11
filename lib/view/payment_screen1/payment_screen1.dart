@@ -36,47 +36,64 @@ class _PaymentScreen1State extends State<PaymentScreen1> {
                 SizedBox(
                   width: 45.w,
                 ),
-                GestureDetector(onTap: () => paymentScreen1ViewModel.closeBtnTap(),
-                    child: Icon(Icons.close, color: AppColors.closeIconColor, size: 16.sp,)),
+                GestureDetector(
+                    onTap: () => paymentScreen1ViewModel.closeBtnTap(),
+                    child: Icon(
+                      Icons.close,
+                      color: AppColors.color89,
+                      size: 16.sp,
+                    )),
               ],
             ),
             SizedBox(
-                height: 89.h,
+              height: 89.h,
             ),
-            Image.asset(AppImageAssets.paymentImage, height: 254.h, width: 315.w,),
+            Image.asset(
+              AppImageAssets.paymentImage,
+              height: 254.h,
+              width: 315.w,
+            ),
             SizedBox(
               height: 91.h,
             ),
-            RichText(text: TextSpan(
-                text: AppStrings.only,
-                style: TextStyle(
-                  color: AppColors.blue5Ecc,
-                  fontFamily: AppConstants.inter,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 24.sp,
-                ),
-                children: [
-                  TextSpan(
-                    text: AppStrings.inrYear1300,
-                    style: TextStyle(
-                      color: AppColors.black1c,
-                      fontFamily: AppConstants.inter,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 24.sp,
-                    ),
+            RichText(
+              text: TextSpan(
+                  text: AppStrings.only,
+                  style: TextStyle(
+                    color: AppColors.blue5Ecc,
+                    fontFamily: AppConstants.inter,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 24.sp,
                   ),
-                ]
-            ),),
+                  children: [
+                    TextSpan(
+                      text: AppStrings.inrYear1300,
+                      style: TextStyle(
+                        color: AppColors.black1c,
+                        fontFamily: AppConstants.inter,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 24.sp,
+                      ),
+                    ),
+                  ]),
+            ),
             SizedBox(
               height: 27.h,
             ),
-            CustomBtn(onTap: ()=> paymentScreen1ViewModel.claimOfferBtnTap(), title: AppStrings.claimOffer, width: 353.w,),
+            CustomBtn(
+              onTap: () => paymentScreen1ViewModel.claimOfferBtnTap(),
+              title: AppStrings.claimOffer,
+              width: 353.w,
+            ),
             SizedBox(
               height: 38.h,
             ),
-            CustomText(AppStrings.cancelAnytimeBilledAnnually, fontSize: 16.sp,
+            CustomText(
+              AppStrings.cancelAnytimeBilledAnnually,
+              fontSize: 16.sp,
               fontWeight: FontWeight.w400,
-              color: AppColors.black1c,),
+              color: AppColors.black1c,
+            ),
             SizedBox(
               height: 55.h,
             ),
@@ -89,9 +106,12 @@ class _PaymentScreen1State extends State<PaymentScreen1> {
             SizedBox(
               height: 17.h,
             ),
-            CustomText(AppStrings.termsAndConditionPrivacyPolicy, fontWeight: FontWeight.w400,
+            CustomText(
+              AppStrings.termsAndConditionPrivacyPolicy,
+              fontWeight: FontWeight.w400,
               fontSize: 16.sp,
-              color: AppColors.black1c,)
+              color: AppColors.black1c,
+            )
           ],
         ),
       ),

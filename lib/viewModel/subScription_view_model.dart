@@ -1,7 +1,8 @@
 import 'package:get/get.dart';
-import 'package:session_mate/general/connectivity_wrapper.dart';
 import 'package:session_mate/utils/app_colors.dart';
 import 'package:session_mate/utils/app_string.dart';
+import 'package:session_mate/utils/collection_utils.dart';
+import 'package:session_mate/utils/shared_preference_utils.dart';
 import 'package:session_mate/view/submitted_successfully_screen/submitted_successfully_screen.dart';
 
 class SubscriptionViewModel extends GetxController {
@@ -35,9 +36,33 @@ class SubscriptionViewModel extends GetxController {
     },
   ];
 
-  void buyBtnTap(int index){
-    navigate(view: SubmittedSuccessfully());
-    // Get.to(()=> const SubmittedSuccessfully());
+  void buyBtnTap(int index) {
+    if (index == 1) {
+      print(SharedPreferenceUtils.getUserId());
+      String subscriptionStartDate =
+          "${DateTime.now().year}-${DateTime.now().month}-${DateTime.now().day}";
+      String subscriptionEndDate =
+          "${DateTime.now().year}-${DateTime.now().month + 1}-${DateTime.now().day}";
+      CollectionUtils.userCollection.doc(SharedPreferenceUtils.getUserId()).update({
+        "subscriptionStartDate": subscriptionStartDate,
+        "subscriptionEndDate": subscriptionEndDate,
+        "subscriptionType": AppStrings.monthlySubscription,
+        "isSubscription": true,
+      });
+    } else if (index == 2) {
+      print(SharedPreferenceUtils.getUserId());
+      String subscriptionStartDate =
+          "${DateTime.now().year}-${DateTime.now().month}-${DateTime.now().day}";
+      String subscriptionEndDate =
+          "${DateTime.now().year + 1}-${DateTime.now().month}-${DateTime.now().day}";
+      CollectionUtils.userCollection.doc(SharedPreferenceUtils.getUserId()).update({
+        "subscriptionStartDate": subscriptionStartDate,
+        "subscriptionEndDate": subscriptionEndDate,
+        "subscriptionType": AppStrings.yearlySubscription,
+        "isSubscription": true,
+      });
+    } else {
+      Get.to(() => const SubmittedSuccessfully());
+    }
   }
-
 }

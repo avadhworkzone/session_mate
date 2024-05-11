@@ -39,7 +39,7 @@ class _SubscriptionsScreenState extends State<SubscriptionsScreen> {
                   width: 29.w,
                 ),
                 LocalAssets(
-                  width: 16.w,
+                  width: 8.65.w,
                   height: 16.9.h,
                   imagePath: AppImageAssets.backArrow,
                 ),
