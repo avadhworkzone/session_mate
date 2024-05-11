@@ -4,12 +4,13 @@ import 'package:session_mate/commonWidget/custom_text.dart';
 import 'package:session_mate/utils/app_colors.dart';
 
 ///SHOW SNACK BAR MESSAGES
-commonSnackBar({required String message, Color? snackBackgroundColor}) {
+commonSnackBar(
+    {required String message, Color? snackBackgroundColor, Color? textColor}) {
   Get.closeAllSnackbars();
   return Get.showSnackbar(GetSnackBar(
     messageText: CustomText(
       message,
-      color: AppColors.white,
+      color: textColor ?? AppColors.white,
       fontSize: 15,
       textAlign: TextAlign.center,
     ),

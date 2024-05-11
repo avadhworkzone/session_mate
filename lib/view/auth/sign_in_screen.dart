@@ -433,7 +433,7 @@ class _SignInScreenState extends State<SignInScreen> {
     model.email = signInViewModel.signInEmailController.value.text;
     model.mobileNumber = signInViewModel.signInPhoneNoController.value.text;
     final status = await AuthService.checkLoginCredential(model);
-    print('status is a -=-=====>>>> ${status}');
+    logs('status is a -=-=====>>>> ${status}');
     if (status) {
       hideLoadingDialog(context: context);
       sendOtp(

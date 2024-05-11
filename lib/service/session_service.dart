@@ -2,20 +2,21 @@ import 'package:session_mate/modal/add_session_data_model.dart';
 import 'package:session_mate/modal/get_session_list_model.dart';
 import 'package:session_mate/modal/therapy_center_location_data_model.dart';
 import 'package:session_mate/utils/collection_utils.dart';
+import 'package:session_mate/utils/common_methods.dart';
 import 'package:session_mate/utils/shared_preference_utils.dart';
 
 class SessionService {
-  /// add session data
+  /// ADD SESSION DATA
   static Future<bool> addSessionData(AddSessionDataModel model) async {
     final doc = CollectionUtils.sessionCollection.doc();
     model.id = doc.id;
     return doc.set(model.toJson()).then((value) => true).catchError((e) {
-      print('SESSION ERROR :=>$e');
+      logs('SESSION ERROR :=>$e');
       return false;
     });
   }
 
-  /// get session data
+  /// GET SESSION DATA
   static Stream<List<AddSessionDataModel>> getSessionData() {
     return CollectionUtils.sessionCollection
         .where('userId', isEqualTo: SharedPreferenceUtils.getUserId())
@@ -25,32 +26,32 @@ class SessionService {
             .toList());
   }
 
-  /// delete session data
+  /// DELETE SESSION DATA
   static Future<bool> deleteSessionData(String id) async {
     return CollectionUtils.sessionCollection
         .doc(id)
         .delete()
         .then((value) => true)
         .catchError((e) {
-      print(' delete ERROR :=>$e');
+      logs(' delete ERROR :=>$e');
       return false;
     });
   }
 
-  /// get session data detail
+  /// GET SESSION DATA DETAIL
   static Future<AddSessionDataModel> getEditSessionDataDetail() async {
     return await CollectionUtils.sessionCollection
         .doc(SharedPreferenceUtils.getSessionId())
         .get()
         .then((value) => AddSessionDataModel.fromJson(value.data()!))
         .catchError((e) {
-      print('getSessionDataDetail error :=>$e');
+      logs('getSessionDataDetail error :=>$e');
       return null;
     });
   }
 
-  /// get session count
-  static Future<List<AddSessionDataModel>> fetchFilteredData(
+  /// GET SESSION COUNT
+  static Future<List<AddSessionDataModel>> getSessionCount(
       {required String sessionName, required String selectedMonth}) async {
     final snapshot = await CollectionUtils.sessionCollection
         .where('session_name', isEqualTo: sessionName)
@@ -66,18 +67,18 @@ class SessionService {
     }
   }
 
-  /// add therapy center
+  /// ADD THERAPY CENTER
   static Future<bool> addTherapyCenter(
       TherapyCenterLocationDataModel model) async {
     final doc = CollectionUtils.therapyCenterCollection.doc();
     model.locationId = doc.id;
     return doc.set(model.toJson()).then((value) => true).catchError((e) {
-      print('SESSION ERROR :=>$e');
+      logs('SESSION ERROR :=>$e');
       return false;
     });
   }
 
-  /// get therapy center
+  /// GET THERAPY CENTER
   static Stream<List<TherapyCenterLocationDataModel>>
       getTherapyCenterLocationData() {
     return CollectionUtils.therapyCenterCollection
@@ -88,7 +89,7 @@ class SessionService {
             .toList());
   }
 
-  /// get therapy center for dropdown
+  /// GET THERAPY CENTER FOR DROP DOWN LIST
   Future<List<TherapyCenterLocationDataModel>>
       getTherapyDropdownCenter() async {
     try {
@@ -105,24 +106,24 @@ class SessionService {
         return []; // Return an empty list if no data found
       }
     } catch (e) {
-      print('get therapy center error :=>$e');
+      logs('get therapy center error :=>$e');
       throw e;
     }
   }
 
-  /// delete therapy center
+  /// DELETE THERAPY CENTER
   static Future<bool> deleteTherapyCenterData(String id) async {
     return CollectionUtils.therapyCenterCollection
         .doc(id)
         .delete()
         .then((value) => true)
         .catchError((e) {
-      print(' delete ERROR :=>$e');
+      logs(' delete ERROR :=>$e');
       return false;
     });
   }
 
-  /// get sessions list
+  /// GET SESSION LIST
   static Stream<List<SessionListData>> getSessionList() {
     return CollectionUtils.session.snapshots().map((event) =>
         event.docs.map((e) => SessionListData.fromJson(e.data())).toList());

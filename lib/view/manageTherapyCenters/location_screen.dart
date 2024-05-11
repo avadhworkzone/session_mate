@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:session_mate/utils/common_methods.dart';
 import 'package:session_mate/view/manageTherapyCenters/map_screen.dart';
 
 class LocationSettingScreen extends StatefulWidget {
@@ -98,7 +99,7 @@ class _LocationSettingScreenState extends State<LocationSettingScreen> {
       final locationWhenInUseStatus =
           await Permission.locationWhenInUse.request().isGranted;
 
-      print('locationStatus:=>$locationStatus ');
+      logs('locationStatus:=>$locationStatus ');
       if (!locationStatus && !locationWhenInUseStatus) {
         openAppSettings();
         return;
@@ -107,7 +108,7 @@ class _LocationSettingScreenState extends State<LocationSettingScreen> {
       final locationStatus = await Permission.location.request().isGranted;
       final locationWhenInUseStatus =
           await Permission.locationWhenInUse.request().isGranted;
-      print(
+      logs(
           'locationStatus:=>$locationStatus locationWhenInUseStatus:=>$locationWhenInUseStatus');
       if (!locationStatus && !locationWhenInUseStatus) {
         openAppSettings();
@@ -115,7 +116,7 @@ class _LocationSettingScreenState extends State<LocationSettingScreen> {
       }
     }
     final position = await Geolocator.getCurrentPosition();
-    print('LOCATION :=>${position.latitude}');
+    logs('LOCATION :=>${position.latitude}');
     Get.to(MapScreen(
       lat: position.latitude.toString(),
       long: position.longitude.toString(),

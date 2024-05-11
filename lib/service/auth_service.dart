@@ -1,5 +1,6 @@
 import 'package:session_mate/modal/user_model.dart';
 import 'package:session_mate/utils/collection_utils.dart';
+import 'package:session_mate/utils/common_methods.dart';
 
 class AuthService {
   static Future<bool> checkUserExist(String docId) async {
@@ -8,7 +9,7 @@ class AuthService {
         .get()
         .then((value) => value.exists ? true : false)
         .catchError((e) {
-      print('CHECK USER EXIST ERROR:=>$e');
+      logs('CHECK USER EXIST ERROR:=>$e');
       return false;
     });
   }
@@ -19,7 +20,7 @@ class AuthService {
         .set(model.toJson())
         .then((value) => true)
         .catchError((e) {
-      print('SIGN UP ERROR :=>$e');
+      logs('SIGN UP ERROR :=>$e');
       return false;
     });
   }
@@ -32,7 +33,7 @@ class AuthService {
         .get()
         .then((value) => value.docs.isNotEmpty ? true : false)
         .catchError((e) {
-      print('CHECK USER EXIST ERROR:=>$e');
+      logs('CHECK USER EXIST ERROR:=>$e');
       return false;
     });
   }

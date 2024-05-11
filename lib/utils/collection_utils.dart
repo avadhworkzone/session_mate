@@ -5,6 +5,8 @@ class TextConfig {
   static const userSessionData = 'UserSessionData';
   static const therapyCenter = 'TherapyCenters';
   static const session = 'Session';
+  static const ageGroupLevel = 'AgeLevel';
+  static const goalCategory = 'Goal';
 }
 
 class CollectionUtils {
@@ -16,4 +18,8 @@ class CollectionUtils {
       FirebaseFirestore.instance.collection(TextConfig.therapyCenter);
   static final session =
       FirebaseFirestore.instance.collection(TextConfig.session);
+  static final ageGroupLevel =
+      FirebaseFirestore.instance.collection(TextConfig.ageGroupLevel);
+  static final goalCategoryCollection =
+      FirebaseFirestore.instance.collection(TextConfig.goalCategory);
 }

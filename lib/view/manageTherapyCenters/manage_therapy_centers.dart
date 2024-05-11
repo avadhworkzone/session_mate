@@ -202,7 +202,7 @@ class _ManageTherapyCentersState extends State<ManageTherapyCenters> {
                 desiredAccuracy: LocationAccuracy.high)
             .catchError((e) {
           // isLoading = false;
-          print('LOCATION ERROR :=>$e');
+          logs('LOCATION ERROR :=>$e');
         });
         if (position.latitude == 0 && position.longitude == 0) {
           // isLoading = false;
@@ -218,13 +218,13 @@ class _ManageTherapyCentersState extends State<ManageTherapyCenters> {
         // await PreferenceManagerUtils.setLongitude(position.longitude);
       }
     } on Exception catch (e) {
-      print('LOCATION ERROR :==>$e');
+      logs('LOCATION ERROR :==>$e');
     }
   }
 
   Future<void> requestLocationPermission() async {
     final permissionStatus = await Permission.location.status;
-    print('permissionStatus:=>$permissionStatus');
+    logs('permissionStatus:=>$permissionStatus');
     if (await Permission.location.request().isGranted ||
         await Permission.locationWhenInUse.request().isGranted) {
       try {
@@ -236,7 +236,7 @@ class _ManageTherapyCentersState extends State<ManageTherapyCenters> {
         // await PreferenceManagerUtils.setLatitude(position.latitude);
         // await PreferenceManagerUtils.setLongitude(position.longitude);
       } on Exception catch (e) {
-        print('LOCATION ERROR :=>$e');
+        logs('LOCATION ERROR :=>$e');
       }
     } else if (await Permission.location.status.isDenied) {
       if (Platform.isAndroid) {

@@ -6,6 +6,7 @@ class SharedPreferenceUtils {
   static String isLogin = 'isLogin';
   static String userId = 'userId';
   static String editedSessionId = 'editedSessionId';
+  static String forTherapyPlanSessionId = 'forTherapyPlanSessionId';
 
   /// is login
   static Future setIsLogin(bool value) async {
@@ -32,6 +33,15 @@ class SharedPreferenceUtils {
 
   static String getSessionId() {
     return getStorage.read(editedSessionId) ?? "";
+  }
+
+  ///for Therapy Plan SessionId
+  static Future setTherapyPlanSessionId(String value) async {
+    await getStorage.write(forTherapyPlanSessionId, value);
+  }
+
+  static String getTherapyPlanSessionId() {
+    return getStorage.read(forTherapyPlanSessionId) ?? "";
   }
 
   static Future<void> clearPreference() async {

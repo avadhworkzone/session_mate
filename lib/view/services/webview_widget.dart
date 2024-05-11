@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:session_mate/utils/common_methods.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class WebViewExample extends StatefulWidget {
@@ -27,7 +28,7 @@ class _WebViewExampleState extends State<WebViewExample> {
           javascriptMode: JavascriptMode.unrestricted,
           initialUrl: widget.url,
           onWebResourceError: (WebResourceError webviewerrr) {
-            print("webview_flutter:" + webviewerrr.description);
+            logs("webview_flutter:" + webviewerrr.description);
           },
         ),
       ),

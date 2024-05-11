@@ -9,6 +9,7 @@ import 'package:session_mate/commonWidget/custom_btn.dart';
 import 'package:session_mate/modal/therapy_center_location_data_model.dart';
 import 'package:session_mate/service/session_service.dart';
 import 'package:session_mate/utils/app_string.dart';
+import 'package:session_mate/utils/common_methods.dart';
 import 'package:session_mate/utils/loading_dialog.dart';
 import 'package:session_mate/utils/shared_preference_utils.dart';
 import 'package:session_mate/utils/size_config_utils.dart';
@@ -77,7 +78,7 @@ class _MapScreenState extends State<MapScreen> {
 
     currentLatLng = LatLng(
         double.parse(latitude.toString()), double.parse(longitude.toString()));
-    print('currentLatLng -=------->> ${currentLatLng}');
+    logs('currentLatLng -=------->> ${currentLatLng}');
     _marker = Marker(
       markerId: const MarkerId('currentLocation'),
       position: LatLng(latitude, longitude),

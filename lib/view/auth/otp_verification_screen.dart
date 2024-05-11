@@ -193,7 +193,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
       final User? user = (await _auth.signInWithCredential(credential)).user;
 
       if (user != null) {
-        print(FirebaseAuth.instance.currentUser!.phoneNumber);
+        logs(FirebaseAuth.instance.currentUser!.phoneNumber ?? '');
         if (widget.isLoginScreen) {
           commonSnackBar(message: AppStrings.loginSuccessfully);
           await SharedPreferenceUtils.setIsLogin(true);
@@ -214,7 +214,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
         // await AuthServices.deleteBlockedUser(number: widget.phoneNumber);
         // await authServices.signIn(context: context);
       } else {
-        print("Authentication failed");
+        logs("Authentication failed");
         hideLoadingDialog(context: context);
       }
     } on FirebaseAuthException catch (e) {
@@ -232,10 +232,10 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
         // }
         // commonSnackBar(
         //     message: "Invalid Otp, $remainingAttempt attempts remaining");
-        print('frg yhythjuyjh${e.toString()}');
+        logs('frg yhythjuyjh${e.toString()}');
       } else {
         commonSnackBar(message: e.toString());
-        print('invalid code === ${e.code}');
+        logs('invalid code === ${e.code}');
       }
     }
   }
@@ -289,8 +289,8 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
           timeout: const Duration(seconds: 100),
           verificationCompleted: (PhoneAuthCredential credential) {},
           verificationFailed: (FirebaseAuthException exception) {
-            print('VERI FAILED :${exception.code}');
-            print('VERI FAILED ERROR :$exception');
+            logs('VERI FAILED :${exception.code}');
+            logs('VERI FAILED ERROR :$exception');
             hideLoadingDialog(context: context);
             // setLoader(false);
             if (exception.code == 'invalid-phone-number' ||

@@ -42,15 +42,16 @@ class _SessionScreenState extends State<SessionScreen> {
   void initState() {
     getSessionData();
     SessionService().getTherapyDropdownCenter().then((data) {
-      if (data != null) {
+      if (data != []) {
         setState(() {
           locationData = data;
         });
       } else {
-        print('Data is null');
+        locationData = [];
+        logs('Data is null');
       }
     }).catchError((error) {
-      print('Error fetching data: $error');
+      logs('Error fetching data: $error');
     });
     // TODO: implement initState
     super.initState();
@@ -70,7 +71,7 @@ class _SessionScreenState extends State<SessionScreen> {
             'id': snapshot.sessionId,
             'session_name': snapshot.sessionName ?? '',
           });
-          print(
+          logs(
               'sessionViewModel.selectedSession====${sessionViewModel.selectedSession}');
         }
         sessionViewModel.sessionDate.value =
@@ -183,7 +184,7 @@ class _SessionScreenState extends State<SessionScreen> {
                                                           snapshotData![index]
                                                               .sessionName
                                                     });
-                                                    print(
+                                                    logs(
                                                         'sessionViewModel.selectedSession====${sessionViewModel.selectedSession}');
                                                   } else {
                                                     sessionViewModel

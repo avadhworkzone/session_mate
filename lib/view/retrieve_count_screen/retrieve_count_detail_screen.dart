@@ -43,7 +43,7 @@ class _RetrieveCountDetailScreenState extends State<RetrieveCountDetailScreen> {
     setState(() {
       isLoadingData = true;
     });
-    SessionService.fetchFilteredData(
+    SessionService.getSessionCount(
             selectedMonth: widget.sessionSelectedMonth,
             sessionName: widget.sessionName)
         .then((data) {
