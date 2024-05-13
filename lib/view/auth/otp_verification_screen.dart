@@ -11,12 +11,11 @@ import 'package:session_mate/service/auth_service.dart';
 import 'package:session_mate/utils/app_colors.dart';
 import 'package:session_mate/utils/app_image_assets.dart';
 import 'package:session_mate/utils/app_string.dart';
-import 'package:session_mate/utils/common_methods.dart';
+import 'package:session_mate/utils/collection_utils.dart';
 import 'package:session_mate/utils/loading_dialog.dart';
 import 'package:session_mate/utils/local_assets.dart';
 import 'package:session_mate/utils/shared_preference_utils.dart';
 import 'package:session_mate/utils/size_config_utils.dart';
-import 'package:session_mate/view/auth/send_otp_method.dart';
 import 'package:session_mate/view/bottomBar/bottom_bar_screen.dart';
 import 'package:session_mate/viewModel/otp_view_model.dart';
 import 'package:session_mate/viewModel/sign_in_view_model.dart';
@@ -29,6 +28,7 @@ class OtpVerificationScreen extends StatefulWidget {
       required this.isLoginScreen,
       required this.countryCode,
       required this.phoneNumber});
+
   String verificationIDFinal;
   String countryCode;
   String phoneNumber;
@@ -42,6 +42,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
   OtpViewModel otpViewModel = Get.find();
   SignUpViewModel signUpViewModel = Get.put(SignUpViewModel());
   SignInViewModel signInViewModel = Get.put(SignInViewModel());
+
   // SignUpViewModel signUpViewModel = Get.find();
   // SignInViewModel signInViewModel = Get.find();
   UserModel model = UserModel();
@@ -200,8 +201,11 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
           signInViewModel.signInPhoneNoController.value.clear();
           signInViewModel.signInPasswordController.value.clear();
           hideLoadingDialog(context: context);
-
-          Get.to(() => const BottomBar());
+          CollectionUtils.userCollection.doc(SharedPreferenceUtils.getUserId()).update({
+            "latitude": SharedPreferenceUtils.getLatitude(),
+            "longitude": SharedPreferenceUtils.getLongitude()
+          });
+          Get.offAll(() => const BottomBar());
           // onLoginTap();
         } else {
           hideLoadingDialog(context: context);
@@ -244,6 +248,14 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
     model.password = signUpViewModel.signUpPasswordController.value.text;
     model.subscriptionType = AppStrings.freeSubscription;
     model.isSubscription = false;
+    model.latitude = SharedPreferenceUtils.getLatitude();
+    model.longitude = SharedPreferenceUtils.getLongitude();
+    model.subscriptionStartDate =
+        "${DateTime.now().year}-${DateTime.now().month < 10 ? "0${DateTime.now().month}" : "${DateTime.now().month}"}-${DateTime.now().day < 10 ? "0${DateTime.now().day}" : "${DateTime.now().day}"}";
+    model.subscriptionEndDate =
+        "${DateTime.now().year}-${DateTime.now().month < 10 ? "0${DateTime.now().month}" : "${DateTime.now().month}"}-${DateTime.now().day < 10 ? "0${DateTime.now().day}" : "${DateTime.now().day}"}";
+    print(model.subscriptionStartDate);
+    print(model.subscriptionEndDate);
     showLoadingDialog(context: context);
 
     final checkUserExistStatus = await AuthService.checkUserExist(model.mobileNumber!);

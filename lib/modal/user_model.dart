@@ -7,6 +7,8 @@ class UserModel {
   String? subscriptionStartDate;
   String? subscriptionEndDate;
   bool? isSubscription;
+  String? latitude;
+  String? longitude;
 
   UserModel({
     this.email,
@@ -17,6 +19,8 @@ class UserModel {
     this.subscriptionStartDate,
     this.subscriptionEndDate,
     this.isSubscription,
+    this.latitude,
+    this.longitude,
   });
 
   UserModel.fromJson(Map<String, dynamic> json) {
@@ -28,6 +32,8 @@ class UserModel {
     subscriptionStartDate = json['subscriptionStartDate'] ?? "";
     subscriptionEndDate = json['subscriptionEndDate'] ?? "";
     isSubscription = json['isSubscription'] ?? "";
+    latitude = json['latitude'] ?? "";
+    longitude = json['longitude'] ?? "";
   }
 
   Map<String, dynamic> toJson() => {
@@ -39,5 +45,7 @@ class UserModel {
         'subscriptionStartDate': subscriptionStartDate,
         'subscriptionEndDate': subscriptionEndDate,
         'isSubscription': isSubscription,
+        'latitude': latitude,
+        'longitude': longitude,
       };
 }

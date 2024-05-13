@@ -33,6 +33,8 @@ dependencies:
   intl: ^0.18.0
   carousel_slider: ^4.2.1
   credit_card_scanner: ^1.0.5
+  worldtime: ^1.2.1
+
 
 
 dev_dependencies:

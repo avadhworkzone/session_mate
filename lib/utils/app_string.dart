@@ -185,4 +185,6 @@ class AppStrings {
   static String freeSubscription = "free";
   static String monthlySubscription = "monthly";
   static String yearlySubscription = "yearly";
+  static String monthlySubscriptionSuccess = "Monthly Subscription Purchased Successfully";
+  static String yearlySubscriptionSuccess = "Yearly Subscription Purchased Successfully";
 }
