@@ -72,21 +72,44 @@ class TherapyPlanService {
   }
 
   /// GET GOALS SUB CATEGORY DATA
-  Future<List<GoalSubCategoryModel>> getGoalSubCategoryData(
-      {required String goalId}) async {
-    try {
-      final snapshot = await CollectionUtils.goalCategoryCollection
-          .where('goalId', isEqualTo: goalId)
-          .get();
-      if (snapshot.docs.isNotEmpty) {
-        return snapshot.docs.map((doc) {
-          final data = doc.data();
+//   Future<List<GoalSubCategoryModel>> getGoalSubCategoryData(
+//       {required String goalId}) async {
+//     try {
+//       final snapshot = await CollectionUtils.goalCategoryCollection
+//           .where('goalId', isEqualTo: goalId)
+//           .get();
+//       if (snapshot.docs.isNotEmpty) {
+//         return snapshot.docs.map((doc) {
+//           final data = doc.data();
+//
+//           return GoalSubCategoryModel.fromJson(data);
+//         }).toList();
+//       } else {
+//         return [];
+//       }
+//     } catch (e) {
+//       logs('get goal sub category error :=>$e');
+//       throw e;
+//     }
+//   }
 
-          return GoalSubCategoryModel.fromJson(data);
-        }).toList();
-      } else {
-        return [];
+  Future<List<GoalSubCategoryModel>> getGoalSubCategoryData(
+      {required List<String?> goalIds}) async {
+    try {
+      List<GoalSubCategoryModel> subCategories = [];
+      for (String? goalId in goalIds) {
+        final snapshot = await CollectionUtils.goalSubCategoryCollection
+            .where('goalId', isEqualTo: goalId)
+            .get();
+        if (snapshot.docs.isNotEmpty) {
+          subCategories.addAll(snapshot.docs.map((doc) {
+            final data = doc.data();
+            return GoalSubCategoryModel.fromJson(data);
+          }));
+          logs('subCategories fngf fgjrtng jrtbgbn b${subCategories}');
+        }
       }
+      return subCategories;
     } catch (e) {
       logs('get goal sub category error :=>$e');
       throw e;

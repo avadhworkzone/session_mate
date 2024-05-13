@@ -33,18 +33,21 @@ class GoalCategoryModel {
 class GoalData {
   String? goalId;
   String? goalName;
+  bool? status = false;
 
-  GoalData({this.goalId, this.goalName});
+  GoalData({this.goalId, this.goalName, this.status});
 
   GoalData.fromJson(Map<String, dynamic> json) {
     goalId = json['goalId'];
     goalName = json['goalName'];
+    status = json['status'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['goalId'] = this.goalId;
     data['goalName'] = this.goalName;
+    data['status'] = this.status;
     return data;
   }
 }

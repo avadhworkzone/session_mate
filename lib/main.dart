@@ -9,6 +9,8 @@ import 'package:session_mate/utils/app_colors.dart';
 import 'package:session_mate/utils/app_theme.dart';
 import 'package:session_mate/utils/shared_preference_utils.dart';
 import 'package:session_mate/view/bottomBar/bottom_bar_screen.dart';
+import 'package:session_mate/view/therapyPlanScreen/assessment_plan_screen.dart';
+import 'package:session_mate/view/welcomeScreen/multiselectdemo.dart';
 import 'package:session_mate/view/welcomeScreen/welcome_screen.dart';
 import 'package:session_mate/viewModel/otp_view_model.dart';
 
@@ -54,7 +56,7 @@ class MyApp extends StatelessWidget {
             transitionDuration: const Duration(milliseconds: 100),
             home: ConnectivityWrapper(
                 child: SharedPreferenceUtils.getIsLogin() == true
-                    ? const BottomBar()
+                    ? BottomBar()
                     : const WelcomeScreen()),
           ),
         ),

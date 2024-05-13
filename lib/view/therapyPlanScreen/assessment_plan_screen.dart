@@ -1,9 +1,13 @@
 import 'dart:convert';
+import 'dart:ffi';
 
+import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:multi_dropdown/multiselect_dropdown.dart';
+import 'package:multiselect/multiselect.dart';
 import 'package:session_mate/commonWidget/common_appbar.dart';
 import 'package:session_mate/commonWidget/common_snackbar.dart';
 import 'package:session_mate/commonWidget/custom_text.dart';
@@ -22,6 +26,8 @@ import 'package:session_mate/utils/shared_preference_utils.dart';
 import 'package:session_mate/utils/size_config_utils.dart';
 import 'package:session_mate/viewModel/assessment_plan_view_model.dart';
 
+import '../welcomeScreen/multiselectdemo.dart';
+
 class AssessmentAndPlanScreen extends StatefulWidget {
   const AssessmentAndPlanScreen({super.key});
 
@@ -33,7 +39,17 @@ class AssessmentAndPlanScreen extends StatefulWidget {
 class _AssessmentAndPlanScreenState extends State<AssessmentAndPlanScreen> {
   AssessmentAndPlanViewModel assessmentAndPlanViewModel =
       Get.put(AssessmentAndPlanViewModel());
+  final MultiSelectController<GoalData> _controller = MultiSelectController();
+  List<dynamic> selectedList = [];
+  List<String?> selectedGoalIds = [];
+  bool goalExpanded = false;
   // SessionListData? sessionData;
+  @override
+  void dispose() {
+    _controller.dispose();
+    // TODO: implement dispose
+    super.dispose();
+  }
 
   @override
   void initState() {
@@ -112,10 +128,19 @@ class _AssessmentAndPlanScreenState extends State<AssessmentAndPlanScreen> {
                             color: AppColors.black,
                           ),
                           onChanged: (AgeGroupLevelModel? newValue) {
+                            setState(() {
+                              goalExpanded = false;
+
+                              selectedList.clear();
+                            });
+                            assessmentAndPlanViewModel.isGoalLoading.value =
+                                true;
+                            assessmentAndPlanViewModel.goalListData.value = [];
                             assessmentAndPlanViewModel.ageGroupData.value =
                                 null;
                             assessmentAndPlanViewModel.ageGroupData.value =
                                 newValue!;
+
                             TherapyPlanService()
                                 .getGoalsCategoryData(
                                     ageLevelId: assessmentAndPlanViewModel
@@ -123,21 +148,19 @@ class _AssessmentAndPlanScreenState extends State<AssessmentAndPlanScreen> {
                                         '')
                                 .then((goalData) {
                               if (goalData.isNotEmpty) {
-                                assessmentAndPlanViewModel
-                                    .goalCategoryListData.value = goalData;
-
-                                assessmentAndPlanViewModel.goalCategoryListData
-                                    .forEach((element) {
+                                goalData.forEach((element) {
                                   assessmentAndPlanViewModel
                                       .goalListData.value = element.goal!;
                                 });
+
                                 logs(
-                                    'assessmentAndPlanViewModel=-==----->>${jsonEncode(assessmentAndPlanViewModel.goalCategoryListData)}');
-                              } else {
-                                assessmentAndPlanViewModel
-                                    .goalCategoryListData.value = [];
+                                    'assessmentAndPlanViewModel=-==----->>${jsonEncode(assessmentAndPlanViewModel.goalListData.value)}');
                               }
+                              assessmentAndPlanViewModel.isGoalLoading.value =
+                                  false;
                             }).catchError((error) {
+                              assessmentAndPlanViewModel.isGoalLoading.value =
+                                  false;
                               logs('Error goalData list data: $error');
                             });
                           },
@@ -223,161 +246,449 @@ class _AssessmentAndPlanScreenState extends State<AssessmentAndPlanScreen> {
               ),
             ),
             SizeConfig.sH40,
-            Container(
-              width: Get.width,
-              padding: EdgeInsets.symmetric(vertical: 25.w),
-              margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 12.w),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15.r),
-                  border: Border.all(color: Colors.grey),
-                  color: AppColors.white),
-              child: Column(
-                children: [
-                  /// SELECT YOUR GOAL
-                  DropdownMenu<GoalData>(
-                    width: Get.width / 1.2,
-                    textStyle:
-                        TextStyle(fontSize: 14.sp, color: AppColors.black1c),
-                    trailingIcon: Icon(
-                      Icons.keyboard_arrow_down,
-                      size: 30.sp,
-                      color: AppColors.primaryColor,
-                    ),
-                    initialSelection: assessmentAndPlanViewModel.goalData.value,
-                    // controller: languageEditController,
-                    requestFocusOnTap: false,
-                    onSelected: (GoalData? newValue) {
-                      unFocus();
-                      assessmentAndPlanViewModel.goalData.value = newValue!;
-                      TherapyPlanService()
-                          .getGoalSubCategoryData(
-                              goalId: assessmentAndPlanViewModel
-                                  .goalData.value!.goalId!)
-                          .then((goalSubCategory) {
-                        if (goalSubCategory != []) {
-                          assessmentAndPlanViewModel
-                              .goalSubCategoryListData.value = goalSubCategory;
-                        } else {
-                          assessmentAndPlanViewModel
-                              .goalSubCategoryListData.value = [];
-                          assessmentAndPlanViewModel.goalSubCategoryData.value =
-                              null;
-                        }
-                      }).catchError((error) {
-                        logs(
-                            'Error fetching age group level list data: $error');
-                      });
-                    },
-                    hintText: AppStrings.selectYourGoal,
-                    menuHeight: Get.height / 4,
-                    inputDecorationTheme: InputDecorationTheme(
-                        fillColor: AppColors.white,
-                        filled: true,
-                        isDense: true,
-                        hintStyle: TextStyle(
-                          color: AppColors.black1c,
-                          fontSize: 14.sp,
+            Expanded(
+              child: SingleChildScrollView(
+                child: Container(
+                  width: Get.width,
+                  padding:
+                      EdgeInsets.symmetric(vertical: 25.w, horizontal: 15.w),
+                  margin:
+                      EdgeInsets.symmetric(horizontal: 20.w, vertical: 12.w),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15.r),
+                      border: Border.all(color: Colors.grey),
+                      color: AppColors.white),
+                  child: Column(
+                    children: [
+                      /// SELECT YOUR GOAL
+
+                      // assessmentAndPlanViewModel.isGoalLoading.value == true
+                      //     ? const CircularProgressIndicator()
+                      //     : TapRegion(
+                      //         onTapInside: (val) {
+                      //           logs(
+                      //               'data for goal ${jsonEncode(assessmentAndPlanViewModel.goalListData)}');
+                      //           if (selectedGoalIds.isEmpty) {
+                      //             if (!_controller.isDropdownOpen) {
+                      //               assessmentAndPlanViewModel.isIgnoring.value =
+                      //                   false;
+                      //             }
+                      //           }
+                      //         },
+                      //         child: Builder(builder: (context) {
+                      //           logs(
+                      //               'assessmentAndPlanViewModel.goalListData${jsonEncode(assessmentAndPlanViewModel.goalListData)}');
+                      //           return MultiSelectDropDown<GoalData>(
+                      //             controller: _controller,
+                      //             clearIcon: const Icon(Icons.clear),
+                      //             onOptionSelected:
+                      //                 (List<ValueItem<GoalData>> options) {
+                      //               selectedGoalIds = options
+                      //                   .map((item) => item.value!.goalId)
+                      //                   .toList();
+                      //             },
+                      //             selectedItemBuilder: (context, valueItem) {
+                      //               return assessmentAndPlanViewModel
+                      //                           .isIgnoring.value ==
+                      //                       true
+                      //                   ? Container(
+                      //                       decoration: BoxDecoration(
+                      //                           color: AppColors.primaryColor,
+                      //                           borderRadius:
+                      //                               BorderRadius.circular(10)),
+                      //                       child: Padding(
+                      //                         padding: EdgeInsets.all(5.w),
+                      //                         child: CustomText(
+                      //                           valueItem.label,
+                      //                           color: AppColors.white,
+                      //                         ),
+                      //                       ))
+                      //                   : const SizedBox();
+                      //             },
+                      //             hint: AppStrings.selectYourGoal,
+                      //             padding: EdgeInsets.symmetric(
+                      //                 vertical: 5.w, horizontal: 5.w),
+                      //             hintStyle: TextStyle(
+                      //                 fontSize: 14.sp, color: AppColors.black1c),
+                      //             options:
+                      //                 assessmentAndPlanViewModel.goalListData.value
+                      //                     .map((goalData) => ValueItem(
+                      //                           label: goalData.goalName!,
+                      //                           value: goalData,
+                      //                         ))
+                      //                     .toList(),
+                      //
+                      //             singleSelectItemStyle: const TextStyle(
+                      //               fontSize: 16,
+                      //               fontWeight: FontWeight.bold,
+                      //             ),
+                      //             chipConfig: const ChipConfig(
+                      //               wrapType: WrapType.wrap,
+                      //               backgroundColor: Colors.red,
+                      //             ),
+                      //             optionTextStyle: const TextStyle(fontSize: 16),
+                      //             selectedOptionIcon: const Icon(
+                      //               Icons.check_circle,
+                      //               color: Colors.pink,
+                      //             ),
+                      //             selectedOptionBackgroundColor:
+                      //                 Colors.grey.shade300,
+                      //             selectedOptionTextColor: Colors.blue,
+                      //             dropdownMargin: 2,
+                      //             onOptionRemoved: (index, option) {
+                      //               // Handle option removed
+                      //             },
+                      //             // optionBuilder: (context, valueItem, isSelected) {
+                      //             //   final index = assessmentAndPlanViewModel
+                      //             //       .goalListData
+                      //             //       .indexOf(valueItem.value);
+                      //             //   final isLastItem = index ==
+                      //             //       assessmentAndPlanViewModel
+                      //             //               .goalListData.length -
+                      //             //           1;
+                      //             //   return Column(
+                      //             //     children: [
+                      //             //       ListTile(
+                      //             //         title: Text(valueItem.label),
+                      //             //         // subtitle: Text(valueItem.value.toString()),
+                      //             //         trailing: isSelected
+                      //             //             ? const Icon(Icons.check_circle)
+                      //             //             : const Icon(
+                      //             //                 Icons.radio_button_unchecked),
+                      //             //       ),
+                      //             //       isLastItem
+                      //             //           ? InkWell(
+                      //             //               onTap: () {
+                      //             //                 _controller.showDropdown();
+                      //             //                 if (_controller.isDropdownOpen) {
+                      //             //                   assessmentAndPlanViewModel
+                      //             //                       .isIgnoring.value = true;
+                      //             //                   _controller.hideDropdown();
+                      //             //
+                      //             //                   assessmentAndPlanViewModel
+                      //             //                       .isGoalSubLoading
+                      //             //                       .value = true;
+                      //             //                   TherapyPlanService()
+                      //             //                       .getGoalSubCategoryData(
+                      //             //                           goalIds: selectedGoalIds)
+                      //             //                       .then((subCategories) {
+                      //             //                     assessmentAndPlanViewModel
+                      //             //                         .goalSubCategoryStringData
+                      //             //                         .value
+                      //             //                         .clear();
+                      //             //                     subCategories
+                      //             //                         .forEach((element) {
+                      //             //                       assessmentAndPlanViewModel
+                      //             //                           .goalSubCategoryStringData
+                      //             //                           .value
+                      //             //                           .addAll(element.subGoal!);
+                      //             //                     });
+                      //             //                     assessmentAndPlanViewModel
+                      //             //                         .isGoalSubLoading
+                      //             //                         .value = false;
+                      //             //                   }).catchError((error) {
+                      //             //                     assessmentAndPlanViewModel
+                      //             //                         .isGoalSubLoading
+                      //             //                         .value = false;
+                      //             //                     // Handle errors
+                      //             //                   });
+                      //             //                 } else {
+                      //             //                   _controller.showDropdown();
+                      //             //                 }
+                      //             //               },
+                      //             //               child: const Padding(
+                      //             //                 padding: EdgeInsets.all(8.0),
+                      //             //                 child: CustomText('Done'),
+                      //             //               ))
+                      //             //           : SizedBox()
+                      //             //     ],
+                      //             //   );
+                      //             // },
+                      //           );
+                      //         }),
+                      //       ),
+
+                      ///
+                      InkWell(
+                        onTap: () {
+                          setState(() {
+                            goalExpanded = true;
+                          });
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.all(15),
+                          decoration: BoxDecoration(
+                              color: AppColors.white,
+                              borderRadius: BorderRadius.circular(10),
+                              boxShadow: const [
+                                BoxShadow(
+                                    color: AppColors.grey, spreadRadius: 1)
+                              ]),
+                          child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: selectedList.isEmpty
+                                  ? CustomText(AppStrings.selectYourGoal)
+                                  : ListView.builder(
+                                      shrinkWrap: true,
+                                      itemCount: selectedList.length,
+                                      itemBuilder: (context, index) {
+                                        return CustomText(
+                                            '${selectedList[index]['name']}${selectedList.length > 1 ? ',' : ''}');
+                                      },
+                                    )),
                         ),
-                        errorBorder: const OutlineInputBorder(
-                            borderSide: BorderSide(color: AppColors.colorA2)),
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(15),
-                            borderSide:
-                                const BorderSide(color: AppColors.colorA2)),
-                        focusedBorder: const OutlineInputBorder(
-                          borderSide:
-                              BorderSide(width: 1.0, color: AppColors.colorA2),
-                          borderRadius: BorderRadius.all(Radius.circular(15)),
-                        ),
-                        disabledBorder: const OutlineInputBorder(
-                          borderSide:
-                              BorderSide(width: 1.0, color: AppColors.colorA2),
-                          borderRadius: BorderRadius.all(Radius.circular(15)),
-                        ),
-                        enabledBorder: const OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(15)),
-                          borderSide: BorderSide(
-                            color: AppColors.colorA2,
-                            width: 1.0,
-                          ),
-                        ),
-                        contentPadding: EdgeInsets.symmetric(horizontal: 10.w)),
-                    dropdownMenuEntries: assessmentAndPlanViewModel
-                        .goalListData.value
-                        .map<DropdownMenuEntry<GoalData>>((GoalData goalData) {
-                      return DropdownMenuEntry<GoalData>(
-                        value: goalData,
-                        label: goalData.goalName!,
-                      );
-                    }).toList(),
+                      ),
+                      SizeConfig.sH10,
+
+                      goalExpanded == false
+                          ? SizedBox()
+                          : Container(
+                              decoration: BoxDecoration(
+                                  color: AppColors.white,
+                                  borderRadius: BorderRadius.circular(10),
+                                  border: Border.all(
+                                      color:
+                                          AppColors.black1c.withOpacity(0.1))),
+                              child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: List.generate(
+                                      assessmentAndPlanViewModel
+                                          .goalListData.value.length, (index) {
+                                    return Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Expanded(
+                                          child: InkWell(
+                                            onTap: () {
+                                              if (assessmentAndPlanViewModel
+                                                      .goalListData
+                                                      .value[index]
+                                                      .status ==
+                                                  true) {
+                                                assessmentAndPlanViewModel
+                                                    .goalListData
+                                                    .value[index]
+                                                    .status = false;
+                                                selectedList.removeWhere(
+                                                    (element) =>
+                                                        element['id'] ==
+                                                        assessmentAndPlanViewModel
+                                                            .goalListData
+                                                            .value[index]
+                                                            .goalId);
+                                              } else {
+                                                assessmentAndPlanViewModel
+                                                    .goalListData
+                                                    .value[index]
+                                                    .status = true;
+                                                selectedList.add({
+                                                  'id':
+                                                      assessmentAndPlanViewModel
+                                                          .goalListData
+                                                          .value[index]
+                                                          .goalId,
+                                                  'name':
+                                                      assessmentAndPlanViewModel
+                                                          .goalListData
+                                                          .value[index]
+                                                          .goalName
+                                                });
+                                              }
+                                              // assessmentAndPlanViewModel.goalListData
+                                              //             .value[index].status ==
+                                              //         true
+                                              //     ? assessmentAndPlanViewModel
+                                              //         .goalListData
+                                              //         .value[index]
+                                              //         .status = false
+                                              //     : assessmentAndPlanViewModel
+                                              //         .goalListData
+                                              //         .value[index]
+                                              //         .status = true;
+
+                                              print(
+                                                  'selectedList---$selectedList');
+
+                                              setState(() {});
+                                            },
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child: CustomText(
+                                                  assessmentAndPlanViewModel
+                                                      .goalListData
+                                                      .value[index]
+                                                      .goalName!),
+                                            ),
+                                          ),
+                                        ),
+                                        Checkbox(
+                                            value: assessmentAndPlanViewModel
+                                                    .goalListData
+                                                    .value[index]
+                                                    .status ??
+                                                false,
+                                            onChanged: (val) {
+                                              if (assessmentAndPlanViewModel
+                                                      .goalListData
+                                                      .value[index]
+                                                      .status ==
+                                                  true) {
+                                                assessmentAndPlanViewModel
+                                                    .goalListData
+                                                    .value[index]
+                                                    .status = false;
+                                                selectedList.removeWhere(
+                                                    (element) =>
+                                                        element['id'] ==
+                                                        assessmentAndPlanViewModel
+                                                            .goalListData
+                                                            .value[index]
+                                                            .goalId);
+                                              } else {
+                                                assessmentAndPlanViewModel
+                                                    .goalListData
+                                                    .value[index]
+                                                    .status = true;
+                                                selectedList.add({
+                                                  'id':
+                                                      assessmentAndPlanViewModel
+                                                          .goalListData
+                                                          .value[index]
+                                                          .goalId,
+                                                  'name':
+                                                      assessmentAndPlanViewModel
+                                                          .goalListData
+                                                          .value[index]
+                                                          .goalName
+                                                });
+                                              }
+                                              logs(
+                                                  'check box data ${selectedList}');
+                                              setState(() {});
+                                            })
+                                      ],
+                                    );
+                                  }))),
+
+                      SizeConfig.sH20,
+
+                      /// SELECT YOUR SUB GOAL
+                      assessmentAndPlanViewModel.isGoalSubLoading.value == true
+                          ? const CircularProgressIndicator()
+                          : MultiSelectDropDown<String>(
+                              clearIcon: const Icon(Icons.clear),
+                              onOptionSelected: (options) {},
+                              hint: AppStrings.selectYourSubGoal,
+                              hintStyle: TextStyle(
+                                  fontSize: 14.sp, color: AppColors.black1c),
+                              selectionType: SelectionType.multi,
+                              options: assessmentAndPlanViewModel
+                                  .goalSubCategoryStringData
+                                  .map((goalData) => ValueItem(
+                                        label: goalData,
+                                        value: goalData,
+                                      ))
+                                  .toList(),
+                              singleSelectItemStyle: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              chipConfig: const ChipConfig(
+                                wrapType: WrapType.wrap,
+                                backgroundColor: Colors.red,
+                              ),
+                              optionTextStyle: const TextStyle(fontSize: 16),
+                              selectedOptionIcon: const Icon(
+                                Icons.check_circle,
+                                color: Colors.pink,
+                              ),
+                              selectedOptionBackgroundColor:
+                                  Colors.grey.shade300,
+                              selectedOptionTextColor: Colors.blue,
+                              dropdownMargin: 2,
+                              onOptionRemoved: (index, option) {
+                                // Handle option removed
+                              },
+                              optionBuilder: (context, valueItem, isSelected) {
+                                return ListTile(
+                                  title: Text(valueItem.label),
+                                  // subtitle: Text(valueItem.value.toString()),
+                                  trailing: isSelected
+                                      ? const Icon(Icons.check_circle)
+                                      : const Icon(
+                                          Icons.radio_button_unchecked),
+                                );
+                              },
+                            )
+
+                      // DropdownMenu<String>(
+                      //   width: Get.width / 1.2,
+                      //   textStyle:
+                      //       TextStyle(fontSize: 14.sp, color: AppColors.black1c),
+                      //   trailingIcon: Icon(
+                      //     Icons.keyboard_arrow_down,
+                      //     size: 30.sp,
+                      //     color: AppColors.primaryColor,
+                      //   ),
+                      //   initialSelection:
+                      //       assessmentAndPlanViewModel.goalSubCategoryStringData.value,
+                      //   // controller: languageEditController,
+                      //   requestFocusOnTap: false,
+                      //   onSelected: (String? newValue) {
+                      //     unFocus();
+                      //     assessmentAndPlanViewModel.goalSubCategoryStringData.value =
+                      //         newValue!;
+                      //   },
+                      //   hintText: AppStrings.selectYourSubGoal,
+                      //   menuHeight: Get.height / 4,
+                      //   inputDecorationTheme: InputDecorationTheme(
+                      //       fillColor: AppColors.white,
+                      //       filled: true,
+                      //       isDense: true,
+                      //       hintStyle: TextStyle(
+                      //         color: AppColors.black1c,
+                      //         fontSize: 14.sp,
+                      //       ),
+                      //       errorBorder: const OutlineInputBorder(
+                      //           borderSide: BorderSide(color: AppColors.colorA2)),
+                      //       border: OutlineInputBorder(
+                      //           borderRadius: BorderRadius.circular(15),
+                      //           borderSide:
+                      //               const BorderSide(color: AppColors.colorA2)),
+                      //       focusedBorder: const OutlineInputBorder(
+                      //         borderSide: BorderSide(
+                      //             width: 1.0, color: AppColors.colorA2),
+                      //         borderRadius: BorderRadius.all(Radius.circular(15)),
+                      //       ),
+                      //       disabledBorder: const OutlineInputBorder(
+                      //         borderSide: BorderSide(
+                      //             width: 1.0, color: AppColors.colorA2),
+                      //         borderRadius: BorderRadius.all(Radius.circular(15)),
+                      //       ),
+                      //       enabledBorder: const OutlineInputBorder(
+                      //         borderRadius: BorderRadius.all(Radius.circular(15)),
+                      //         borderSide: BorderSide(
+                      //           color: AppColors.colorA2,
+                      //           width: 1.0,
+                      //         ),
+                      //       ),
+                      //       contentPadding:
+                      //           EdgeInsets.symmetric(horizontal: 10.w)),
+                      //   dropdownMenuEntries: assessmentAndPlanViewModel
+                      //       .goalSubCategoryStringData.value
+                      //       .map<DropdownMenuEntry<String>>(
+                      //           (GoalSubCategoryModel goalData) {
+                      //     return DropdownMenuEntry<String>(
+                      //       value: goalData.subGoal,
+                      //       label: goalData.subGoal,
+                      //     );
+                      //   }).toList(),
+                      // )
+                    ],
                   ),
-
-                  SizeConfig.sH20,
-
-                  /// SELECT YOUR SUB GOAL
-                  DropdownMenu<String>(
-                    width: Get.width / 1.2,
-                    textStyle:
-                        TextStyle(fontSize: 14.sp, color: AppColors.black1c),
-                    trailingIcon: Icon(
-                      Icons.keyboard_arrow_down,
-                      size: 30.sp,
-                      color: AppColors.primaryColor,
-                    ),
-                    initialSelection:
-                        assessmentAndPlanViewModel.goalSubCategoryData.value,
-                    // controller: languageEditController,
-                    requestFocusOnTap: false,
-                    onSelected: (String? newValue) {
-                      unFocus();
-                      assessmentAndPlanViewModel.goalSubCategoryData.value =
-                          newValue!;
-                    },
-                    hintText: AppStrings.selectYourSubGoal,
-                    menuHeight: Get.height / 4,
-                    inputDecorationTheme: InputDecorationTheme(
-                        fillColor: AppColors.white,
-                        filled: true,
-                        isDense: true,
-                        hintStyle: TextStyle(
-                          color: AppColors.black1c,
-                          fontSize: 14.sp,
-                        ),
-                        errorBorder: const OutlineInputBorder(
-                            borderSide: BorderSide(color: AppColors.colorA2)),
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(15),
-                            borderSide:
-                                const BorderSide(color: AppColors.colorA2)),
-                        focusedBorder: const OutlineInputBorder(
-                          borderSide:
-                              BorderSide(width: 1.0, color: AppColors.colorA2),
-                          borderRadius: BorderRadius.all(Radius.circular(15)),
-                        ),
-                        disabledBorder: const OutlineInputBorder(
-                          borderSide:
-                              BorderSide(width: 1.0, color: AppColors.colorA2),
-                          borderRadius: BorderRadius.all(Radius.circular(15)),
-                        ),
-                        enabledBorder: const OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(15)),
-                          borderSide: BorderSide(
-                            color: AppColors.colorA2,
-                            width: 1.0,
-                          ),
-                        ),
-                        contentPadding: EdgeInsets.symmetric(horizontal: 10.w)),
-                    dropdownMenuEntries: assessmentAndPlanViewModel
-                        .goalSubCategoryListData.value
-                        .map<DropdownMenuEntry<String>>(
-                            (GoalSubCategoryModel goalData) {
-                      return DropdownMenuEntry<String>(
-                        value: goalData.subGoal![0],
-                        label: goalData.subGoal![0],
-                      );
-                    }).toList(),
-                  )
-                ],
+                ),
               ),
             )
           ],

@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:multi_dropdown/multiselect_dropdown.dart';
 import 'package:session_mate/modal/age_group_level_model.dart';
 import 'package:session_mate/modal/get_session_list_model.dart';
 import 'package:session_mate/modal/goal_category_model.dart';
@@ -14,12 +15,17 @@ class AssessmentAndPlanViewModel extends GetxController {
   Rx<AgeGroupLevelModel?> ageGroupData = Rx<AgeGroupLevelModel?>(null);
 
   /// get goal category
-  RxList<GoalCategoryModel> goalCategoryListData = <GoalCategoryModel>[].obs;
+  // RxList<GoalCategoryModel> goalCategoryListData = <GoalCategoryModel>[].obs;
   RxList<GoalData> goalListData = <GoalData>[].obs;
-  Rx<GoalData?> goalData = Rx<GoalData?>(null);
+  Rx<MultiSelectController<GoalData>> controller =
+      MultiSelectController<GoalData>().obs;
+  Rx<bool> isGoalLoading = false.obs;
+  Rx<bool> isIgnoring = false.obs;
+  // Rx<GoalData?> goalData = Rx<GoalData?>(null);
 
   /// get goal sub category
-  RxList<GoalSubCategoryModel> goalSubCategoryListData =
-      <GoalSubCategoryModel>[].obs;
-  Rx<String?> goalSubCategoryData = Rx<String?>(null);
+
+  RxList<String> goalSubCategoryStringData = <String>[].obs;
+
+  Rx<bool> isGoalSubLoading = false.obs;
 }
