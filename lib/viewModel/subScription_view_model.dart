@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:session_mate/service/razorpay_service.dart';
 import 'package:session_mate/utils/app_colors.dart';
 import 'package:session_mate/utils/app_string.dart';
 import 'package:session_mate/utils/collection_utils.dart';
@@ -53,32 +54,16 @@ class SubscriptionViewModel extends GetxController {
         Get.snackbar("Message",
             "You have already purchased ${userDetail?["subscriptionType"]} subscription valid till '${userDetail?["subscriptionEndDate"]}'");
       } else {
-        String subscriptionStartDate =
-            "${currentDateTime.year}-${currentDateTime.month < 10 ? "0${currentDateTime.month}" : "${currentDateTime.month}"}-${currentDateTime.day < 10 ? "0${currentDateTime.day}" : "${currentDateTime.day}"}";
-        String subscriptionEndDate =
-            "${currentDateTime.year}-${currentDateTime.month + 1 < 10 ? "0${currentDateTime.month + 1}" : "${currentDateTime.month + 1}"}-${currentDateTime.day < 10 ? "0${currentDateTime.day}" : "${currentDateTime.day}"}";
-        CollectionUtils.userCollection.doc(SharedPreferenceUtils.getUserId()).update({
-          "subscriptionStartDate": subscriptionStartDate,
-          "subscriptionEndDate": subscriptionEndDate,
-          "subscriptionType": AppStrings.monthlySubscription,
-          "isSubscription": true,
-        }).then((value) => Get.snackbar("Message", AppStrings.monthlySubscriptionSuccess));
+        RazorpayService.isMonthly = true;
+        RazorpayService.makePaymentWithRazorPay(amount: 49);
       }
     } else if (index == 2) {
       if (userDetail?["isSubscription"]) {
         Get.snackbar("Message",
             "You have already purchased ${userDetail?["subscriptionType"]} subscription valid till '${userDetail?["subscriptionEndDate"]}'");
       } else {
-        String subscriptionStartDate =
-            "${currentDateTime.year}-${currentDateTime.month < 10 ? "0${currentDateTime.month}" : "${currentDateTime.month}"}-${currentDateTime.day < 10 ? "0${currentDateTime.day}" : "${currentDateTime.day}"}";
-        String subscriptionEndDate =
-            "${currentDateTime.year + 1}-${currentDateTime.month < 10 ? "0${currentDateTime.month}" : "${currentDateTime.month}"}-${currentDateTime.day < 10 ? "0${currentDateTime.day}" : "${currentDateTime.day}"}";
-        CollectionUtils.userCollection.doc(SharedPreferenceUtils.getUserId()).update({
-          "subscriptionStartDate": subscriptionStartDate,
-          "subscriptionEndDate": subscriptionEndDate,
-          "subscriptionType": AppStrings.yearlySubscription,
-          "isSubscription": true,
-        }).then((value) => Get.snackbar("Message", AppStrings.yearlySubscriptionSuccess));
+        RazorpayService.isMonthly = false;
+        RazorpayService.makePaymentWithRazorPay(amount: 449);
       }
     } else {
       SharedPreferenceUtils.clearPreference();

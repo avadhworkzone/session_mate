@@ -20,6 +20,7 @@ import 'package:session_mate/view/bottomBar/bottom_bar_screen.dart';
 import 'package:session_mate/viewModel/otp_view_model.dart';
 import 'package:session_mate/viewModel/sign_in_view_model.dart';
 import 'package:session_mate/viewModel/sign_up_view_model.dart';
+import 'package:worldtime/worldtime.dart';
 
 class OtpVerificationScreen extends StatefulWidget {
   OtpVerificationScreen(
@@ -46,6 +47,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
   // SignUpViewModel signUpViewModel = Get.find();
   // SignInViewModel signInViewModel = Get.find();
   UserModel model = UserModel();
+  final worldtimePlugin = Worldtime();
 
   @override
   void initState() {
@@ -250,6 +252,12 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
     model.isSubscription = false;
     model.latitude = SharedPreferenceUtils.getLatitude();
     model.longitude = SharedPreferenceUtils.getLongitude();
+    final DateTime currentDateTime = await worldtimePlugin.timeByLocation(
+      latitude: double.parse(SharedPreferenceUtils.getLatitude()),
+      longitude: double.parse(SharedPreferenceUtils.getLongitude()),
+    );
+    model.registrationDate =
+        "${currentDateTime.year}-${currentDateTime.month < 10 ? "0${currentDateTime.month}" : "${currentDateTime.month}"}-${currentDateTime.day < 10 ? "0${currentDateTime.day}" : "${currentDateTime.day}"}";
     model.subscriptionStartDate =
         "${DateTime.now().year}-${DateTime.now().month < 10 ? "0${DateTime.now().month}" : "${DateTime.now().month}"}-${DateTime.now().day < 10 ? "0${DateTime.now().day}" : "${DateTime.now().day}"}";
     model.subscriptionEndDate =

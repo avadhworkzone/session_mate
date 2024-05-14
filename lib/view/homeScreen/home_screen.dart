@@ -27,7 +27,15 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   SessionViewModel sessionViewModel = Get.put(SessionViewModel());
+  BottomBarViewModel bottomBarViewModel = Get.find<BottomBarViewModel>();
   final GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    //bottomBarViewModel.checkIsFreeTrial();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -79,19 +87,28 @@ class _HomeScreenState extends State<HomeScreen> {
                       sessionViewModel.retrieveCountMonthIs.value = '';
                       Get.to(() => const RetrieveCounts());
                     } else {
-                      Get.to(() => const AssessmentAndPlanScreen());
+                      if (bottomBarViewModel.isFreeTrial) {
+                        Get.to(() => const AssessmentAndPlanScreen());
+                      } else {
+                        Get.snackbar("Message", AppStrings.yourFreeTrialEnd);
+                      }
                     }
                   },
                   child: Container(
                     decoration: BoxDecoration(
-                        color: AppColors.white,
-                        borderRadius: BorderRadius.circular(15.r),
-                        boxShadow: [
-                          BoxShadow(
-                              color: AppColors.black.withOpacity(0.20),
-                              blurRadius: 10,
-                              spreadRadius: 1)
-                        ]),
+                      color: index == 2
+                          ? !bottomBarViewModel.isFreeTrial
+                              ? AppColors.black.withOpacity(0.1)
+                              : AppColors.white
+                          : AppColors.white,
+                      borderRadius: BorderRadius.circular(15.r),
+                      boxShadow: [
+                        BoxShadow(
+                            color: AppColors.black.withOpacity(0.20),
+                            blurRadius: 10,
+                            spreadRadius: 1)
+                      ],
+                    ),
                     child: Padding(
                       padding: EdgeInsets.symmetric(
                         horizontal: 25.w,

@@ -115,6 +115,7 @@ class AppStrings {
   static String currentLeval = "Current\nLevel";
   static String strategies = "Planned\nStrategies";
   static String assessmentPlan = "Assessment & Plan";
+  static String yourFreeTrialEnd = "Your free trial has ended";
 
   /// Assessment And Plan
   static String assessmentAndPlan = 'Assessment & Plan';
@@ -137,9 +138,9 @@ class AppStrings {
   static String phoneNumber = "Phone Number";
   static String freeCapital = "FREE";
   static String monthly = "Monthly";
-  static String inrTenMonth = "INR 10/Month";
+  static String inrTenMonth = "INR 49/Month";
   static String yearly = "Yearly";
-  static String inr100Year = "INR 100/Year";
+  static String inr100Year = "INR 499/Year";
   static String sessionTracking = "Session Tracking";
   static String therapyPlanDownload = "Therapy Plan Download";
   static String twoFreeSession = "2- Free  Counseling Sessions";
@@ -187,4 +188,5 @@ class AppStrings {
   static String yearlySubscription = "yearly";
   static String monthlySubscriptionSuccess = "Monthly Subscription Purchased Successfully";
   static String yearlySubscriptionSuccess = "Yearly Subscription Purchased Successfully";
+  static String subscriptionSuccess = "Subscription Purchased Successfully";
 }
