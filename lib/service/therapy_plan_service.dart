@@ -1,7 +1,9 @@
 import 'package:session_mate/modal/age_group_level_model.dart';
+import 'package:session_mate/modal/current_level_model.dart';
 import 'package:session_mate/modal/get_session_list_model.dart';
 import 'package:session_mate/modal/goal_category_model.dart';
 import 'package:session_mate/modal/goal_sub_category_model.dart';
+import 'package:session_mate/modal/strategies_data_model.dart';
 import 'package:session_mate/utils/collection_utils.dart';
 import 'package:session_mate/utils/common_methods.dart';
 import 'package:session_mate/utils/const_utils.dart';
@@ -72,27 +74,6 @@ class TherapyPlanService {
   }
 
   /// GET GOALS SUB CATEGORY DATA
-//   Future<List<GoalSubCategoryModel>> getGoalSubCategoryData(
-//       {required String goalId}) async {
-//     try {
-//       final snapshot = await CollectionUtils.goalCategoryCollection
-//           .where('goalId', isEqualTo: goalId)
-//           .get();
-//       if (snapshot.docs.isNotEmpty) {
-//         return snapshot.docs.map((doc) {
-//           final data = doc.data();
-//
-//           return GoalSubCategoryModel.fromJson(data);
-//         }).toList();
-//       } else {
-//         return [];
-//       }
-//     } catch (e) {
-//       logs('get goal sub category error :=>$e');
-//       throw e;
-//     }
-//   }
-
   Future<List<GoalSubCategoryModel>> getGoalSubCategoryData(
       {required List<String?> goalIds}) async {
     try {
@@ -112,6 +93,47 @@ class TherapyPlanService {
       return subCategories;
     } catch (e) {
       logs('get goal sub category error :=>$e');
+      throw e;
+    }
+  }
+
+  /// GET CURRENT LEVEL
+  Future<List<CurrentLevelModel>> currentLevelList() async {
+    try {
+      final snapshot = await CollectionUtils.currentLevelCollection.get();
+      if (snapshot.docs.isNotEmpty) {
+        return snapshot.docs.map((doc) {
+          final data = doc.data();
+          return CurrentLevelModel.fromJson(data);
+        }).toList();
+      } else {
+        return []; // Return an empty list if no data found
+      }
+    } catch (e) {
+      logs('get current level list error :=>$e');
+      throw e;
+    }
+  }
+
+  /// GET STRATEGIES DATA
+  Future<List<StrategiesModel>> getStrategiesData(
+      {required List<String?> goalIds}) async {
+    try {
+      List<StrategiesModel> strategies = [];
+      for (String? goalId in goalIds) {
+        final snapshot = await CollectionUtils.strategiesCollection
+            .where('goalId', isEqualTo: goalId)
+            .get();
+        if (snapshot.docs.isNotEmpty) {
+          strategies.addAll(snapshot.docs.map((doc) {
+            final data = doc.data();
+            return StrategiesModel.fromJson(data);
+          }));
+        }
+      }
+      return strategies;
+    } catch (e) {
+      logs('get goal strategies error :=>$e');
       throw e;
     }
   }

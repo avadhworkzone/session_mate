@@ -8,6 +8,8 @@ class TextConfig {
   static const ageGroupLevel = 'AgeLevel';
   static const goalCategory = 'Goal';
   static const goalSubCategory = 'subGoal';
+  static const currentLevel = 'Current Level';
+  static const strategies = 'Strategies';
 }
 
 class CollectionUtils {
@@ -25,4 +27,8 @@ class CollectionUtils {
       FirebaseFirestore.instance.collection(TextConfig.goalCategory);
   static final goalSubCategoryCollection =
       FirebaseFirestore.instance.collection(TextConfig.goalSubCategory);
+  static final currentLevelCollection =
+      FirebaseFirestore.instance.collection(TextConfig.currentLevel);
+  static final strategiesCollection =
+      FirebaseFirestore.instance.collection(TextConfig.strategies);
 }

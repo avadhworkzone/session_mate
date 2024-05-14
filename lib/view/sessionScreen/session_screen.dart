@@ -199,9 +199,8 @@ class _SessionScreenState extends State<SessionScreen> {
                                                   setState(() {});
                                                 },
                                                 child: CommonSessionContainer(
-                                                  imageUrl:
-                                                      sessionDataList[index]
-                                                          ['image'],
+                                                  imageUrl: snapshotData![index]
+                                                      .image!,
                                                   titleText:
                                                       snapshotData![index]
                                                           .sessionName!,

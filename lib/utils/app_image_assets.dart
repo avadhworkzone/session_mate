@@ -6,6 +6,10 @@ class AppImageAssets {
   static const String noInternet =
       '${AppConstants.baseImageAssetsPath}noInternet.png';
 
+  ///NO FOUND IMAGES
+  static String noImageFound =
+      "${AppConstants.baseImageAssetsPath}noImageFound.jpg";
+
   /// welcom screen
   static const String welcomeImage =
       '${AppConstants.baseImageAssetsPath}welcomeImage.png';

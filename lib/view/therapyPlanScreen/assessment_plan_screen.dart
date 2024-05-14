@@ -1,32 +1,20 @@
-import 'dart:convert';
-import 'dart:ffi';
-
-import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:multi_dropdown/multiselect_dropdown.dart';
-import 'package:multiselect/multiselect.dart';
 import 'package:session_mate/commonWidget/common_appbar.dart';
 import 'package:session_mate/commonWidget/common_snackbar.dart';
+import 'package:session_mate/commonWidget/custom_btn.dart';
 import 'package:session_mate/commonWidget/custom_text.dart';
 import 'package:session_mate/modal/age_group_level_model.dart';
 import 'package:session_mate/modal/get_session_list_model.dart';
-import 'package:session_mate/modal/goal_category_model.dart';
-import 'package:session_mate/modal/goal_sub_category_model.dart';
-import 'package:session_mate/service/session_service.dart';
 import 'package:session_mate/service/therapy_plan_service.dart';
 import 'package:session_mate/utils/app_colors.dart';
-import 'package:session_mate/utils/app_constant.dart';
 import 'package:session_mate/utils/app_string.dart';
 import 'package:session_mate/utils/common_methods.dart';
-import 'package:session_mate/utils/const_utils.dart';
 import 'package:session_mate/utils/shared_preference_utils.dart';
 import 'package:session_mate/utils/size_config_utils.dart';
 import 'package:session_mate/viewModel/assessment_plan_view_model.dart';
-
-import '../welcomeScreen/multiselectdemo.dart';
 
 class AssessmentAndPlanScreen extends StatefulWidget {
   const AssessmentAndPlanScreen({super.key});
@@ -39,17 +27,9 @@ class AssessmentAndPlanScreen extends StatefulWidget {
 class _AssessmentAndPlanScreenState extends State<AssessmentAndPlanScreen> {
   AssessmentAndPlanViewModel assessmentAndPlanViewModel =
       Get.put(AssessmentAndPlanViewModel());
-  final MultiSelectController<GoalData> _controller = MultiSelectController();
-  List<dynamic> selectedList = [];
+
   List<String?> selectedGoalIds = [];
-  bool goalExpanded = false;
-  // SessionListData? sessionData;
-  @override
-  void dispose() {
-    _controller.dispose();
-    // TODO: implement dispose
-    super.dispose();
-  }
+  bool strategiesExpanded = false;
 
   @override
   void initState() {
@@ -67,6 +47,16 @@ class _AssessmentAndPlanScreenState extends State<AssessmentAndPlanScreen> {
       }
     }).catchError((error) {
       logs('Error fetching session list data: $error');
+    });
+    TherapyPlanService().currentLevelList().then((currentLevelData) {
+      if (currentLevelData != []) {
+        assessmentAndPlanViewModel.currentLevelListData.value =
+            currentLevelData;
+      } else {
+        assessmentAndPlanViewModel.currentLevelListData.value = [];
+      }
+    }).catchError((error) {
+      logs('Error fetching current level list data: $error');
     });
   }
 
@@ -128,14 +118,20 @@ class _AssessmentAndPlanScreenState extends State<AssessmentAndPlanScreen> {
                             color: AppColors.black,
                           ),
                           onChanged: (AgeGroupLevelModel? newValue) {
-                            setState(() {
-                              goalExpanded = false;
-
-                              selectedList.clear();
-                            });
-                            assessmentAndPlanViewModel.isGoalLoading.value =
-                                true;
-                            assessmentAndPlanViewModel.goalListData.value = [];
+                            assessmentAndPlanViewModel.goalExpanded.value =
+                                false;
+                            assessmentAndPlanViewModel.goalSelectedList.clear();
+                            assessmentAndPlanViewModel.goalListData.value
+                                .clear();
+                            assessmentAndPlanViewModel.subGoalSelectedList
+                                .clear();
+                            assessmentAndPlanViewModel.goalSubCategoryStringData
+                                .clear();
+                            assessmentAndPlanViewModel.strategiesSelectedList
+                                .clear();
+                            assessmentAndPlanViewModel.strategiesStringData
+                                .clear();
+                            selectedGoalIds.clear();
                             assessmentAndPlanViewModel.ageGroupData.value =
                                 null;
                             assessmentAndPlanViewModel.ageGroupData.value =
@@ -152,15 +148,8 @@ class _AssessmentAndPlanScreenState extends State<AssessmentAndPlanScreen> {
                                   assessmentAndPlanViewModel
                                       .goalListData.value = element.goal!;
                                 });
-
-                                logs(
-                                    'assessmentAndPlanViewModel=-==----->>${jsonEncode(assessmentAndPlanViewModel.goalListData.value)}');
                               }
-                              assessmentAndPlanViewModel.isGoalLoading.value =
-                                  false;
                             }).catchError((error) {
-                              assessmentAndPlanViewModel.isGoalLoading.value =
-                                  false;
                               logs('Error goalData list data: $error');
                             });
                           },
@@ -261,159 +250,9 @@ class _AssessmentAndPlanScreenState extends State<AssessmentAndPlanScreen> {
                   child: Column(
                     children: [
                       /// SELECT YOUR GOAL
-
-                      // assessmentAndPlanViewModel.isGoalLoading.value == true
-                      //     ? const CircularProgressIndicator()
-                      //     : TapRegion(
-                      //         onTapInside: (val) {
-                      //           logs(
-                      //               'data for goal ${jsonEncode(assessmentAndPlanViewModel.goalListData)}');
-                      //           if (selectedGoalIds.isEmpty) {
-                      //             if (!_controller.isDropdownOpen) {
-                      //               assessmentAndPlanViewModel.isIgnoring.value =
-                      //                   false;
-                      //             }
-                      //           }
-                      //         },
-                      //         child: Builder(builder: (context) {
-                      //           logs(
-                      //               'assessmentAndPlanViewModel.goalListData${jsonEncode(assessmentAndPlanViewModel.goalListData)}');
-                      //           return MultiSelectDropDown<GoalData>(
-                      //             controller: _controller,
-                      //             clearIcon: const Icon(Icons.clear),
-                      //             onOptionSelected:
-                      //                 (List<ValueItem<GoalData>> options) {
-                      //               selectedGoalIds = options
-                      //                   .map((item) => item.value!.goalId)
-                      //                   .toList();
-                      //             },
-                      //             selectedItemBuilder: (context, valueItem) {
-                      //               return assessmentAndPlanViewModel
-                      //                           .isIgnoring.value ==
-                      //                       true
-                      //                   ? Container(
-                      //                       decoration: BoxDecoration(
-                      //                           color: AppColors.primaryColor,
-                      //                           borderRadius:
-                      //                               BorderRadius.circular(10)),
-                      //                       child: Padding(
-                      //                         padding: EdgeInsets.all(5.w),
-                      //                         child: CustomText(
-                      //                           valueItem.label,
-                      //                           color: AppColors.white,
-                      //                         ),
-                      //                       ))
-                      //                   : const SizedBox();
-                      //             },
-                      //             hint: AppStrings.selectYourGoal,
-                      //             padding: EdgeInsets.symmetric(
-                      //                 vertical: 5.w, horizontal: 5.w),
-                      //             hintStyle: TextStyle(
-                      //                 fontSize: 14.sp, color: AppColors.black1c),
-                      //             options:
-                      //                 assessmentAndPlanViewModel.goalListData.value
-                      //                     .map((goalData) => ValueItem(
-                      //                           label: goalData.goalName!,
-                      //                           value: goalData,
-                      //                         ))
-                      //                     .toList(),
-                      //
-                      //             singleSelectItemStyle: const TextStyle(
-                      //               fontSize: 16,
-                      //               fontWeight: FontWeight.bold,
-                      //             ),
-                      //             chipConfig: const ChipConfig(
-                      //               wrapType: WrapType.wrap,
-                      //               backgroundColor: Colors.red,
-                      //             ),
-                      //             optionTextStyle: const TextStyle(fontSize: 16),
-                      //             selectedOptionIcon: const Icon(
-                      //               Icons.check_circle,
-                      //               color: Colors.pink,
-                      //             ),
-                      //             selectedOptionBackgroundColor:
-                      //                 Colors.grey.shade300,
-                      //             selectedOptionTextColor: Colors.blue,
-                      //             dropdownMargin: 2,
-                      //             onOptionRemoved: (index, option) {
-                      //               // Handle option removed
-                      //             },
-                      //             // optionBuilder: (context, valueItem, isSelected) {
-                      //             //   final index = assessmentAndPlanViewModel
-                      //             //       .goalListData
-                      //             //       .indexOf(valueItem.value);
-                      //             //   final isLastItem = index ==
-                      //             //       assessmentAndPlanViewModel
-                      //             //               .goalListData.length -
-                      //             //           1;
-                      //             //   return Column(
-                      //             //     children: [
-                      //             //       ListTile(
-                      //             //         title: Text(valueItem.label),
-                      //             //         // subtitle: Text(valueItem.value.toString()),
-                      //             //         trailing: isSelected
-                      //             //             ? const Icon(Icons.check_circle)
-                      //             //             : const Icon(
-                      //             //                 Icons.radio_button_unchecked),
-                      //             //       ),
-                      //             //       isLastItem
-                      //             //           ? InkWell(
-                      //             //               onTap: () {
-                      //             //                 _controller.showDropdown();
-                      //             //                 if (_controller.isDropdownOpen) {
-                      //             //                   assessmentAndPlanViewModel
-                      //             //                       .isIgnoring.value = true;
-                      //             //                   _controller.hideDropdown();
-                      //             //
-                      //             //                   assessmentAndPlanViewModel
-                      //             //                       .isGoalSubLoading
-                      //             //                       .value = true;
-                      //             //                   TherapyPlanService()
-                      //             //                       .getGoalSubCategoryData(
-                      //             //                           goalIds: selectedGoalIds)
-                      //             //                       .then((subCategories) {
-                      //             //                     assessmentAndPlanViewModel
-                      //             //                         .goalSubCategoryStringData
-                      //             //                         .value
-                      //             //                         .clear();
-                      //             //                     subCategories
-                      //             //                         .forEach((element) {
-                      //             //                       assessmentAndPlanViewModel
-                      //             //                           .goalSubCategoryStringData
-                      //             //                           .value
-                      //             //                           .addAll(element.subGoal!);
-                      //             //                     });
-                      //             //                     assessmentAndPlanViewModel
-                      //             //                         .isGoalSubLoading
-                      //             //                         .value = false;
-                      //             //                   }).catchError((error) {
-                      //             //                     assessmentAndPlanViewModel
-                      //             //                         .isGoalSubLoading
-                      //             //                         .value = false;
-                      //             //                     // Handle errors
-                      //             //                   });
-                      //             //                 } else {
-                      //             //                   _controller.showDropdown();
-                      //             //                 }
-                      //             //               },
-                      //             //               child: const Padding(
-                      //             //                 padding: EdgeInsets.all(8.0),
-                      //             //                 child: CustomText('Done'),
-                      //             //               ))
-                      //             //           : SizedBox()
-                      //             //     ],
-                      //             //   );
-                      //             // },
-                      //           );
-                      //         }),
-                      //       ),
-
-                      ///
                       InkWell(
                         onTap: () {
-                          setState(() {
-                            goalExpanded = true;
-                          });
+                          assessmentAndPlanViewModel.goalExpanded.value = true;
                         },
                         child: Container(
                           padding: const EdgeInsets.all(15),
@@ -424,24 +263,34 @@ class _AssessmentAndPlanScreenState extends State<AssessmentAndPlanScreen> {
                                 BoxShadow(
                                     color: AppColors.grey, spreadRadius: 1)
                               ]),
-                          child: Align(
-                              alignment: Alignment.centerLeft,
-                              child: selectedList.isEmpty
-                                  ? CustomText(AppStrings.selectYourGoal)
-                                  : ListView.builder(
-                                      shrinkWrap: true,
-                                      itemCount: selectedList.length,
-                                      itemBuilder: (context, index) {
-                                        return CustomText(
-                                            '${selectedList[index]['name']}${selectedList.length > 1 ? ',' : ''}');
-                                      },
-                                    )),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Expanded(
+                                child: Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: assessmentAndPlanViewModel
+                                            .goalSelectedList.value.isEmpty
+                                        ? CustomText(AppStrings.selectYourGoal)
+                                        : Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: List.generate(
+                                                assessmentAndPlanViewModel
+                                                    .goalSelectedList.length,
+                                                (index) => CustomText(
+                                                    '${assessmentAndPlanViewModel.goalSelectedList[index]['name']}${assessmentAndPlanViewModel.goalSelectedList.length > 1 ? ',' : ''}')),
+                                          )),
+                              ),
+                              const Icon(Icons.keyboard_arrow_down_sharp)
+                            ],
+                          ),
                         ),
                       ),
                       SizeConfig.sH10,
-
-                      goalExpanded == false
-                          ? SizedBox()
+                      assessmentAndPlanViewModel.goalExpanded.value == false
+                          ? const SizedBox()
                           : Container(
                               decoration: BoxDecoration(
                                   color: AppColors.white,
@@ -454,120 +303,234 @@ class _AssessmentAndPlanScreenState extends State<AssessmentAndPlanScreen> {
                                   children: List.generate(
                                       assessmentAndPlanViewModel
                                           .goalListData.value.length, (index) {
-                                    return Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                    return Column(
                                       children: [
-                                        Expanded(
-                                          child: InkWell(
-                                            onTap: () {
-                                              if (assessmentAndPlanViewModel
-                                                      .goalListData
-                                                      .value[index]
-                                                      .status ==
-                                                  true) {
-                                                assessmentAndPlanViewModel
-                                                    .goalListData
-                                                    .value[index]
-                                                    .status = false;
-                                                selectedList.removeWhere(
-                                                    (element) =>
-                                                        element['id'] ==
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Expanded(
+                                              child: InkWell(
+                                                onTap: () {
+                                                  if (assessmentAndPlanViewModel
+                                                          .goalListData
+                                                          .value[index]
+                                                          .status ==
+                                                      true) {
+                                                    assessmentAndPlanViewModel
+                                                        .goalListData
+                                                        .value[index]
+                                                        .status = false;
+                                                    assessmentAndPlanViewModel
+                                                        .goalSelectedList
+                                                        .removeWhere((element) =>
+                                                            element['id'] ==
+                                                            assessmentAndPlanViewModel
+                                                                .goalListData
+                                                                .value[index]
+                                                                .goalId);
+                                                    selectedGoalIds.remove(
                                                         assessmentAndPlanViewModel
                                                             .goalListData
                                                             .value[index]
                                                             .goalId);
-                                              } else {
-                                                assessmentAndPlanViewModel
-                                                    .goalListData
-                                                    .value[index]
-                                                    .status = true;
-                                                selectedList.add({
-                                                  'id':
+                                                  } else {
+                                                    assessmentAndPlanViewModel
+                                                        .goalListData
+                                                        .value[index]
+                                                        .status = true;
+                                                    assessmentAndPlanViewModel
+                                                        .goalSelectedList
+                                                        .add({
+                                                      'id':
+                                                          assessmentAndPlanViewModel
+                                                              .goalListData
+                                                              .value[index]
+                                                              .goalId,
+                                                      'name':
+                                                          assessmentAndPlanViewModel
+                                                              .goalListData
+                                                              .value[index]
+                                                              .goalName
+                                                    });
+                                                    if (assessmentAndPlanViewModel
+                                                            .ageGroupData
+                                                            .value!
+                                                            .level !=
+                                                        '0 to 3 years') {
+                                                      selectedGoalIds.clear();
+                                                      selectedGoalIds.add(
+                                                          assessmentAndPlanViewModel
+                                                              .goalListData
+                                                              .value[index]
+                                                              .goalId);
+                                                    } else {
+                                                      selectedGoalIds.add(
+                                                          assessmentAndPlanViewModel
+                                                              .goalListData
+                                                              .value[index]
+                                                              .goalId);
+                                                    }
+                                                  }
+                                                  // assessmentAndPlanViewModel.goalListData
+                                                  //             .value[index].status ==
+                                                  //         true
+                                                  //     ? assessmentAndPlanViewModel
+                                                  //         .goalListData
+                                                  //         .value[index]
+                                                  //         .status = false
+                                                  //     : assessmentAndPlanViewModel
+                                                  //         .goalListData
+                                                  //         .value[index]
+                                                  //         .status = true;
+                                                },
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(8.0),
+                                                  child: CustomText(
                                                       assessmentAndPlanViewModel
                                                           .goalListData
                                                           .value[index]
-                                                          .goalId,
-                                                  'name':
-                                                      assessmentAndPlanViewModel
-                                                          .goalListData
-                                                          .value[index]
-                                                          .goalName
-                                                });
-                                              }
-                                              // assessmentAndPlanViewModel.goalListData
-                                              //             .value[index].status ==
-                                              //         true
-                                              //     ? assessmentAndPlanViewModel
-                                              //         .goalListData
-                                              //         .value[index]
-                                              //         .status = false
-                                              //     : assessmentAndPlanViewModel
-                                              //         .goalListData
-                                              //         .value[index]
-                                              //         .status = true;
-
-                                              print(
-                                                  'selectedList---$selectedList');
-
-                                              setState(() {});
-                                            },
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
-                                              child: CustomText(
-                                                  assessmentAndPlanViewModel
-                                                      .goalListData
-                                                      .value[index]
-                                                      .goalName!),
+                                                          .goalName!),
+                                                ),
+                                              ),
                                             ),
-                                          ),
-                                        ),
-                                        Checkbox(
-                                            value: assessmentAndPlanViewModel
-                                                    .goalListData
-                                                    .value[index]
-                                                    .status ??
-                                                false,
-                                            onChanged: (val) {
-                                              if (assessmentAndPlanViewModel
-                                                      .goalListData
-                                                      .value[index]
-                                                      .status ==
-                                                  true) {
-                                                assessmentAndPlanViewModel
-                                                    .goalListData
-                                                    .value[index]
-                                                    .status = false;
-                                                selectedList.removeWhere(
-                                                    (element) =>
-                                                        element['id'] ==
+                                            Checkbox(
+                                                value:
+                                                    assessmentAndPlanViewModel
+                                                            .goalListData
+                                                            .value[index]
+                                                            .status ??
+                                                        false,
+                                                onChanged: (val) {
+                                                  if (assessmentAndPlanViewModel
+                                                          .goalListData
+                                                          .value[index]
+                                                          .status ==
+                                                      true) {
+                                                    assessmentAndPlanViewModel
+                                                        .goalListData
+                                                        .value[index]
+                                                        .status = false;
+                                                    assessmentAndPlanViewModel
+                                                        .goalSelectedList
+                                                        .removeWhere((element) =>
+                                                            element['id'] ==
+                                                            assessmentAndPlanViewModel
+                                                                .goalListData
+                                                                .value[index]
+                                                                .goalId);
+                                                    selectedGoalIds.remove(
                                                         assessmentAndPlanViewModel
                                                             .goalListData
                                                             .value[index]
                                                             .goalId);
-                                              } else {
+                                                  } else {
+                                                    assessmentAndPlanViewModel
+                                                        .goalListData
+                                                        .value[index]
+                                                        .status = true;
+                                                    assessmentAndPlanViewModel
+                                                        .goalSelectedList
+                                                        .add({
+                                                      'id':
+                                                          assessmentAndPlanViewModel
+                                                              .goalListData
+                                                              .value[index]
+                                                              .goalId,
+                                                      'name':
+                                                          assessmentAndPlanViewModel
+                                                              .goalListData
+                                                              .value[index]
+                                                              .goalName
+                                                    });
+                                                    selectedGoalIds.add(
+                                                        assessmentAndPlanViewModel
+                                                            .goalListData
+                                                            .value[index]
+                                                            .goalId);
+                                                  }
+                                                })
+                                          ],
+                                        ),
+                                        index ==
                                                 assessmentAndPlanViewModel
-                                                    .goalListData
-                                                    .value[index]
-                                                    .status = true;
-                                                selectedList.add({
-                                                  'id':
+                                                        .goalListData
+                                                        .value
+                                                        .length -
+                                                    1
+                                            ? Padding(
+                                                padding: EdgeInsets.all(20.w),
+                                                child: CustomBtn(
+                                                    onTap: () {
                                                       assessmentAndPlanViewModel
-                                                          .goalListData
-                                                          .value[index]
-                                                          .goalId,
-                                                  'name':
+                                                          .goalExpanded
+                                                          .value = false;
                                                       assessmentAndPlanViewModel
-                                                          .goalListData
-                                                          .value[index]
-                                                          .goalName
-                                                });
-                                              }
-                                              logs(
-                                                  'check box data ${selectedList}');
-                                              setState(() {});
-                                            })
+                                                          .goalSubCategoryStringData
+                                                          .value
+                                                          .clear();
+                                                      assessmentAndPlanViewModel
+                                                          .subGoalSelectedList
+                                                          .value
+                                                          .clear();
+
+                                                      /// GOAL SUB CATEGORY
+                                                      TherapyPlanService()
+                                                          .getGoalSubCategoryData(
+                                                              goalIds:
+                                                                  selectedGoalIds)
+                                                          .then(
+                                                              (subCategories) {
+                                                        subCategories
+                                                            .forEach((element) {
+                                                          element.subGoal!
+                                                              .forEach(
+                                                                  (element) {
+                                                            assessmentAndPlanViewModel
+                                                                .goalSubCategoryStringData
+                                                                .value
+                                                                .add({
+                                                              'status': false,
+                                                              'name': element
+                                                            });
+                                                          });
+                                                        });
+                                                      }).catchError((error) {
+                                                        // Handle errors
+                                                      });
+
+                                                      /// GOAL STRATEGIES
+                                                      TherapyPlanService()
+                                                          .getStrategiesData(
+                                                              goalIds:
+                                                                  selectedGoalIds)
+                                                          .then((strategies) {
+                                                        assessmentAndPlanViewModel
+                                                            .strategiesStringData
+                                                            .value
+                                                            .clear();
+                                                        strategies
+                                                            .forEach((element) {
+                                                          element.strategies!
+                                                              .forEach(
+                                                                  (element) {
+                                                            assessmentAndPlanViewModel
+                                                                .strategiesStringData
+                                                                .value
+                                                                .add({
+                                                              'status': false,
+                                                              'name': element
+                                                            });
+                                                          });
+                                                        });
+                                                      }).catchError((error) {
+                                                        // Handle errors
+                                                      });
+                                                    },
+                                                    title: 'Done'),
+                                              )
+                                            : const SizedBox()
                                       ],
                                     );
                                   }))),
@@ -575,117 +538,563 @@ class _AssessmentAndPlanScreenState extends State<AssessmentAndPlanScreen> {
                       SizeConfig.sH20,
 
                       /// SELECT YOUR SUB GOAL
-                      assessmentAndPlanViewModel.isGoalSubLoading.value == true
-                          ? const CircularProgressIndicator()
-                          : MultiSelectDropDown<String>(
-                              clearIcon: const Icon(Icons.clear),
-                              onOptionSelected: (options) {},
-                              hint: AppStrings.selectYourSubGoal,
-                              hintStyle: TextStyle(
-                                  fontSize: 14.sp, color: AppColors.black1c),
-                              selectionType: SelectionType.multi,
-                              options: assessmentAndPlanViewModel
-                                  .goalSubCategoryStringData
-                                  .map((goalData) => ValueItem(
-                                        label: goalData,
-                                        value: goalData,
-                                      ))
-                                  .toList(),
-                              singleSelectItemStyle: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
+                      InkWell(
+                        onTap: () {
+                          assessmentAndPlanViewModel.subGoalExpanded.value =
+                              true;
+                          setState(() {});
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.all(15),
+                          decoration: BoxDecoration(
+                              color: AppColors.white,
+                              borderRadius: BorderRadius.circular(10),
+                              boxShadow: const [
+                                BoxShadow(
+                                    color: AppColors.grey, spreadRadius: 1)
+                              ]),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Expanded(
+                                child: Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: assessmentAndPlanViewModel
+                                            .subGoalSelectedList.value.isEmpty
+                                        ? CustomText(
+                                            AppStrings.selectYourSubGoal)
+                                        : Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: List.generate(
+                                                assessmentAndPlanViewModel
+                                                    .subGoalSelectedList.length,
+                                                (index) => Padding(
+                                                      padding:
+                                                          EdgeInsets.symmetric(
+                                                              vertical: 5.w),
+                                                      child: CustomText(
+                                                          maxLines: 2,
+                                                          '${assessmentAndPlanViewModel.subGoalSelectedList[index]['name']}${assessmentAndPlanViewModel.subGoalSelectedList.length > 1 ? ',' : ''}'),
+                                                    )),
+                                          )),
                               ),
-                              chipConfig: const ChipConfig(
-                                wrapType: WrapType.wrap,
-                                backgroundColor: Colors.red,
-                              ),
-                              optionTextStyle: const TextStyle(fontSize: 16),
-                              selectedOptionIcon: const Icon(
-                                Icons.check_circle,
-                                color: Colors.pink,
-                              ),
-                              selectedOptionBackgroundColor:
-                                  Colors.grey.shade300,
-                              selectedOptionTextColor: Colors.blue,
-                              dropdownMargin: 2,
-                              onOptionRemoved: (index, option) {
-                                // Handle option removed
-                              },
-                              optionBuilder: (context, valueItem, isSelected) {
-                                return ListTile(
-                                  title: Text(valueItem.label),
-                                  // subtitle: Text(valueItem.value.toString()),
-                                  trailing: isSelected
-                                      ? const Icon(Icons.check_circle)
-                                      : const Icon(
-                                          Icons.radio_button_unchecked),
-                                );
-                              },
-                            )
+                              const Icon(Icons.keyboard_arrow_down_sharp)
+                            ],
+                          ),
+                        ),
+                      ),
+                      SizeConfig.sH10,
+                      assessmentAndPlanViewModel.subGoalExpanded.value == false
+                          ? const SizedBox()
+                          : Container(
+                              decoration: BoxDecoration(
+                                  color: AppColors.white,
+                                  borderRadius: BorderRadius.circular(10),
+                                  border: Border.all(
+                                      color:
+                                          AppColors.black1c.withOpacity(0.1))),
+                              child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: List.generate(
+                                      assessmentAndPlanViewModel
+                                          .goalSubCategoryStringData
+                                          .value
+                                          .length, (index) {
+                                    return Column(
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Expanded(
+                                              child: InkWell(
+                                                onTap: () {
+                                                  if (assessmentAndPlanViewModel
+                                                          .goalSubCategoryStringData
+                                                          .value[index]['status'] ==
+                                                      true) {
+                                                    assessmentAndPlanViewModel
+                                                            .goalSubCategoryStringData
+                                                            .value[index]
+                                                        ['status'] = false;
+                                                    assessmentAndPlanViewModel
+                                                        .subGoalSelectedList
+                                                        .removeWhere((element) =>
+                                                            element['name'] ==
+                                                            assessmentAndPlanViewModel
+                                                                    .goalSubCategoryStringData
+                                                                    .value[
+                                                                index]['name']);
+                                                  } else {
+                                                    assessmentAndPlanViewModel
+                                                            .goalSubCategoryStringData
+                                                            .value[index]
+                                                        ['status'] = true;
+                                                    assessmentAndPlanViewModel
+                                                        .subGoalSelectedList
+                                                        .add({
+                                                      'name': assessmentAndPlanViewModel
+                                                          .goalSubCategoryStringData
+                                                          .value[index]['name']
+                                                    });
+                                                  }
+                                                },
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(8.0),
+                                                  child: CustomText(
+                                                      assessmentAndPlanViewModel
+                                                          .goalSubCategoryStringData
+                                                          .value[index]['name']),
+                                                ),
+                                              ),
+                                            ),
+                                            Checkbox(
+                                                value: assessmentAndPlanViewModel
+                                                        .goalSubCategoryStringData
+                                                        .value[index]['status'] ??
+                                                    false,
+                                                onChanged: (val) {
+                                                  if (assessmentAndPlanViewModel
+                                                          .goalSubCategoryStringData
+                                                          .value[index]['status'] ==
+                                                      true) {
+                                                    assessmentAndPlanViewModel
+                                                            .goalSubCategoryStringData
+                                                            .value[index]
+                                                        ['status'] = false;
+                                                    assessmentAndPlanViewModel
+                                                        .subGoalSelectedList
+                                                        .removeWhere((element) =>
+                                                            element['name'] ==
+                                                            assessmentAndPlanViewModel
+                                                                    .goalSubCategoryStringData
+                                                                    .value[
+                                                                index]['name']);
+                                                  } else {
+                                                    assessmentAndPlanViewModel
+                                                            .goalSubCategoryStringData
+                                                            .value[index]
+                                                        ['status'] = true;
+                                                    assessmentAndPlanViewModel
+                                                        .subGoalSelectedList
+                                                        .add({
+                                                      'name': assessmentAndPlanViewModel
+                                                          .goalSubCategoryStringData
+                                                          .value[index]['name']
+                                                    });
+                                                  }
+                                                })
+                                          ],
+                                        ),
+                                        index ==
+                                                assessmentAndPlanViewModel
+                                                        .goalSubCategoryStringData
+                                                        .value
+                                                        .length -
+                                                    1
+                                            ? Padding(
+                                                padding: EdgeInsets.all(20.w),
+                                                child: CustomBtn(
+                                                    onTap: () {
+                                                      assessmentAndPlanViewModel
+                                                          .subGoalExpanded
+                                                          .value = false;
+                                                    },
+                                                    title: 'Done'),
+                                              )
+                                            : const SizedBox()
+                                      ],
+                                    );
+                                  }))),
+                      SizeConfig.sH20,
 
-                      // DropdownMenu<String>(
-                      //   width: Get.width / 1.2,
-                      //   textStyle:
-                      //       TextStyle(fontSize: 14.sp, color: AppColors.black1c),
-                      //   trailingIcon: Icon(
-                      //     Icons.keyboard_arrow_down,
-                      //     size: 30.sp,
-                      //     color: AppColors.primaryColor,
-                      //   ),
-                      //   initialSelection:
-                      //       assessmentAndPlanViewModel.goalSubCategoryStringData.value,
-                      //   // controller: languageEditController,
-                      //   requestFocusOnTap: false,
-                      //   onSelected: (String? newValue) {
-                      //     unFocus();
-                      //     assessmentAndPlanViewModel.goalSubCategoryStringData.value =
-                      //         newValue!;
-                      //   },
-                      //   hintText: AppStrings.selectYourSubGoal,
-                      //   menuHeight: Get.height / 4,
-                      //   inputDecorationTheme: InputDecorationTheme(
-                      //       fillColor: AppColors.white,
-                      //       filled: true,
-                      //       isDense: true,
-                      //       hintStyle: TextStyle(
-                      //         color: AppColors.black1c,
-                      //         fontSize: 14.sp,
-                      //       ),
-                      //       errorBorder: const OutlineInputBorder(
-                      //           borderSide: BorderSide(color: AppColors.colorA2)),
-                      //       border: OutlineInputBorder(
-                      //           borderRadius: BorderRadius.circular(15),
-                      //           borderSide:
-                      //               const BorderSide(color: AppColors.colorA2)),
-                      //       focusedBorder: const OutlineInputBorder(
-                      //         borderSide: BorderSide(
-                      //             width: 1.0, color: AppColors.colorA2),
-                      //         borderRadius: BorderRadius.all(Radius.circular(15)),
-                      //       ),
-                      //       disabledBorder: const OutlineInputBorder(
-                      //         borderSide: BorderSide(
-                      //             width: 1.0, color: AppColors.colorA2),
-                      //         borderRadius: BorderRadius.all(Radius.circular(15)),
-                      //       ),
-                      //       enabledBorder: const OutlineInputBorder(
-                      //         borderRadius: BorderRadius.all(Radius.circular(15)),
-                      //         borderSide: BorderSide(
-                      //           color: AppColors.colorA2,
-                      //           width: 1.0,
-                      //         ),
-                      //       ),
-                      //       contentPadding:
-                      //           EdgeInsets.symmetric(horizontal: 10.w)),
-                      //   dropdownMenuEntries: assessmentAndPlanViewModel
-                      //       .goalSubCategoryStringData.value
-                      //       .map<DropdownMenuEntry<String>>(
-                      //           (GoalSubCategoryModel goalData) {
-                      //     return DropdownMenuEntry<String>(
-                      //       value: goalData.subGoal,
-                      //       label: goalData.subGoal,
-                      //     );
-                      //   }).toList(),
-                      // )
+                      /// SELECT YOUR CURRENT LEVEL
+                      InkWell(
+                        onTap: () {
+                          assessmentAndPlanViewModel
+                              .currentLevelExpanded.value = true;
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.all(15),
+                          decoration: BoxDecoration(
+                              color: AppColors.white,
+                              borderRadius: BorderRadius.circular(10),
+                              boxShadow: const [
+                                BoxShadow(
+                                    color: AppColors.grey, spreadRadius: 1)
+                              ]),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Expanded(
+                                child: Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: assessmentAndPlanViewModel
+                                            .currentLevelSelectedList
+                                            .value
+                                            .isEmpty
+                                        ? CustomText(
+                                            AppStrings.selectYourCurrentLevel)
+                                        : Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: List.generate(
+                                                assessmentAndPlanViewModel
+                                                    .currentLevelSelectedList
+                                                    .length,
+                                                (index) => CustomText(
+                                                    '${assessmentAndPlanViewModel.currentLevelSelectedList[index]['name']}${assessmentAndPlanViewModel.currentLevelSelectedList.length > 1 ? ',' : ''}')),
+                                          )),
+                              ),
+                              const Icon(Icons.keyboard_arrow_down_sharp)
+                            ],
+                          ),
+                        ),
+                      ),
+                      SizeConfig.sH10,
+                      assessmentAndPlanViewModel.currentLevelExpanded.value ==
+                              false
+                          ? const SizedBox()
+                          : Container(
+                              decoration: BoxDecoration(
+                                  color: AppColors.white,
+                                  borderRadius: BorderRadius.circular(10),
+                                  border: Border.all(
+                                      color:
+                                          AppColors.black1c.withOpacity(0.1))),
+                              child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: List.generate(
+                                      assessmentAndPlanViewModel
+                                          .currentLevelListData
+                                          .value
+                                          .length, (index) {
+                                    return Column(
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Expanded(
+                                              child: InkWell(
+                                                onTap: () {
+                                                  if (assessmentAndPlanViewModel
+                                                          .currentLevelListData
+                                                          .value[index]
+                                                          .status ==
+                                                      true) {
+                                                    assessmentAndPlanViewModel
+                                                        .currentLevelListData
+                                                        .value[index]
+                                                        .status = false;
+                                                    assessmentAndPlanViewModel
+                                                        .currentLevelSelectedList
+                                                        .removeWhere((element) =>
+                                                            element['id'] ==
+                                                            assessmentAndPlanViewModel
+                                                                .currentLevelListData
+                                                                .value[index]
+                                                                .id);
+                                                  } else {
+                                                    assessmentAndPlanViewModel
+                                                        .currentLevelListData
+                                                        .value[index]
+                                                        .status = true;
+                                                    assessmentAndPlanViewModel
+                                                        .currentLevelSelectedList
+                                                        .add({
+                                                      'id': assessmentAndPlanViewModel
+                                                          .currentLevelListData
+                                                          .value[index]
+                                                          .id,
+                                                      'name':
+                                                          assessmentAndPlanViewModel
+                                                              .currentLevelListData
+                                                              .value[index]
+                                                              .name
+                                                    });
+                                                  }
+                                                  // assessmentAndPlanViewModel.goalListData
+                                                  //             .value[index].status ==
+                                                  //         true
+                                                  //     ? assessmentAndPlanViewModel
+                                                  //         .goalListData
+                                                  //         .value[index]
+                                                  //         .status = false
+                                                  //     : assessmentAndPlanViewModel
+                                                  //         .goalListData
+                                                  //         .value[index]
+                                                  //         .status = true;
+                                                },
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(8.0),
+                                                  child: CustomText(
+                                                      assessmentAndPlanViewModel
+                                                          .currentLevelListData
+                                                          .value[index]
+                                                          .name!),
+                                                ),
+                                              ),
+                                            ),
+                                            Checkbox(
+                                                value: assessmentAndPlanViewModel
+                                                        .currentLevelListData
+                                                        .value[index]
+                                                        .status ??
+                                                    false,
+                                                onChanged: (val) {
+                                                  if (assessmentAndPlanViewModel
+                                                          .currentLevelListData
+                                                          .value[index]
+                                                          .status ==
+                                                      true) {
+                                                    assessmentAndPlanViewModel
+                                                        .currentLevelListData
+                                                        .value[index]
+                                                        .status = false;
+                                                    assessmentAndPlanViewModel
+                                                        .currentLevelSelectedList
+                                                        .removeWhere((element) =>
+                                                            element['id'] ==
+                                                            assessmentAndPlanViewModel
+                                                                .currentLevelListData
+                                                                .value[index]
+                                                                .id);
+                                                  } else {
+                                                    assessmentAndPlanViewModel
+                                                        .currentLevelListData
+                                                        .value[index]
+                                                        .status = true;
+                                                    assessmentAndPlanViewModel
+                                                        .currentLevelSelectedList
+                                                        .add({
+                                                      'id': assessmentAndPlanViewModel
+                                                          .currentLevelListData
+                                                          .value[index]
+                                                          .id,
+                                                      'name':
+                                                          assessmentAndPlanViewModel
+                                                              .currentLevelListData
+                                                              .value[index]
+                                                              .name
+                                                    });
+                                                  }
+                                                })
+                                          ],
+                                        ),
+                                        index ==
+                                                assessmentAndPlanViewModel
+                                                        .currentLevelListData
+                                                        .value
+                                                        .length -
+                                                    1
+                                            ? Padding(
+                                                padding: EdgeInsets.all(20.w),
+                                                child: CustomBtn(
+                                                    onTap: () {
+                                                      assessmentAndPlanViewModel
+                                                          .currentLevelExpanded
+                                                          .value = false;
+                                                    },
+                                                    title: 'Done'),
+                                              )
+                                            : const SizedBox()
+                                      ],
+                                    );
+                                  }))),
+                      SizeConfig.sH20,
+
+                      /// SELECT YOUR STRATEGIES
+                      Obx(() {
+                        return InkWell(
+                          onTap: () {
+                            // assessmentAndPlanViewModel
+                            //     .strategiesExpanded.value = true;
+
+                            setState(() {
+                              strategiesExpanded = true;
+                            });
+                            logs(
+                                '${assessmentAndPlanViewModel.strategiesStringData.value}');
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.all(15),
+                            decoration: BoxDecoration(
+                                color: AppColors.white,
+                                borderRadius: BorderRadius.circular(10),
+                                boxShadow: const [
+                                  BoxShadow(
+                                      color: AppColors.grey, spreadRadius: 1)
+                                ]),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Expanded(
+                                  child: Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: assessmentAndPlanViewModel
+                                              .strategiesSelectedList
+                                              .value
+                                              .isEmpty
+                                          ? CustomText(
+                                              AppStrings.selectYourStrategies)
+                                          : Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: List.generate(
+                                                  assessmentAndPlanViewModel
+                                                      .strategiesSelectedList
+                                                      .length,
+                                                  (index) => Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .symmetric(
+                                                                vertical: 5),
+                                                        child: CustomText(
+                                                            '${assessmentAndPlanViewModel.strategiesSelectedList[index]['name']}${assessmentAndPlanViewModel.strategiesSelectedList.length > 1 ? ',' : ''}'),
+                                                      )),
+                                            )),
+                                ),
+                                const Icon(Icons.keyboard_arrow_down_sharp)
+                              ],
+                            ),
+                          ),
+                        );
+                      }),
+                      SizeConfig.sH10,
+                      strategiesExpanded == false
+                          ? const SizedBox()
+                          : Container(
+                              decoration: BoxDecoration(
+                                  color: AppColors.white,
+                                  borderRadius: BorderRadius.circular(10),
+                                  border: Border.all(
+                                      color:
+                                          AppColors.black1c.withOpacity(0.1))),
+                              child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: List.generate(
+                                      assessmentAndPlanViewModel
+                                          .strategiesStringData
+                                          .value
+                                          .length, (index) {
+                                    return Column(
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Expanded(
+                                              child: InkWell(
+                                                onTap: () {
+                                                  if (assessmentAndPlanViewModel
+                                                              .strategiesStringData
+                                                              .value[index]
+                                                          ['status'] ==
+                                                      true) {
+                                                    assessmentAndPlanViewModel
+                                                            .strategiesStringData
+                                                            .value[index]
+                                                        ['status'] = false;
+                                                    assessmentAndPlanViewModel
+                                                        .strategiesSelectedList
+                                                        .removeWhere((element) =>
+                                                            element['name'] ==
+                                                            assessmentAndPlanViewModel
+                                                                    .strategiesStringData
+                                                                    .value[
+                                                                index]['name']);
+                                                  } else {
+                                                    assessmentAndPlanViewModel
+                                                            .strategiesStringData
+                                                            .value[index]
+                                                        ['status'] = true;
+                                                    assessmentAndPlanViewModel
+                                                        .strategiesSelectedList
+                                                        .add({
+                                                      'name': assessmentAndPlanViewModel
+                                                          .strategiesStringData
+                                                          .value[index]['name']
+                                                    });
+                                                  }
+                                                },
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(8.0),
+                                                  child: CustomText(
+                                                      assessmentAndPlanViewModel
+                                                          .strategiesStringData
+                                                          .value[index]['name']),
+                                                ),
+                                              ),
+                                            ),
+                                            Checkbox(
+                                                value: assessmentAndPlanViewModel
+                                                            .strategiesStringData
+                                                            .value[index]
+                                                        ['status'] ??
+                                                    false,
+                                                onChanged: (val) {
+                                                  if (assessmentAndPlanViewModel
+                                                              .strategiesStringData
+                                                              .value[index]
+                                                          ['status'] ==
+                                                      true) {
+                                                    assessmentAndPlanViewModel
+                                                            .strategiesStringData
+                                                            .value[index]
+                                                        ['status'] = false;
+                                                    assessmentAndPlanViewModel
+                                                        .strategiesSelectedList
+                                                        .removeWhere((element) =>
+                                                            element['name'] ==
+                                                            assessmentAndPlanViewModel
+                                                                    .strategiesStringData
+                                                                    .value[
+                                                                index]['name']);
+                                                  } else {
+                                                    assessmentAndPlanViewModel
+                                                            .strategiesStringData
+                                                            .value[index]
+                                                        ['status'] = true;
+                                                    assessmentAndPlanViewModel
+                                                        .strategiesSelectedList
+                                                        .add({
+                                                      'name': assessmentAndPlanViewModel
+                                                          .strategiesStringData
+                                                          .value[index]['name']
+                                                    });
+                                                  }
+                                                })
+                                          ],
+                                        ),
+                                        index ==
+                                                assessmentAndPlanViewModel
+                                                        .strategiesStringData
+                                                        .value
+                                                        .length -
+                                                    1
+                                            ? Padding(
+                                                padding: EdgeInsets.all(20.w),
+                                                child: CustomBtn(
+                                                    onTap: () {
+                                                      setState(() {
+                                                        strategiesExpanded =
+                                                            false;
+                                                      });
+                                                    },
+                                                    title: 'Done'),
+                                              )
+                                            : const SizedBox()
+                                      ],
+                                    );
+                                  }))),
                     ],
                   ),
                 ),

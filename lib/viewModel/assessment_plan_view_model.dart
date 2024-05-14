@@ -1,9 +1,8 @@
 import 'package:get/get.dart';
-import 'package:multi_dropdown/multiselect_dropdown.dart';
 import 'package:session_mate/modal/age_group_level_model.dart';
+import 'package:session_mate/modal/current_level_model.dart';
 import 'package:session_mate/modal/get_session_list_model.dart';
 import 'package:session_mate/modal/goal_category_model.dart';
-import 'package:session_mate/modal/goal_sub_category_model.dart';
 
 class AssessmentAndPlanViewModel extends GetxController {
   /// get session list
@@ -15,17 +14,24 @@ class AssessmentAndPlanViewModel extends GetxController {
   Rx<AgeGroupLevelModel?> ageGroupData = Rx<AgeGroupLevelModel?>(null);
 
   /// get goal category
-  // RxList<GoalCategoryModel> goalCategoryListData = <GoalCategoryModel>[].obs;
   RxList<GoalData> goalListData = <GoalData>[].obs;
-  Rx<MultiSelectController<GoalData>> controller =
-      MultiSelectController<GoalData>().obs;
-  Rx<bool> isGoalLoading = false.obs;
-  Rx<bool> isIgnoring = false.obs;
-  // Rx<GoalData?> goalData = Rx<GoalData?>(null);
+  RxList<dynamic> goalSelectedList = [].obs;
+  Rx<bool> goalExpanded = false.obs;
 
   /// get goal sub category
+  RxList<Map<String, dynamic>> goalSubCategoryStringData =
+      <Map<String, dynamic>>[].obs;
+  RxList<dynamic> subGoalSelectedList = [].obs;
+  Rx<bool> subGoalExpanded = false.obs;
 
-  RxList<String> goalSubCategoryStringData = <String>[].obs;
+  /// get current level data
+  RxList<CurrentLevelModel> currentLevelListData = <CurrentLevelModel>[].obs;
+  RxList<dynamic> currentLevelSelectedList = [].obs;
+  Rx<bool> currentLevelExpanded = false.obs;
 
-  Rx<bool> isGoalSubLoading = false.obs;
+  /// get strategies data
+  RxList<Map<String, dynamic>> strategiesStringData =
+      <Map<String, dynamic>>[].obs;
+  RxList<dynamic> strategiesSelectedList = [].obs;
+  // Rx<bool> strategiesExpanded = false.obs;
 }
