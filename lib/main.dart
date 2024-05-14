@@ -11,6 +11,7 @@ import 'package:session_mate/utils/shared_preference_utils.dart';
 import 'package:session_mate/view/bottomBar/bottom_bar_screen.dart';
 import 'package:session_mate/view/welcomeScreen/welcome_screen.dart';
 import 'package:session_mate/viewModel/otp_view_model.dart';
+import 'package:session_mate/viewModel/sign_in_view_model.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -31,6 +32,7 @@ Future<void> main() async {
 
 class MyApp extends StatelessWidget {
   MyApp({super.key});
+
 //demo
   // This widget is the root of your application.
   @override
@@ -63,4 +65,5 @@ class MyApp extends StatelessWidget {
   }
 
   OtpViewModel otpViewModel = Get.put(OtpViewModel());
+  SignInViewModel signInViewModel = Get.put(SignInViewModel());
 }

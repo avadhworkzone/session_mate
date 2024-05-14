@@ -15,10 +15,14 @@ class AppColors {
   static const Color color97 = Color(0xff979797);
   static const Color color59 = Color(0xff59B483);
   static const Color color5B = Color(0xff5B72E3);
+  static const Color color89 = Color(0xff898989);
+  static const Color colorF5 = Color(0xffF5F5F5);
+  static const Color colorCbCb = Color(0xffcbcbcb);
   static const Color grey = Color(0xffE7E7F4);
   static const Color pink = Color(0xffF95675);
   static const Color blue = Color(0xff5655B9);
   static const Color grey88 = Color(0xff848688);
   static const Color whiteF5 = Color(0xffF5F5F5);
   static const Color color09 = Color(0xff09121F);
+  static const Color blue5Ecc = Color(0xff005ECC);
 }

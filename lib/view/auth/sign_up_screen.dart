@@ -8,6 +8,7 @@ import 'package:session_mate/commonWidget/commom_textfield.dart';
 import 'package:session_mate/commonWidget/common_snackbar.dart';
 import 'package:session_mate/commonWidget/custom_btn.dart';
 import 'package:session_mate/commonWidget/custom_text.dart';
+import 'package:session_mate/general/connectivity_wrapper.dart';
 import 'package:session_mate/modal/user_model.dart';
 import 'package:session_mate/service/auth_service.dart';
 import 'package:session_mate/utils/app_colors.dart';
@@ -94,73 +95,56 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   blurRadius: 8)
                             ]),
                         child: Padding(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 20.w, vertical: 55.w),
+                          padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 55.w),
                           child: SingleChildScrollView(
-                            padding: EdgeInsets.only(
-                                bottom:
-                                    MediaQuery.of(context).viewInsets.bottom),
+                            padding:
+                                EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
                             child: Form(
                               key: signUpViewModel.signUpFormKey.value,
                               child: Column(
                                 children: [
                                   CommonTextField(
                                     title: AppStrings.email,
-                                    regularExpression:
-                                        RegularExpressionUtils.emailPattern,
-                                    textEditController: signUpViewModel
-                                        .signUpEmailController.value,
+                                    regularExpression: RegularExpressionUtils.emailPattern,
+                                    textEditController: signUpViewModel.signUpEmailController.value,
                                     keyBoardType: TextInputType.emailAddress,
-                                    contentPadding:
-                                        EdgeInsets.only(bottom: 9.w, top: 6.w),
+                                    contentPadding: EdgeInsets.only(bottom: 9.w, top: 6.w),
                                     hintText: AppStrings.emailHintTxt,
                                     preFixIconPath: AppImageAssets.emailIcon,
                                     isValidate: true,
                                     validationType: ValidationTypeEnum.email,
                                     textInputAction: TextInputAction.next,
-                                    validationMessage:
-                                        AppStrings.emailIsRequired,
+                                    validationMessage: AppStrings.emailIsRequired,
                                   ),
                                   SizeConfig.sH20,
                                   Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
                                       CustomText(
                                         AppStrings.phoneNo,
                                         fontSize: 15.sp,
                                         fontWeight: FontWeight.w500,
-                                        color:
-                                            AppColors.black1c.withOpacity(0.8),
+                                        color: AppColors.black1c.withOpacity(0.8),
                                       ),
                                       SizedBox(
                                         height: 60.w,
                                         child: IntlPhoneField(
                                           showDropdownIcon: false,
-                                          textAlignVertical:
-                                              TextAlignVertical.bottom,
+                                          textAlignVertical: TextAlignVertical.bottom,
                                           textInputAction: TextInputAction.done,
-                                          inputFormatters: [
-                                            FilteringTextInputFormatter
-                                                .digitsOnly
-                                          ],
-                                          controller: signUpViewModel
-                                              .signUpPhoneNoController.value,
-                                          autovalidateMode: AutovalidateMode
-                                              .onUserInteraction,
+                                          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                                          controller: signUpViewModel.signUpPhoneNoController.value,
+                                          autovalidateMode: AutovalidateMode.onUserInteraction,
                                           keyboardType: TextInputType.number,
                                           initialCountryCode: 'IN',
                                           onChanged: (val) {
                                             if (val.toString().isNotEmpty) {
-                                              signUpViewModel
-                                                  .signUpPhoneIsValidate
-                                                  .value = false;
+                                              signUpViewModel.signUpPhoneIsValidate.value = false;
                                             }
                                           },
                                           onCountryChanged: (val) {
-                                            signUpViewModel.signUpCountryCode
-                                                .value = val.dialCode;
+                                            signUpViewModel.signUpCountryCode.value = val.dialCode;
                                           },
                                           style: TextStyle(
                                               fontSize: 14.sp,
@@ -171,64 +155,45 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                             isDense: true,
                                             fillColor: Colors.transparent,
                                             filled: true,
-                                            contentPadding:
-                                                EdgeInsets.symmetric(
-                                                    vertical: 10.h),
+                                            contentPadding: EdgeInsets.symmetric(vertical: 10.h),
                                             hintText: AppStrings.phoneNoHintTxt,
                                             hintStyle: TextStyle(
-                                              color: AppColors.black1c
-                                                  .withOpacity(0.5),
+                                              color: AppColors.black1c.withOpacity(0.5),
                                               fontSize: 14.sp,
                                               fontFamily: AppConstants.inter,
                                               fontWeight: FontWeight.normal,
                                             ),
                                             // contentPadding: EdgeInsets.zero,
-                                            errorText: (signUpViewModel
-                                                            .signUpPhoneIsValidate
-                                                            .value ==
-                                                        true &&
-                                                    signUpViewModel
-                                                        .signUpPhoneNoController
-                                                        .value
-                                                        .text
-                                                        .isEmpty)
-                                                ? AppStrings
-                                                    .phoneNumberIsRequired
-                                                : null,
+                                            errorText:
+                                                (signUpViewModel.signUpPhoneIsValidate.value ==
+                                                            true &&
+                                                        signUpViewModel.signUpPhoneNoController
+                                                            .value.text.isEmpty)
+                                                    ? AppStrings.phoneNumberIsRequired
+                                                    : null,
                                             errorBorder: (signUpViewModel
-                                                            .signUpPhoneIsValidate
-                                                            .value ==
+                                                            .signUpPhoneIsValidate.value ==
                                                         true &&
                                                     signUpViewModel
-                                                        .signUpPhoneNoController
-                                                        .value
-                                                        .text
-                                                        .isEmpty)
+                                                        .signUpPhoneNoController.value.text.isEmpty)
                                                 ? const UnderlineInputBorder(
-                                                    borderSide: BorderSide(
-                                                        color: AppColors.red1D),
+                                                    borderSide: BorderSide(color: AppColors.red1D),
                                                   )
                                                 : UnderlineInputBorder(
                                                     borderSide: BorderSide(
-                                                        color: AppColors.black1c
-                                                            .withOpacity(0.4))),
+                                                        color: AppColors.black1c.withOpacity(0.4))),
                                             border: UnderlineInputBorder(
                                                 borderSide: BorderSide(
-                                                    color: AppColors.black1c
-                                                        .withOpacity(0.4))),
+                                                    color: AppColors.black1c.withOpacity(0.4))),
                                             focusedBorder: UnderlineInputBorder(
                                                 borderSide: BorderSide(
-                                                    color: AppColors.black1c
-                                                        .withOpacity(0.4))),
-                                            disabledBorder:
-                                                UnderlineInputBorder(
-                                                    borderSide: BorderSide(
-                                                        color: AppColors.black1c
-                                                            .withOpacity(0.4))),
+                                                    color: AppColors.black1c.withOpacity(0.4))),
+                                            disabledBorder: UnderlineInputBorder(
+                                                borderSide: BorderSide(
+                                                    color: AppColors.black1c.withOpacity(0.4))),
                                             enabledBorder: UnderlineInputBorder(
                                                 borderSide: BorderSide(
-                                                    color: AppColors.black1c
-                                                        .withOpacity(0.4))),
+                                                    color: AppColors.black1c.withOpacity(0.4))),
                                           ),
                                         ),
                                       ),
@@ -237,10 +202,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   SizeConfig.sH20,
                                   CommonTextField(
                                     title: AppStrings.password,
-                                    regularExpression:
-                                        RegularExpressionUtils.passwordPattern,
-                                    textEditController: signUpViewModel
-                                        .signUpPasswordController.value,
+                                    regularExpression: RegularExpressionUtils.passwordPattern,
+                                    textEditController:
+                                        signUpViewModel.signUpPasswordController.value,
                                     keyBoardType: TextInputType.text,
                                     textInputAction: TextInputAction.next,
                                     contentPadding: EdgeInsets.symmetric(
@@ -249,23 +213,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                     hintText: AppStrings.passwordHintTxt,
                                     preFixIconPath: AppImageAssets.passwordIcon,
                                     validationType: ValidationTypeEnum.password,
-                                    validationMessage:
-                                        AppStrings.passwordIsRequired,
+                                    validationMessage: AppStrings.passwordIsRequired,
                                     obscureValue:
-                                        signUpViewModel.signUpShowPass.value ==
-                                                true
-                                            ? false
-                                            : true,
+                                        signUpViewModel.signUpShowPass.value == true ? false : true,
                                     sIcon: InkWell(
                                       onTap: () {
                                         signUpViewModel.signUpShowPass.value =
-                                            !signUpViewModel
-                                                .signUpShowPass.value;
+                                            !signUpViewModel.signUpShowPass.value;
                                       },
                                       child: LocalAssets(
-                                        imagePath: signUpViewModel
-                                                    .signUpShowPass.value ==
-                                                true
+                                        imagePath: signUpViewModel.signUpShowPass.value == true
                                             ? AppImageAssets.eyeIcon
                                             : AppImageAssets.passwordViewIcon,
                                         height: 22.w,
@@ -275,37 +232,29 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   ),
                                   SizeConfig.sH20,
                                   CommonTextField(
-                                    textEditController: signUpViewModel
-                                        .signUpConfirmPasswordController.value,
+                                    textEditController:
+                                        signUpViewModel.signUpConfirmPasswordController.value,
                                     title: AppStrings.confirmPassword,
                                     validationType: ValidationTypeEnum.password,
-                                    regularExpression:
-                                        RegularExpressionUtils.passwordPattern,
+                                    regularExpression: RegularExpressionUtils.passwordPattern,
                                     keyBoardType: TextInputType.text,
-                                    validationMessage:
-                                        AppStrings.confirmPasswordIsRequired,
+                                    validationMessage: AppStrings.confirmPasswordIsRequired,
                                     contentPadding: EdgeInsets.symmetric(
                                       vertical: 7.w,
                                     ),
                                     hintText: AppStrings.passwordHintTxt,
                                     textInputAction: TextInputAction.done,
-                                    obscureValue: signUpViewModel
-                                                .signUpShowConPass.value ==
-                                            true
+                                    obscureValue: signUpViewModel.signUpShowConPass.value == true
                                         ? false
                                         : true,
                                     preFixIconPath: AppImageAssets.passwordIcon,
                                     sIcon: InkWell(
                                       onTap: () {
-                                        signUpViewModel
-                                                .signUpShowConPass.value =
-                                            !signUpViewModel
-                                                .signUpShowConPass.value;
+                                        signUpViewModel.signUpShowConPass.value =
+                                            !signUpViewModel.signUpShowConPass.value;
                                       },
                                       child: LocalAssets(
-                                        imagePath: signUpViewModel
-                                                    .signUpShowConPass.value ==
-                                                true
+                                        imagePath: signUpViewModel.signUpShowConPass.value == true
                                             ? AppImageAssets.eyeIcon
                                             : AppImageAssets.passwordViewIcon,
                                         height: 22.w,
@@ -314,8 +263,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   ),
                                   SizeConfig.sH20,
                                   Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       SizedBox(
                                         height: 20,
@@ -324,31 +272,24 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                           scale: 1.1,
                                           child: Checkbox(
                                             activeColor: AppColors.primaryColor,
-                                            materialTapTargetSize:
-                                                MaterialTapTargetSize
-                                                    .shrinkWrap,
+                                            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                                             shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(5),
+                                              borderRadius: BorderRadius.circular(5),
                                             ),
                                             side: BorderSide(
                                                 width: 1,
-                                                color: AppColors.black1c
-                                                    .withOpacity(0.8)),
-                                            value: signUpViewModel
-                                                .isPrivacyAndTermsChecked.value,
+                                                color: AppColors.black1c.withOpacity(0.8)),
+                                            value: signUpViewModel.isPrivacyAndTermsChecked.value,
                                             onChanged: (value) {
-                                              signUpViewModel
-                                                  .isPrivacyAndTermsChecked
-                                                  .value = value!;
+                                              signUpViewModel.isPrivacyAndTermsChecked.value =
+                                                  value!;
                                             },
                                           ),
                                         ),
                                       ),
                                       SizeConfig.sW20,
                                       Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           CustomText(
                                             AppStrings.privacyAndTermsCheckTxt,
@@ -357,16 +298,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                             children: [
                                               InkWell(
                                                 onTap: () {
+                                                  // navigate(view: const WebViewExample(
+                                                  //   url: AppStrings
+                                                  //       .privacyPolicyUrl,
+                                                  // ));
                                                   Get.to(const WebViewExample(
-                                                    url: AppStrings
-                                                        .privacyPolicyUrl,
+                                                    url: AppStrings.privacyPolicyUrl,
                                                   ));
                                                 },
                                                 child: CustomText(
                                                   AppStrings.termsConditionTxt,
                                                   fontWeight: FontWeight.w600,
-                                                  decoration:
-                                                      TextDecoration.underline,
+                                                  decoration: TextDecoration.underline,
                                                   color: AppColors.black1c,
                                                 ),
                                               ),
@@ -377,16 +320,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                               SizeConfig.sW5,
                                               InkWell(
                                                 onTap: () {
-                                                  Get.to(const WebViewExample(
+                                                  /*navigate(view: const WebViewExample(
                                                     url: AppStrings
                                                         .privacyPolicyUrl,
+                                                  ));*/
+                                                  Get.to(const WebViewExample(
+                                                    url: AppStrings.privacyPolicyUrl,
                                                   ));
                                                 },
                                                 child: CustomText(
                                                   AppStrings.privacyPoliceTxt,
                                                   fontWeight: FontWeight.w600,
-                                                  decoration:
-                                                      TextDecoration.underline,
+                                                  decoration: TextDecoration.underline,
                                                   color: AppColors.black1c,
                                                 ),
                                               ),
@@ -407,37 +352,21 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                     fontSize: 18.sp,
                                     textColor: AppColors.whiteFF,
                                     onTap: () {
-                                      signUpViewModel
-                                          .signUpPhoneIsValidate.value = true;
-                                      FocusManager.instance.primaryFocus
-                                          ?.unfocus();
-                                      if (signUpViewModel
-                                              .signUpFormKey.value.currentState!
+                                      signUpViewModel.signUpPhoneIsValidate.value = true;
+                                      FocusManager.instance.primaryFocus?.unfocus();
+                                      if (signUpViewModel.signUpFormKey.value.currentState!
                                               .validate() &&
                                           signUpViewModel
-                                              .signUpPhoneNoController
-                                              .value
-                                              .text
-                                              .isNotEmpty) {
-                                        if (signUpViewModel
-                                                .signUpPasswordController
-                                                .value
-                                                .text !=
+                                              .signUpPhoneNoController.value.text.isNotEmpty) {
+                                        if (signUpViewModel.signUpPasswordController.value.text !=
                                             signUpViewModel
-                                                .signUpConfirmPasswordController
-                                                .value
-                                                .text) {
-                                          commonErrorSnackBar(
-                                              message:
-                                                  AppStrings.passValidation);
+                                                .signUpConfirmPasswordController.value.text) {
+                                          commonErrorSnackBar(message: AppStrings.passValidation);
                                         } else {
                                           sendOtp(
                                               phoneNumber: signUpViewModel
-                                                  .signUpPhoneNoController
-                                                  .value
-                                                  .text,
-                                              countryCode: signUpViewModel
-                                                  .signUpCountryCode.value,
+                                                  .signUpPhoneNoController.value.text,
+                                              countryCode: signUpViewModel.signUpCountryCode.value,
                                               context: context,
                                               isLoginScreen: false);
                                         }
@@ -456,8 +385,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                         ),
                                       ),
                                       CustomText(AppStrings.registerWith,
-                                          fontSize: 15.sp,
-                                          color: AppColors.black1c),
+                                          fontSize: 15.sp, color: AppColors.black1c),
                                       const Expanded(
                                         child: Divider(
                                           color: AppColors.whiteF4,
@@ -469,17 +397,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   ),
                                   SizeConfig.sH22,
                                   Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
                                       commonSocialMediaDesign(
-                                          imagePath:
-                                              AppImageAssets.facebookImage),
+                                          imagePath: AppImageAssets.facebookImage),
                                       commonSocialMediaDesign(
-                                          imagePath:
-                                              AppImageAssets.googleImage),
-                                      commonSocialMediaDesign(
-                                          imagePath: AppImageAssets.appleImage)
+                                          imagePath: AppImageAssets.googleImage),
+                                      commonSocialMediaDesign(imagePath: AppImageAssets.appleImage)
                                     ],
                                   ),
                                   SizeConfig.sH15,
@@ -487,25 +411,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       CustomText(AppStrings.alreadyHaveAccount,
-                                          fontSize: 15.sp,
-                                          color: AppColors.black1c),
+                                          fontSize: 15.sp, color: AppColors.black1c),
                                       InkWell(
                                         onTap: () {
-                                          signUpViewModel
-                                              .signUpEmailController.value
+                                          signUpViewModel.signUpEmailController.value.clear();
+                                          signUpViewModel.signUpPhoneNoController.value.clear();
+                                          signUpViewModel.signUpPasswordController.value.clear();
+                                          signUpViewModel.signUpConfirmPasswordController.value
                                               .clear();
-                                          signUpViewModel
-                                              .signUpPhoneNoController.value
-                                              .clear();
-                                          signUpViewModel
-                                              .signUpPasswordController.value
-                                              .clear();
-                                          signUpViewModel
-                                              .signUpConfirmPasswordController
-                                              .value
-                                              .clear();
-                                          signUpViewModel.signUpPhoneIsValidate
-                                              .value = false;
+                                          signUpViewModel.signUpPhoneIsValidate.value = false;
                                           Get.off(() => const SignInScreen());
                                         },
                                         child: CustomText(AppStrings.login,

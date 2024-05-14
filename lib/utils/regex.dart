@@ -75,16 +75,16 @@ class ValidationMethod {
     return null;
   }
 
-  // static String? validateName(value) {
-  //   bool regex =
-  //       RegExp(RegularExpressionUtils.alphabetSpacePattern).hasMatch(value);
-  //   if (value == null) {
-  //     return AppStrings.isRequired.tr;
-  //   } else if (!regex) {
-  //     return AppStrings.isRequired.tr;
-  //   }
-  //   return null;
-  // }
+  static String? validateName(value) {
+    bool regex =
+        RegExp(RegularExpressionUtils.alphabetSpacePattern).hasMatch(value);
+    if (value == null) {
+      return AppStrings.isRequired.tr;
+    } else if (!regex) {
+      return AppStrings.isRequired.tr;
+    }
+    return null;
+  }
 
   // static String? validateDate(value) {
   //   if (value == null || value.isEmpty) {
@@ -109,14 +109,14 @@ class ValidationMethod {
   //   }
   //   return null;
   // }
-  //
-  // static String? validateAddress(value) {
-  //   bool regex = RegExp(RegularExpressionUtils.address).hasMatch(value);
-  //   if (value == null) {
-  //     return AppStrings.isRequired.tr;
-  //   } else if (!regex) {
-  //     return AppStrings.isRequired.tr;
-  //   }
-  //   return null;
-  // }
+
+  static String? validateAddress(value) {
+    bool regex = RegExp(RegularExpressionUtils.address).hasMatch(value);
+    if (value == null) {
+      return AppStrings.isRequired.tr;
+    } else if (!regex) {
+      return AppStrings.isRequired.tr;
+    }
+    return null;
+  }
 }

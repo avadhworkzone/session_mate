@@ -7,6 +7,10 @@ class SharedPreferenceUtils {
   static String userId = 'userId';
   static String editedSessionId = 'editedSessionId';
   static String forTherapyPlanSessionId = 'forTherapyPlanSessionId';
+  static String isSubscription = 'isSubscription';
+  static String latitude = 'latitude';
+  static String longitude = 'longitude';
+  static String currentDate = 'currentDate';
 
   /// is login
   static Future setIsLogin(bool value) async {
@@ -46,5 +50,41 @@ class SharedPreferenceUtils {
 
   static Future<void> clearPreference() async {
     await getStorage.erase();
+  }
+
+  ///isSubscription
+  static setIsSubscription(bool value) async {
+    await getStorage.write(isSubscription, value);
+  }
+
+  static bool getIsSubscription() {
+    return getStorage.read(isSubscription) ?? false;
+  }
+
+  ///LATITUDE
+  static setLatitude(String value) async {
+    await getStorage.write(latitude, value);
+  }
+
+  static String getLatitude() {
+    return getStorage.read(latitude) ?? "0.0";
+  }
+
+  ///LONGITUDE
+  static setLongitude(String value) async {
+    await getStorage.write(longitude, value);
+  }
+
+  static String getLongitude() {
+    return getStorage.read(longitude) ?? "0.0";
+  }
+
+  ///CURRENT DATE
+  static setCurrentDate(String value) async {
+    await getStorage.write(currentDate, value);
+  }
+
+  static String getCurrentDate() {
+    return getStorage.read(currentDate) ?? "1970-01-01";
   }
 }

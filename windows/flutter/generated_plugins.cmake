@@ -9,6 +9,7 @@ list(APPEND FLUTTER_PLUGIN_LIST
   geolocator_windows
   permission_handler_windows
   smart_auth
+  worldtime
 )
 
 list(APPEND FLUTTER_FFI_PLUGIN_LIST
