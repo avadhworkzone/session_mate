@@ -75,101 +75,115 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.w),
             child: Obx(() {
-              return Column(
-                children: [
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20.w),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        // const Icon(Icons.arrow_back_ios),
-                        CustomText(
-                          AppStrings.verification,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 26.sp,
-                        ),
-                        SizedBox(
-                          width: 20.w,
-                        )
-                      ],
+              return SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 20.w),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          // const Icon(Icons.arrow_back_ios),
+                          CustomText(
+                            AppStrings.verification,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 26.sp,
+                          ),
+                          SizedBox(
+                            width: 20.w,
+                          )
+                        ],
+                      ),
                     ),
-                  ),
-                  SizeConfig.sH20,
-                  LocalAssets(
-                    imagePath: AppImageAssets.otpVerificationImage,
-                    height: Get.width / 1.5,
-                    width: Get.width / 1.5,
-                  ),
-                  CustomText(
-                    AppStrings.otpVerificationTxt,
-                    fontSize: 16.sp,
-                    textAlign: TextAlign.center,
-                  ),
-                  SizeConfig.sH10,
-                  CustomText('+${widget.countryCode} - ${widget.phoneNumber}',
-                      fontWeight: FontWeight.w600, fontSize: 15.sp),
-                  SizeConfig.sH50,
-                  Pinput(
-                    // validator: (val) => ValidationMethod.validateOtp(val),
-                    controller: otpViewModel.pinPutController.value,
-                    length: 6,
-                    showCursor: true,
-                    keyboardType: TextInputType.number,
-                    defaultPinTheme: PinTheme(
-                        height: 45.h,
-                        width: 45.w,
-                        textStyle: TextStyle(fontSize: 15.sp),
-                        decoration: BoxDecoration(
-                            color: AppColors.whiteF6,
-                            borderRadius: BorderRadius.circular(30.r),
-                            border: Border.all(color: AppColors.primaryColor))),
-                    onChanged: (val) {},
-                  ),
-                  SizeConfig.sH35,
-                  if (int.parse(otpViewModel
-                          .strDigits(otpViewModel.myDuration.value.inSeconds.remainder(60))
-                          .value) >
-                      0)
+                    SizeConfig.sH20,
+                    LocalAssets(
+                      imagePath: AppImageAssets.otpVerificationImage,
+                      height: Get.width / 1.5,
+                      width: Get.width / 1.5,
+                    ),
                     CustomText(
-                      '${otpViewModel.strDigits(otpViewModel.myDuration.value.inMinutes.remainder(60))}:${otpViewModel.strDigits(otpViewModel.myDuration.value.inSeconds.remainder(60))}',
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.black1c,
+                      AppStrings.otpVerificationTxt,
+                      fontSize: 16.sp,
+                      textAlign: TextAlign.center,
                     ),
-                  SizeConfig.sH15,
-                  CustomText(
-                    AppStrings.otpNotReceivedTxt,
-                    color: AppColors.black.withOpacity(0.30),
-                    fontSize: 16.sp,
-                  ),
-                  SizeConfig.sH5,
-                  int.parse(otpViewModel
-                              .strDigits(otpViewModel.myDuration.value.inSeconds.remainder(60))
-                              .value) >
-                          0
-                      ? CustomText(
-                          AppStrings.sendAgainAfterTxt,
-                          color: AppColors.primaryColor.withOpacity(0.30),
-                          fontSize: 15.sp,
-                          fontWeight: FontWeight.w700,
-                        )
-                      : InkWell(
-                          onTap: () {
-                            reSendOtp();
-                          },
-                          child: CustomText(
-                            AppStrings.sendAgainTxt,
-                            color: AppColors.primaryColor,
+                    SizeConfig.sH10,
+                    CustomText('+${widget.countryCode} - ${widget.phoneNumber}',
+                        fontWeight: FontWeight.w600, fontSize: 15.sp),
+                    SizeConfig.sH50,
+                    Focus(
+                      onFocusChange: (hasFocus) {
+                        if (hasFocus) {
+                          otpViewModel.sizeBoxHeight.value = 200.h;
+                        } else {
+                          otpViewModel.sizeBoxHeight.value = 0.h;
+                        }
+                      },
+                      child: Pinput(
+                        // validator: (val) => ValidationMethod.validateOtp(val),
+                        controller: otpViewModel.pinPutController.value,
+                        length: 6,
+                        showCursor: true,
+                        keyboardType: TextInputType.number,
+                        defaultPinTheme: PinTheme(
+                            height: 45.h,
+                            width: 45.w,
+                            textStyle: TextStyle(fontSize: 15.sp),
+                            decoration: BoxDecoration(
+                                color: AppColors.whiteF6,
+                                borderRadius: BorderRadius.circular(30.r),
+                                border: Border.all(color: AppColors.primaryColor))),
+                        onChanged: (val) {},
+                      ),
+                    ),
+                    SizeConfig.sH35,
+                    if (int.parse(otpViewModel
+                            .strDigits(otpViewModel.myDuration.value.inSeconds.remainder(60))
+                            .value) >
+                        0)
+                      CustomText(
+                        '${otpViewModel.strDigits(otpViewModel.myDuration.value.inMinutes.remainder(60))}:${otpViewModel.strDigits(otpViewModel.myDuration.value.inSeconds.remainder(60))}',
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.black1c,
+                      ),
+                    SizeConfig.sH15,
+                    CustomText(
+                      AppStrings.otpNotReceivedTxt,
+                      color: AppColors.black.withOpacity(0.30),
+                      fontSize: 16.sp,
+                    ),
+                    SizeConfig.sH5,
+                    int.parse(otpViewModel
+                                .strDigits(otpViewModel.myDuration.value.inSeconds.remainder(60))
+                                .value) >
+                            0
+                        ? CustomText(
+                            AppStrings.sendAgainAfterTxt,
+                            color: AppColors.primaryColor.withOpacity(0.30),
                             fontSize: 15.sp,
                             fontWeight: FontWeight.w700,
+                          )
+                        : InkWell(
+                            onTap: () {
+                              reSendOtp();
+                            },
+                            child: CustomText(
+                              AppStrings.sendAgainTxt,
+                              color: AppColors.primaryColor,
+                              fontSize: 15.sp,
+                              fontWeight: FontWeight.w700,
+                            ),
                           ),
-                        ),
-                  SizeConfig.sH10,
-                  CustomBtn(
-                      onTap: () {
-                        verifyOtp();
-                      },
-                      title: AppStrings.submit)
-                ],
+                    SizeConfig.sH10,
+                    CustomBtn(
+                        onTap: () {
+                          verifyOtp();
+                        },
+                        title: AppStrings.submit),
+                    SizedBox(
+                      height: otpViewModel.sizeBoxHeight.value,
+                    ),
+                  ],
+                ),
               );
             }),
           ),

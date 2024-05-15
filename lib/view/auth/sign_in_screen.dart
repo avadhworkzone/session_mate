@@ -5,7 +5,6 @@ import 'package:session_mate/commonWidget/commom_textfield.dart';
 import 'package:session_mate/commonWidget/common_snackbar.dart';
 import 'package:session_mate/commonWidget/custom_btn.dart';
 import 'package:session_mate/commonWidget/custom_text.dart';
-import 'package:session_mate/general/connectivity_wrapper.dart';
 import 'package:session_mate/modal/user_model.dart';
 import 'package:session_mate/service/auth_service.dart';
 import 'package:session_mate/utils/app_colors.dart';
@@ -13,7 +12,6 @@ import 'package:session_mate/utils/app_constant.dart';
 import 'package:session_mate/utils/app_enum.dart';
 import 'package:session_mate/utils/app_image_assets.dart';
 import 'package:session_mate/utils/app_string.dart';
-import 'package:session_mate/utils/common_methods.dart';
 import 'package:session_mate/utils/loading_dialog.dart';
 import 'package:session_mate/utils/local_assets.dart';
 import 'package:get/get.dart';
@@ -21,10 +19,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:session_mate/utils/regex.dart';
 import 'package:session_mate/utils/size_config_utils.dart';
 import 'package:session_mate/view/auth/common_container_social_media.dart';
-import 'package:session_mate/view/auth/otp_verification_screen.dart';
 import 'package:session_mate/view/auth/send_otp_method.dart';
 import 'package:session_mate/view/auth/sign_up_screen.dart';
-import 'package:session_mate/view/bottomBar/bottom_bar_screen.dart';
 import 'package:session_mate/view/welcomeScreen/welcome_screen.dart';
 import 'package:session_mate/viewModel/sign_in_view_model.dart';
 
@@ -50,7 +46,7 @@ class _SignInScreenState extends State<SignInScreen> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () {
-        Get.offAll(() => WelcomeScreen());
+        Get.offAll(() => const WelcomeScreen());
         return Future.value(true);
       },
       child: Material(
@@ -104,6 +100,7 @@ class _SignInScreenState extends State<SignInScreen> {
                                 children: [
                                   CommonTextField(
                                     title: AppStrings.email,
+                                    isCapitalize: false,
                                     regularExpression: RegularExpressionUtils.emailPattern,
                                     // isCapitalize: false,
                                     textEditController: signInViewModel.signInEmailController.value,
@@ -114,6 +111,7 @@ class _SignInScreenState extends State<SignInScreen> {
                                     isValidate: true,
                                     validationType: ValidationTypeEnum.email,
                                     textInputAction: TextInputAction.next,
+                                    lowerCaseFormatter: LowerCaseTextFormatter(),
                                   ),
                                   SizeConfig.sH20,
                                   Column(
