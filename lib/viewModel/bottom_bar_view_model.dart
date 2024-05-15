@@ -1,7 +1,9 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:session_mate/utils/collection_utils.dart';
+import 'package:session_mate/utils/loading_dialog.dart';
 import 'package:session_mate/utils/shared_preference_utils.dart';
 import 'package:session_mate/view/homeScreen/home_screen.dart';
 import 'package:session_mate/view/profile_screen.dart';
@@ -30,10 +32,7 @@ class BottomBarViewModel extends GetxController {
 
   void setUserData() async {
     var userDetail;
-    CollectionUtils.userCollection
-        .doc(SharedPreferenceUtils.getUserId())
-        .get()
-        .then((value) {
+    CollectionUtils.userCollection.doc(SharedPreferenceUtils.getUserId()).get().then((value) {
       userDetail = value.data();
       SharedPreferenceUtils.setUserDetail(jsonEncode(value.data()));
     });

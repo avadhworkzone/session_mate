@@ -230,7 +230,7 @@ class _SubscriptionsScreenState extends State<SubscriptionsScreen> {
                         height: 27.h,
                       ),
                       InkWell(
-                        onTap: () => subscriptionViewModel.buyBtnTap(index),
+                        onTap: () => subscriptionViewModel.buyBtnTap(index, context),
                         borderRadius: BorderRadius.circular(15.r),
                         child: Container(
                           height: 44.h,

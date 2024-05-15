@@ -12,6 +12,7 @@ import 'package:session_mate/utils/app_constant.dart';
 import 'package:session_mate/utils/app_enum.dart';
 import 'package:session_mate/utils/app_image_assets.dart';
 import 'package:session_mate/utils/app_string.dart';
+import 'package:session_mate/utils/common_methods.dart';
 import 'package:session_mate/utils/loading_dialog.dart';
 import 'package:session_mate/utils/local_assets.dart';
 import 'package:get/get.dart';

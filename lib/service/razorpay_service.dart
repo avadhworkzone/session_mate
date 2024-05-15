@@ -1,9 +1,11 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 import 'package:session_mate/utils/app_string.dart';
 import 'package:session_mate/utils/collection_utils.dart';
+import 'package:session_mate/utils/loading_dialog.dart';
 import 'package:session_mate/utils/shared_preference_utils.dart';
 import 'package:worldtime/worldtime.dart';
 
@@ -11,14 +13,14 @@ class RazorpayService {
   static final worldtimePlugin = Worldtime();
   static late Razorpay razorpay;
   static bool isMonthly = false;
+  static BuildContext? context;
 
   static makePaymentWithRazorPay({required int amount}) {
     var options = {
       'key': 'rzp_test_BLGsdJ6y7LBA6D',
       'amount': amount * 100,
       'name': 'Acme Corp.',
-      'description':
-          amount * 100 == 4900 ? 'Monthly Subscription' : 'Yearly Subscription',
+      'description': amount * 100 == 4900 ? 'Monthly Subscription' : 'Yearly Subscription',
       "timeout": "180",
       "currency": "INR",
       'retry': {'enabled': true, 'max_count': 1},
@@ -38,12 +40,10 @@ class RazorpayService {
     razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, handleExternalWallet);
   }
 
-  static Future<void> handlePaymentSuccess(
-      PaymentSuccessResponse response) async {
+  static Future<void> handlePaymentSuccess(PaymentSuccessResponse response) async {
     print("PaymentSuccessResponse <><><><><><><><><> ${response.data}");
-    var userDetailSnapshot = await CollectionUtils.userCollection
-        .doc(SharedPreferenceUtils.getUserId())
-        .get();
+    var userDetailSnapshot =
+        await CollectionUtils.userCollection.doc(SharedPreferenceUtils.getUserId()).get();
     var userDetail = userDetailSnapshot.data();
     final DateTime currentDateTime = await worldtimePlugin.timeByLocation(
       latitude: double.parse(userDetail?["latitude"]),
@@ -54,9 +54,7 @@ class RazorpayService {
           "${currentDateTime.year}-${currentDateTime.month < 10 ? "0${currentDateTime.month}" : "${currentDateTime.month}"}-${currentDateTime.day < 10 ? "0${currentDateTime.day}" : "${currentDateTime.day}"}";
       String subscriptionEndDate =
           "${currentDateTime.year}-${currentDateTime.month + 1 < 10 ? "0${currentDateTime.month + 1}" : "${currentDateTime.month + 1}"}-${currentDateTime.day < 10 ? "0${currentDateTime.day}" : "${currentDateTime.day}"}";
-      CollectionUtils.userCollection
-          .doc(SharedPreferenceUtils.getUserId())
-          .update({
+      CollectionUtils.userCollection.doc(SharedPreferenceUtils.getUserId()).update({
         "subscriptionStartDate": subscriptionStartDate,
         "subscriptionEndDate": subscriptionEndDate,
         "subscriptionType": AppStrings.monthlySubscription,
@@ -64,6 +62,7 @@ class RazorpayService {
       }).then((value) {
         CollectionUtils.userCollection.doc(SharedPreferenceUtils.getUserId()).get().then((value) {
           SharedPreferenceUtils.setUserDetail(jsonEncode(value.data()));
+          hideLoadingDialog(context: context);
           Get.snackbar("Message", AppStrings.monthlySubscriptionSuccess);
         });
       });
@@ -72,9 +71,7 @@ class RazorpayService {
           "${currentDateTime.year}-${currentDateTime.month < 10 ? "0${currentDateTime.month}" : "${currentDateTime.month}"}-${currentDateTime.day < 10 ? "0${currentDateTime.day}" : "${currentDateTime.day}"}";
       String subscriptionEndDate =
           "${currentDateTime.year + 1}-${currentDateTime.month < 10 ? "0${currentDateTime.month}" : "${currentDateTime.month}"}-${currentDateTime.day < 10 ? "0${currentDateTime.day}" : "${currentDateTime.day}"}";
-      CollectionUtils.userCollection
-          .doc(SharedPreferenceUtils.getUserId())
-          .update({
+      CollectionUtils.userCollection.doc(SharedPreferenceUtils.getUserId()).update({
         "subscriptionStartDate": subscriptionStartDate,
         "subscriptionEndDate": subscriptionEndDate,
         "subscriptionType": AppStrings.yearlySubscription,
@@ -82,6 +79,7 @@ class RazorpayService {
       }).then((value) {
         CollectionUtils.userCollection.doc(SharedPreferenceUtils.getUserId()).get().then((value) {
           SharedPreferenceUtils.setUserDetail(jsonEncode(value.data()));
+          hideLoadingDialog(context: context);
           Get.snackbar("Message", AppStrings.yearlySubscriptionSuccess);
         });
       });
@@ -90,10 +88,12 @@ class RazorpayService {
 
   static void handlePaymentError(PaymentFailureResponse response) {
     print("PaymentFailureResponse <><><><><><><><><> ${response.error}");
+    hideLoadingDialog(context: context);
     Get.snackbar("Error", response.error!["description"], isDismissible: false);
   }
 
   static void handleExternalWallet(ExternalWalletResponse response) {
+    hideLoadingDialog(context: context);
     print("ExternalWalletResponse <><><><><><><><><> ${response.walletName}");
   }
 }

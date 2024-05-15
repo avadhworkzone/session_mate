@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:session_mate/utils/collection_utils.dart';
+import 'package:session_mate/utils/loading_dialog.dart';
 import 'package:session_mate/utils/shared_preference_utils.dart';
 import 'package:worldtime/worldtime.dart';
 
@@ -19,7 +20,8 @@ class HomeViewModel extends GetxController {
   GlobalKey<ScaffoldState> homeDrawerKey = GlobalKey();
 
   /// CHECK USER SUBSCRIPTION
-  Future<void> checkSubscription() async {
+  Future<void> checkSubscription(BuildContext context) async {
+    showLoadingDialog(context: context);
     String data = SharedPreferenceUtils.getUserDetail();
     var userDetailSnapshot = jsonDecode(data);
     var userDetail = userDetailSnapshot;
@@ -36,6 +38,7 @@ class HomeViewModel extends GetxController {
           .update({"isSubscription": true}).then((value) {
         SharedPreferenceUtils.setIsSubscription(true);
         isFreeTrial = true;
+        hideLoadingDialog(context: context);
         update(["freeTrial"]);
         print("isSubscription ======>>>>${SharedPreferenceUtils.getIsSubscription()}<<<<");
       });
@@ -51,6 +54,7 @@ class HomeViewModel extends GetxController {
             DateTime.parse("2024-05-30" /*userDetail?["registrationDate"]*/);
         print(
             "Difference days from registration >>>> ${currentDate.difference(registrationDate).inDays}");
+        hideLoadingDialog(context: context);
         if (registrationDate.difference(currentDate).inDays > 14) {
           isFreeTrial = false;
           update(["freeTrial"]);
