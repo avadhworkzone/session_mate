@@ -19,8 +19,9 @@ class BottomBarViewModel extends GetxController {
 
   /// CHECK USER SUBSCRIPTION
   Future<void> checkSubscription() async {
-    var userDetailSnapshot =
-        await CollectionUtils.userCollection.doc(SharedPreferenceUtils.getUserId()).get();
+    var userDetailSnapshot = await CollectionUtils.userCollection
+        .doc(SharedPreferenceUtils.getUserId())
+        .get();
     var userDetail = userDetailSnapshot.data();
     final DateTime currentDate = await worldtimePlugin.timeByLocation(
       latitude: double.parse(userDetail?["latitude"]),
@@ -28,14 +29,16 @@ class BottomBarViewModel extends GetxController {
     );
     SharedPreferenceUtils.setCurrentDate(
         "${currentDate.year}-${currentDate.month < 10 ? "0${currentDate.month}" : "${currentDate.month}"}-${currentDate.day < 10 ? "0${currentDate.day}" : "${currentDate.day}"}");
-    DateTime subscriptionEndDate = DateTime.parse(userDetail?["subscriptionEndDate"]);
+    DateTime subscriptionEndDate =
+        DateTime.parse(userDetail?["subscriptionEndDate"]);
     if (subscriptionEndDate.isAfter(currentDate)) {
       CollectionUtils.userCollection
           .doc(SharedPreferenceUtils.getUserId())
           .update({"isSubscription": true}).then((value) {
         SharedPreferenceUtils.setIsSubscription(true);
         isFreeTrial = true;
-        print("isSubscription ======>>>>${SharedPreferenceUtils.getIsSubscription()}<<<<");
+        print(
+            "isSubscription ======>>>>${SharedPreferenceUtils.getIsSubscription()}<<<<");
       });
     } else {
       CollectionUtils.userCollection
@@ -43,19 +46,23 @@ class BottomBarViewModel extends GetxController {
           .update({"isSubscription": false}).then((value) {
         SharedPreferenceUtils.setIsSubscription(false);
         checkIsFreeTrial();
-        print("isSubscription ======>>>>${SharedPreferenceUtils.getIsSubscription()}<<<<");
+        print(
+            "isSubscription ======>>>>${SharedPreferenceUtils.getIsSubscription()}<<<<");
       });
     }
   }
 
   ///CHECK 14 DAYS FREE TRIAL
   Future<void> checkIsFreeTrial() async {
-    var userDetailSnapshot =
-        await CollectionUtils.userCollection.doc(SharedPreferenceUtils.getUserId()).get();
+    var userDetailSnapshot = await CollectionUtils.userCollection
+        .doc(SharedPreferenceUtils.getUserId())
+        .get();
     var userDetail = userDetailSnapshot.data();
-    DateTime currentDate = DateTime.parse(SharedPreferenceUtils.getCurrentDate());
+    DateTime currentDate =
+        DateTime.parse(SharedPreferenceUtils.getCurrentDate());
+    // DateTime registrationDate = DateTime.parse("2024-06-01");
     DateTime registrationDate = DateTime.parse(userDetail?["registrationDate"]);
-    if (currentDate.difference(registrationDate).inDays > 14) {
+    if (registrationDate.difference(currentDate).inDays > 14) {
       isFreeTrial = false;
     }
   }

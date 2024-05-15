@@ -14,6 +14,7 @@ import 'package:session_mate/utils/app_string.dart';
 import 'package:session_mate/utils/common_methods.dart';
 import 'package:session_mate/utils/shared_preference_utils.dart';
 import 'package:session_mate/utils/size_config_utils.dart';
+import 'package:session_mate/view/therapyPlanScreen/therapy_plan_screen.dart';
 import 'package:session_mate/viewModel/assessment_plan_view_model.dart';
 
 class AssessmentAndPlanScreen extends StatefulWidget {
@@ -64,6 +65,19 @@ class _AssessmentAndPlanScreenState extends State<AssessmentAndPlanScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.primaryColor,
+      bottomNavigationBar: Padding(
+        padding:
+            EdgeInsets.symmetric(horizontal: Get.width / 3.2, vertical: 20),
+        child: CustomBtn(
+          radius: 12,
+          onTap: () {
+            Get.to(() => const TherapyPlan());
+          },
+          bgColor: AppColors.whiteF5,
+          title: AppStrings.submit,
+          textColor: AppColors.colorA2,
+        ),
+      ),
       appBar: AppBar(
         toolbarHeight: 0,
         systemOverlayStyle:
@@ -78,7 +92,7 @@ class _AssessmentAndPlanScreenState extends State<AssessmentAndPlanScreen> {
                 title: AppStrings.assessmentAndPlan,
                 iconColor: AppColors.white,
                 textColor: AppColors.white),
-            SizeConfig.sH40,
+            SizeConfig.sH30,
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 20.w),
               child: Row(
@@ -96,7 +110,7 @@ class _AssessmentAndPlanScreenState extends State<AssessmentAndPlanScreen> {
                           if (assessmentAndPlanViewModel.sessionData.value ==
                               null) {
                             commonSnackBar(
-                                message: 'Please Select Session',
+                                message: AppStrings.selectYourSession,
                                 snackBackgroundColor: AppColors.white,
                                 textColor: AppColors.primaryColor);
                           }
@@ -182,9 +196,10 @@ class _AssessmentAndPlanScreenState extends State<AssessmentAndPlanScreen> {
                         underline: const SizedBox(),
                         iconEnabledColor: AppColors.color97,
                         iconDisabledColor: AppColors.color97,
-                        icon: const Icon(Icons.keyboard_arrow_down),
-                        // const LocalAssets(
-                        //     imagePath: AppImageAssets.dropDownArrowIcn),
+                        icon: const Icon(
+                          Icons.keyboard_arrow_down,
+                          color: AppColors.black1c,
+                        ),
                         hint: CustomText(
                           AppStrings.session,
                           fontWeight: FontWeight.w300,
@@ -272,7 +287,10 @@ class _AssessmentAndPlanScreenState extends State<AssessmentAndPlanScreen> {
                                     alignment: Alignment.centerLeft,
                                     child: assessmentAndPlanViewModel
                                             .goalSelectedList.value.isEmpty
-                                        ? CustomText(AppStrings.selectYourGoal)
+                                        ? CustomText(
+                                            AppStrings.selectYourGoal,
+                                            fontSize: 17.sp,
+                                          )
                                         : Column(
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
@@ -563,7 +581,9 @@ class _AssessmentAndPlanScreenState extends State<AssessmentAndPlanScreen> {
                                     child: assessmentAndPlanViewModel
                                             .subGoalSelectedList.value.isEmpty
                                         ? CustomText(
-                                            AppStrings.selectYourSubGoal)
+                                            AppStrings.selectYourSubGoal,
+                                            fontSize: 17.sp,
+                                          )
                                         : Column(
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
@@ -738,7 +758,9 @@ class _AssessmentAndPlanScreenState extends State<AssessmentAndPlanScreen> {
                                             .value
                                             .isEmpty
                                         ? CustomText(
-                                            AppStrings.selectYourCurrentLevel)
+                                            AppStrings.selectYourCurrentLevel,
+                                            fontSize: 17.sp,
+                                          )
                                         : Column(
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
@@ -910,65 +932,65 @@ class _AssessmentAndPlanScreenState extends State<AssessmentAndPlanScreen> {
                       SizeConfig.sH20,
 
                       /// SELECT YOUR STRATEGIES
-                      Obx(() {
-                        return InkWell(
-                          onTap: () {
-                            // assessmentAndPlanViewModel
-                            //     .strategiesExpanded.value = true;
+                      InkWell(
+                        onTap: () {
+                          assessmentAndPlanViewModel.strategiesExpanded.value =
+                              true;
 
-                            setState(() {
-                              strategiesExpanded = true;
-                            });
-                            logs(
-                                '${assessmentAndPlanViewModel.strategiesStringData.value}');
-                          },
-                          child: Container(
-                            padding: const EdgeInsets.all(15),
-                            decoration: BoxDecoration(
-                                color: AppColors.white,
-                                borderRadius: BorderRadius.circular(10),
-                                boxShadow: const [
-                                  BoxShadow(
-                                      color: AppColors.grey, spreadRadius: 1)
-                                ]),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Expanded(
-                                  child: Align(
-                                      alignment: Alignment.centerLeft,
-                                      child: assessmentAndPlanViewModel
-                                              .strategiesSelectedList
-                                              .value
-                                              .isEmpty
-                                          ? CustomText(
-                                              AppStrings.selectYourStrategies)
-                                          : Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: List.generate(
-                                                  assessmentAndPlanViewModel
-                                                      .strategiesSelectedList
-                                                      .length,
-                                                  (index) => Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .symmetric(
-                                                                vertical: 5),
-                                                        child: CustomText(
-                                                            '${assessmentAndPlanViewModel.strategiesSelectedList[index]['name']}${assessmentAndPlanViewModel.strategiesSelectedList.length > 1 ? ',' : ''}'),
-                                                      )),
-                                            )),
-                                ),
-                                const Icon(Icons.keyboard_arrow_down_sharp)
-                              ],
-                            ),
+                          // setState(() {
+                          //   strategiesExpanded = true;
+                          // });
+                          // logs(
+                          //     '${assessmentAndPlanViewModel.strategiesStringData.value}');
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.all(15),
+                          decoration: BoxDecoration(
+                              color: AppColors.white,
+                              borderRadius: BorderRadius.circular(10),
+                              boxShadow: const [
+                                BoxShadow(
+                                    color: AppColors.grey, spreadRadius: 1)
+                              ]),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Expanded(
+                                child: Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: assessmentAndPlanViewModel
+                                            .strategiesSelectedList
+                                            .value
+                                            .isEmpty
+                                        ? CustomText(
+                                            AppStrings.selectYourStrategies,
+                                            fontSize: 17.sp,
+                                          )
+                                        : Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: List.generate(
+                                                assessmentAndPlanViewModel
+                                                    .strategiesSelectedList
+                                                    .length,
+                                                (index) => Padding(
+                                                      padding: const EdgeInsets
+                                                          .symmetric(
+                                                          vertical: 5),
+                                                      child: CustomText(
+                                                          '${assessmentAndPlanViewModel.strategiesSelectedList[index]['name']}${assessmentAndPlanViewModel.strategiesSelectedList.length > 1 ? ',' : ''}'),
+                                                    )),
+                                          )),
+                              ),
+                              const Icon(Icons.keyboard_arrow_down_sharp)
+                            ],
                           ),
-                        );
-                      }),
+                        ),
+                      ),
                       SizeConfig.sH10,
-                      strategiesExpanded == false
+                      assessmentAndPlanViewModel.strategiesExpanded.value ==
+                              false
                           ? const SizedBox()
                           : Container(
                               decoration: BoxDecoration(
@@ -1084,10 +1106,9 @@ class _AssessmentAndPlanScreenState extends State<AssessmentAndPlanScreen> {
                                                 padding: EdgeInsets.all(20.w),
                                                 child: CustomBtn(
                                                     onTap: () {
-                                                      setState(() {
-                                                        strategiesExpanded =
-                                                            false;
-                                                      });
+                                                      assessmentAndPlanViewModel
+                                                          .strategiesExpanded
+                                                          .value = false;
                                                     },
                                                     title: 'Done'),
                                               )
@@ -1099,7 +1120,7 @@ class _AssessmentAndPlanScreenState extends State<AssessmentAndPlanScreen> {
                   ),
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),

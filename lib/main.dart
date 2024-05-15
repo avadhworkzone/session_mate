@@ -21,7 +21,8 @@ Future<void> main() async {
           apiKey: "AIzaSyCCPvygb8Emu4AV-9Z0bl8SQq2apISQ2hk",
           appId: "1:824473918339:android:9e77aaa912a92eb4fd34b6",
           messagingSenderId: "824473918339",
-          projectId: "session-mate-v2"));
+          projectId: "session-mate-v2",
+          storageBucket: "session-mate-v2.appspot.com"));
   runApp(MyApp());
 
   SystemChrome.setPreferredOrientations([

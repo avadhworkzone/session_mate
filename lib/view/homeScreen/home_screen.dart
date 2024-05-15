@@ -80,25 +80,26 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: GestureDetector(
                   onTap: () async {
                     if (index == 0) {
-                      Get.find<BottomBarViewModel>().selectedBottomIndex.value = 1;
+                      Get.find<BottomBarViewModel>().selectedBottomIndex.value =
+                          1;
                       await SharedPreferenceUtils.setSessionId('');
                       Get.to(() => const BottomBar());
                     } else if (index == 1) {
                       sessionViewModel.retrieveCountMonthIs.value = '';
                       Get.to(() => const RetrieveCounts());
                     } else {
-                      if (bottomBarViewModel.isFreeTrial) {
-                        Get.to(() => const AssessmentAndPlanScreen());
-                      } else {
-                        Get.snackbar("Message", AppStrings.yourFreeTrialEnd);
-                      }
+                      // if (bottomBarViewModel.isFreeTrial) {
+                      Get.to(() => const AssessmentAndPlanScreen());
+                      // } else {
+                      //   Get.snackbar("Message", AppStrings.yourFreeTrialEnd);
+                      // }
                     }
                   },
                   child: Container(
                     decoration: BoxDecoration(
                       color: index == 2
                           ? !bottomBarViewModel.isFreeTrial
-                              ? AppColors.black.withOpacity(0.1)
+                              ? AppColors.black1c.withOpacity(0.1)
                               : AppColors.white
                           : AppColors.white,
                       borderRadius: BorderRadius.circular(15.r),

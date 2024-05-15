@@ -11,12 +11,12 @@ class RazorpayService {
   static bool isMonthly = false;
 
   static makePaymentWithRazorPay({required int amount}) {
-    print("amount >>>>>>>>>>>>> $amount");
     var options = {
       'key': 'rzp_test_BLGsdJ6y7LBA6D',
       'amount': amount * 100,
       'name': 'Acme Corp.',
-      'description': amount * 100 == 4900 ? 'Monthly Subscription' : 'Yearly Subscription',
+      'description':
+          amount * 100 == 4900 ? 'Monthly Subscription' : 'Yearly Subscription',
       "timeout": "180",
       "currency": "INR",
       'retry': {'enabled': true, 'max_count': 1},
@@ -36,10 +36,12 @@ class RazorpayService {
     razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, handleExternalWallet);
   }
 
-  static Future<void> handlePaymentSuccess(PaymentSuccessResponse response) async {
+  static Future<void> handlePaymentSuccess(
+      PaymentSuccessResponse response) async {
     print("PaymentSuccessResponse <><><><><><><><><> ${response.data}");
-    var userDetailSnapshot =
-        await CollectionUtils.userCollection.doc(SharedPreferenceUtils.getUserId()).get();
+    var userDetailSnapshot = await CollectionUtils.userCollection
+        .doc(SharedPreferenceUtils.getUserId())
+        .get();
     var userDetail = userDetailSnapshot.data();
     final DateTime currentDateTime = await worldtimePlugin.timeByLocation(
       latitude: double.parse(userDetail?["latitude"]),
@@ -50,7 +52,9 @@ class RazorpayService {
           "${currentDateTime.year}-${currentDateTime.month < 10 ? "0${currentDateTime.month}" : "${currentDateTime.month}"}-${currentDateTime.day < 10 ? "0${currentDateTime.day}" : "${currentDateTime.day}"}";
       String subscriptionEndDate =
           "${currentDateTime.year}-${currentDateTime.month + 1 < 10 ? "0${currentDateTime.month + 1}" : "${currentDateTime.month + 1}"}-${currentDateTime.day < 10 ? "0${currentDateTime.day}" : "${currentDateTime.day}"}";
-      CollectionUtils.userCollection.doc(SharedPreferenceUtils.getUserId()).update({
+      CollectionUtils.userCollection
+          .doc(SharedPreferenceUtils.getUserId())
+          .update({
         "subscriptionStartDate": subscriptionStartDate,
         "subscriptionEndDate": subscriptionEndDate,
         "subscriptionType": AppStrings.monthlySubscription,
@@ -63,7 +67,9 @@ class RazorpayService {
           "${currentDateTime.year}-${currentDateTime.month < 10 ? "0${currentDateTime.month}" : "${currentDateTime.month}"}-${currentDateTime.day < 10 ? "0${currentDateTime.day}" : "${currentDateTime.day}"}";
       String subscriptionEndDate =
           "${currentDateTime.year + 1}-${currentDateTime.month < 10 ? "0${currentDateTime.month}" : "${currentDateTime.month}"}-${currentDateTime.day < 10 ? "0${currentDateTime.day}" : "${currentDateTime.day}"}";
-      CollectionUtils.userCollection.doc(SharedPreferenceUtils.getUserId()).update({
+      CollectionUtils.userCollection
+          .doc(SharedPreferenceUtils.getUserId())
+          .update({
         "subscriptionStartDate": subscriptionStartDate,
         "subscriptionEndDate": subscriptionEndDate,
         "subscriptionType": AppStrings.yearlySubscription,

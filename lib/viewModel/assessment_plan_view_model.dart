@@ -33,5 +33,5 @@ class AssessmentAndPlanViewModel extends GetxController {
   RxList<Map<String, dynamic>> strategiesStringData =
       <Map<String, dynamic>>[].obs;
   RxList<dynamic> strategiesSelectedList = [].obs;
-  // Rx<bool> strategiesExpanded = false.obs;
+  Rx<bool> strategiesExpanded = false.obs;
 }
