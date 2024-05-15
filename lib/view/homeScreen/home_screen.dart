@@ -33,6 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
+    homeViewModel.checkSubscription();
     // TODO: implement initState
     //bottomBarViewModel.checkIsFreeTrial();
     super.initState();
@@ -40,7 +41,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    homeViewModel.checkSubscription();
     return Scaffold(
       key: _key,
       drawer: buildDrawer(),
