@@ -132,13 +132,15 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                             decoration: BoxDecoration(
                                 color: AppColors.whiteF6,
                                 borderRadius: BorderRadius.circular(30.r),
-                                border: Border.all(color: AppColors.primaryColor))),
+                                border:
+                                    Border.all(color: AppColors.primaryColor))),
                         onChanged: (val) {},
                       ),
                     ),
                     SizeConfig.sH35,
                     if (int.parse(otpViewModel
-                            .strDigits(otpViewModel.myDuration.value.inSeconds.remainder(60))
+                            .strDigits(otpViewModel.myDuration.value.inSeconds
+                                .remainder(60))
                             .value) >
                         0)
                       CustomText(
@@ -154,7 +156,9 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                     ),
                     SizeConfig.sH5,
                     int.parse(otpViewModel
-                                .strDigits(otpViewModel.myDuration.value.inSeconds.remainder(60))
+                                .strDigits(otpViewModel
+                                    .myDuration.value.inSeconds
+                                    .remainder(60))
                                 .value) >
                             0
                         ? CustomText(

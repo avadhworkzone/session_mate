@@ -56,11 +56,11 @@ class MyApp extends StatelessWidget {
             ),
             transitionDuration: const Duration(milliseconds: 100),
             home: ConnectivityWrapper(
-                // child: BottomBar()
-                child: SharedPreferenceUtils.getIsLogin() == true
-                    ? const BottomBar()
-                    : const WelcomeScreen(),
-                ),
+              // child: BottomBar()
+              child: SharedPreferenceUtils.getIsLogin() == true
+                  ? const BottomBar()
+                  : const WelcomeScreen(),
+            ),
           ),
         ),
       ),
