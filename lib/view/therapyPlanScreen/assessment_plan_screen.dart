@@ -267,7 +267,20 @@ class _AssessmentAndPlanScreenState extends State<AssessmentAndPlanScreen> {
                       /// SELECT YOUR GOAL
                       InkWell(
                         onTap: () {
-                          assessmentAndPlanViewModel.goalExpanded.value = true;
+                          if (assessmentAndPlanViewModel
+                              .goalSelectedList.value.isEmpty) {
+                            if (assessmentAndPlanViewModel.goalExpanded.value ==
+                                true) {
+                              assessmentAndPlanViewModel.goalExpanded.value =
+                                  false;
+                            } else {
+                              assessmentAndPlanViewModel.goalExpanded.value =
+                                  true;
+                            }
+                          } else {
+                            assessmentAndPlanViewModel.goalExpanded.value =
+                                true;
+                          }
                         },
                         child: Container(
                           padding: const EdgeInsets.all(15),
@@ -558,9 +571,21 @@ class _AssessmentAndPlanScreenState extends State<AssessmentAndPlanScreen> {
                       /// SELECT YOUR SUB GOAL
                       InkWell(
                         onTap: () {
-                          assessmentAndPlanViewModel.subGoalExpanded.value =
-                              true;
-                          setState(() {});
+                          if (assessmentAndPlanViewModel
+                              .subGoalSelectedList.value.isEmpty) {
+                            if (assessmentAndPlanViewModel
+                                    .subGoalExpanded.value ==
+                                true) {
+                              assessmentAndPlanViewModel.subGoalExpanded.value =
+                                  false;
+                            } else {
+                              assessmentAndPlanViewModel.subGoalExpanded.value =
+                                  true;
+                            }
+                          } else {
+                            assessmentAndPlanViewModel.subGoalExpanded.value =
+                                true;
+                          }
                         },
                         child: Container(
                           padding: const EdgeInsets.all(15),
@@ -734,8 +759,21 @@ class _AssessmentAndPlanScreenState extends State<AssessmentAndPlanScreen> {
                       /// SELECT YOUR CURRENT LEVEL
                       InkWell(
                         onTap: () {
-                          assessmentAndPlanViewModel
-                              .currentLevelExpanded.value = true;
+                          if (assessmentAndPlanViewModel
+                              .currentLevelSelectedList.value.isEmpty) {
+                            if (assessmentAndPlanViewModel
+                                    .currentLevelExpanded.value ==
+                                true) {
+                              assessmentAndPlanViewModel
+                                  .currentLevelExpanded.value = false;
+                            } else {
+                              assessmentAndPlanViewModel
+                                  .currentLevelExpanded.value = true;
+                            }
+                          } else {
+                            assessmentAndPlanViewModel
+                                .currentLevelExpanded.value = true;
+                          }
                         },
                         child: Container(
                           padding: const EdgeInsets.all(15),
@@ -934,14 +972,21 @@ class _AssessmentAndPlanScreenState extends State<AssessmentAndPlanScreen> {
                       /// SELECT YOUR STRATEGIES
                       InkWell(
                         onTap: () {
-                          assessmentAndPlanViewModel.strategiesExpanded.value =
-                              true;
-
-                          // setState(() {
-                          //   strategiesExpanded = true;
-                          // });
-                          // logs(
-                          //     '${assessmentAndPlanViewModel.strategiesStringData.value}');
+                          if (assessmentAndPlanViewModel
+                              .strategiesSelectedList.value.isEmpty) {
+                            if (assessmentAndPlanViewModel
+                                    .strategiesExpanded.value ==
+                                true) {
+                              assessmentAndPlanViewModel
+                                  .strategiesExpanded.value = false;
+                            } else {
+                              assessmentAndPlanViewModel
+                                  .strategiesExpanded.value = true;
+                            }
+                          } else {
+                            assessmentAndPlanViewModel
+                                .strategiesExpanded.value = true;
+                          }
                         },
                         child: Container(
                           padding: const EdgeInsets.all(15),
