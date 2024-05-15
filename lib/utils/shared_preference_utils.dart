@@ -10,6 +10,7 @@ class SharedPreferenceUtils {
   static String latitude = 'latitude';
   static String longitude = 'longitude';
   static String currentDate = 'currentDate';
+  static String userDetail = 'userDetail';
 
   /// is login
   static Future setIsLogin(bool value) async {
@@ -40,6 +41,15 @@ class SharedPreferenceUtils {
 
   static Future<void> clearPreference() async {
     await getStorage.erase();
+  }
+
+  ///USER DETAIL
+  static setUserDetail(String value) async {
+    await getStorage.write(userDetail, value);
+  }
+
+  static String getUserDetail() {
+    return getStorage.read(userDetail) ?? "";
   }
 
   ///isSubscription
