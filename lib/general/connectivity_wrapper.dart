@@ -117,9 +117,9 @@ class _ConnectivityWrapperState extends State<ConnectivityWrapper> {
 //
 // Widget screen = BottomBar();
 //
-// void navigate({required Widget view}){
+// void navigate({required Widget view}) {
 //   screen = view;
-//   Get.to(()=> view);
+//   Get.to(() => view);
 // }
 //
 // /// both time work
@@ -148,9 +148,9 @@ class _ConnectivityWrapperState extends State<ConnectivityWrapper> {
 //       });
 //       if (!_isConnected) {
 //         // Navigate to the desired screen when internet is disconnected
-//         Get.offAll(InternetErrorScreen());
+//         Get.offAll(const InternetErrorScreen());
 //       } else {
-//         Get.to(screen);
+//         Get.off(screen);
 //       }
 //       /*  ConnectivityResult connectivityResult = result;
 //           switch(connectivityResult){
@@ -191,7 +191,7 @@ class _ConnectivityWrapperState extends State<ConnectivityWrapper> {
 //       });
 //     });
 //
-//     _checkInitialConnectivity();
+//     // _checkInitialConnectivity();
 //   }
 //
 //   @override
@@ -230,7 +230,8 @@ class _ConnectivityWrapperState extends State<ConnectivityWrapper> {
 //
 //   @override
 //   Widget build(BuildContext context) {
-//     return WillPopScope(
+//     return isConnect ? screen : InternetErrorScreen();
+//     /* WillPopScope(
 //       onWillPop: () async {
 //         if (_handleBackButton) {
 //           return false;
@@ -238,6 +239,6 @@ class _ConnectivityWrapperState extends State<ConnectivityWrapper> {
 //         return true;
 //       },
 //       child: isConnect ? screen : InternetErrorScreen(),
-//     );
+//     );*/
 //   }
 // }

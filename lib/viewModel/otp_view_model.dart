@@ -8,13 +8,12 @@ class OtpViewModel extends GetxController {
   // final Rx<GlobalKey<FormState>> formKey = GlobalKey<FormState>().obs;
 
   ///COUNT DOWN TIMER FOR OTP
-  Rx<Timer?>? countdownTimer =
-      Timer.periodic(const Duration(seconds: 1), (timer) {}).obs;
+  Rx<Timer?>? countdownTimer = Timer.periodic(const Duration(seconds: 1), (timer) {}).obs;
   Rx<Duration> myDuration = const Duration(seconds: 30).obs;
+  Rx<double> sizeBoxHeight = 0.0.obs;
 
   void startTimer() {
-    countdownTimer!.value =
-        Timer.periodic(const Duration(seconds: 1), (_) => setCountDown());
+    countdownTimer!.value = Timer.periodic(const Duration(seconds: 1), (_) => setCountDown());
   }
 
   void stopTimer() {

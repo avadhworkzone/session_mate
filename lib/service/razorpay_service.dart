@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:get/get.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 import 'package:session_mate/utils/app_string.dart';
@@ -60,7 +62,10 @@ class RazorpayService {
         "subscriptionType": AppStrings.monthlySubscription,
         "isSubscription": true,
       }).then((value) {
-        Get.snackbar("Message", AppStrings.monthlySubscriptionSuccess);
+        CollectionUtils.userCollection.doc(SharedPreferenceUtils.getUserId()).get().then((value) {
+          SharedPreferenceUtils.setUserDetail(jsonEncode(value.data()));
+          Get.snackbar("Message", AppStrings.monthlySubscriptionSuccess);
+        });
       });
     } else {
       String subscriptionStartDate =
@@ -75,7 +80,10 @@ class RazorpayService {
         "subscriptionType": AppStrings.yearlySubscription,
         "isSubscription": true,
       }).then((value) {
-        Get.snackbar("Message", AppStrings.yearlySubscriptionSuccess);
+        CollectionUtils.userCollection.doc(SharedPreferenceUtils.getUserId()).get().then((value) {
+          SharedPreferenceUtils.setUserDetail(jsonEncode(value.data()));
+          Get.snackbar("Message", AppStrings.yearlySubscriptionSuccess);
+        });
       });
     }
   }

@@ -23,8 +23,8 @@ class RegularExpressionUtils {
   /// specialCharacters is used for one special characters is requiter in string
   var specialCharacters = RegExp(r'[!@#$%^&*(),.?":{}|<>]');
 
-  static var isValidEmail = RegExp(
-      r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
+  static var isValidEmail =
+      RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
 
   static RegExp passwordValidator =
       RegExp(r'^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*\W)(?!.* ).{8,12}');
@@ -57,6 +57,26 @@ class NoLeadingSpaceFormatter extends TextInputFormatter {
   }
 }
 
+class LowerCaseTextFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
+    return TextEditingValue(
+      text: newValue.text.toLowerCase(),
+      selection: newValue.selection,
+    );
+  }
+}
+
+class TextFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
+    return TextEditingValue(
+      text: newValue.text,
+      selection: newValue.selection,
+    );
+  }
+}
+
 /// VALIDATION METHOD
 class ValidationMethod {
   /// EMAIL VALIDATION METHOD
@@ -76,8 +96,7 @@ class ValidationMethod {
   }
 
   static String? validateName(value) {
-    bool regex =
-        RegExp(RegularExpressionUtils.alphabetSpacePattern).hasMatch(value);
+    bool regex = RegExp(RegularExpressionUtils.alphabetSpacePattern).hasMatch(value);
     if (value == null) {
       return AppStrings.isRequired.tr;
     } else if (!regex) {
