@@ -224,7 +224,7 @@ class _TherapyPlanState extends State<TherapyPlan> {
                             ),
                             CustomBtn(
                               onTap: () {
-                                therapyPlanViewModel.fetchDataFromFirebase();
+                                // therapyPlanViewModel.fetchDataFromFirebase();
                                 therapyPlanViewModel.generateAndSendPDF();
                               },
                               height: 55.h,

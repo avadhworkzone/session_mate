@@ -11,6 +11,20 @@ class AppConstants {
   static const String openSans = "Open Sans";
 }
 
+class CombinedData {
+  final String category;
+  final String subCategory;
+  final String currentLevel;
+  final String plannedStrategies;
+
+  CombinedData({
+    required this.category,
+    required this.subCategory,
+    required this.currentLevel,
+    required this.plannedStrategies,
+  });
+}
+
 List<String> homeImageList = [
   AppImageAssets.addNewSession,
   AppImageAssets.retriveCount,
