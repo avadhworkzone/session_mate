@@ -33,7 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
-    homeViewModel.checkSubscription();
+    homeViewModel.checkSubscription(context);
     // TODO: implement initState
     //bottomBarViewModel.checkIsFreeTrial();
     super.initState();
@@ -81,14 +81,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: ListView.builder(
                     itemCount: 3,
                     itemBuilder: (context, index) => Padding(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: 30.w, vertical: 10.h),
+                      padding: EdgeInsets.symmetric(horizontal: 30.w, vertical: 10.h),
                       child: GestureDetector(
                         onTap: () async {
                           if (index == 0) {
-                            Get.find<BottomBarViewModel>()
-                                .selectedBottomIndex
-                                .value = 1;
+                            Get.find<BottomBarViewModel>().selectedBottomIndex.value = 1;
                             await SharedPreferenceUtils.setSessionId('');
                             Get.to(() => const BottomBar());
                           } else if (index == 1) {
@@ -98,8 +95,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             if (homeViewModel.isFreeTrial) {
                               Get.to(() => const AssessmentAndPlanScreen());
                             } else {
-                              Get.snackbar(
-                                  "Message", AppStrings.yourFreeTrialEnd);
+                              Get.snackbar("Message", AppStrings.yourFreeTrialEnd);
                             }
                           }
                         },
