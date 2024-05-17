@@ -108,10 +108,10 @@ class _SessionScreenState extends State<SessionScreen> {
                 Container(
                   height: 50.h,
                   width: 60.w,
-                  padding: EdgeInsets.symmetric(horizontal: 30.w, vertical: 26.w),
+                  // padding: EdgeInsets.symmetric(horizontal: 30.w, vertical: 26.w),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(25.r),
-                    border: Border.all(color: AppColors.black),
+                   color: AppColors.grey
                     /*image: const DecorationImage(
                           fit: BoxFit.cover,
                           image: NetworkImage(
@@ -119,7 +119,7 @@ class _SessionScreenState extends State<SessionScreen> {
                   ),
                   child: Center(
                     child: CustomText(
-                      userDetail["userName"].toString().split("").first,
+                      userDetail["userName"].toString().split("").first.capitalize,
                       color: AppColors.white,
                     ),
                   ),

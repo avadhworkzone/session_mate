@@ -215,16 +215,29 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
         if (widget.isLoginScreen) {
           commonSnackBar(message: AppStrings.loginSuccessfully);
           await SharedPreferenceUtils.setIsLogin(true);
-          await SharedPreferenceUtils.setUserId(signInViewModel.signInPhoneNoController.value.text);
+          await SharedPreferenceUtils.setUserId(signInViewModel.signInPhoneNoController.value.text)
+              .then((value) {
+            hideLoadingDialog(context: context);
+            CollectionUtils.userCollection.doc(SharedPreferenceUtils.getUserId()).update({
+              "latitude": SharedPreferenceUtils.getLatitude(),
+              "longitude": SharedPreferenceUtils.getLongitude()
+            }).then((value) {
+              CollectionUtils.userCollection
+                  .doc(SharedPreferenceUtils.getUserId())
+                  .get()
+                  .then((value) async {
+                Map<String, dynamic>? userDetail;
+                userDetail = value.data();
+                await SharedPreferenceUtils.setUserDetail(jsonEncode(value.data())).then((value) {
+                  Get.to(() => const BottomBar());
+                });
+              });
+            });
+          });
           signInViewModel.signInEmailController.value.clear();
           signInViewModel.signInPhoneNoController.value.clear();
           signInViewModel.signInPasswordController.value.clear();
-          hideLoadingDialog(context: context);
-          CollectionUtils.userCollection.doc(SharedPreferenceUtils.getUserId()).update({
-            "latitude": SharedPreferenceUtils.getLatitude(),
-            "longitude": SharedPreferenceUtils.getLongitude()
-          });
-          Get.offAll(() => const BottomBar());
+
           // onLoginTap();
         } else {
           hideLoadingDialog(context: context);
