@@ -85,11 +85,14 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: ListView.builder(
                     itemCount: 3,
                     itemBuilder: (context, index) => Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 30.w, vertical: 10.h),
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 30.w, vertical: 10.h),
                       child: GestureDetector(
                         onTap: () async {
                           if (index == 0) {
-                            Get.find<BottomBarViewModel>().selectedBottomIndex.value = 1;
+                            Get.find<BottomBarViewModel>()
+                                .selectedBottomIndex
+                                .value = 1;
                             await SharedPreferenceUtils.setSessionId('');
                             Get.to(() => const BottomBar());
                           } else if (index == 1) {
