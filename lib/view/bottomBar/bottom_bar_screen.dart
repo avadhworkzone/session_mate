@@ -21,12 +21,18 @@ class _BottomBarState extends State<BottomBar> {
   BottomBarViewModel bottomBarViewModel = Get.put(BottomBarViewModel());
 
   @override
+  void initState() {
+    // TODO: implement initState
+    bottomBarViewModel.setUserData();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Obx(
       () => Scaffold(
         extendBody: false,
-        body: bottomBarViewModel
-            .screenList[bottomBarViewModel.selectedBottomIndex.value],
+        body: bottomBarViewModel.screenList[bottomBarViewModel.selectedBottomIndex.value],
         bottomNavigationBar: Container(
           padding: EdgeInsets.symmetric(vertical: 20.w, horizontal: 12.w),
           width: Get.width,
@@ -82,9 +88,7 @@ class _BottomBarState extends State<BottomBar> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           LocalAssets(
-            imagePath: bottomBarViewModel.selectedBottomIndex.value == index
-                ? selectedIcon
-                : icon,
+            imagePath: bottomBarViewModel.selectedBottomIndex.value == index ? selectedIcon : icon,
             height: 25.h,
             width: 25.w,
             // imgColor: bottomBarViewModel.selectedBottomIndex.value == index
