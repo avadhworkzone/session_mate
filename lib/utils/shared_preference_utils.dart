@@ -54,7 +54,7 @@ class SharedPreferenceUtils {
   }
 
   ///USER DETAIL
-  static setUserDetail(String value) async {
+  static Future<void> setUserDetail(String value) async {
     await getStorage.write(userDetail, value);
   }
 

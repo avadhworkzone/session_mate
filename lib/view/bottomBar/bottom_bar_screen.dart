@@ -23,7 +23,6 @@ class _BottomBarState extends State<BottomBar> {
   @override
   void initState() {
     // TODO: implement initState
-    bottomBarViewModel.setUserData();
     super.initState();
   }
 

@@ -10,6 +10,7 @@ class RegularExpressionUtils {
   static String digitsPattern = r"[0-9]";
   static String address = r"^[a-zA-Z0-9\s,-]+$";
   static String passwordPattern = r"[a-zA-Z0-9#!_@$%^&*-]";
+  static String therapyCenterCode = r"[a-zA-Z0-9]";
 
   /// capitalCase is used for one capital character is requiter in string
   var capitalCase = RegExp(r'[A-Z]');

@@ -8,13 +8,6 @@ import 'package:session_mate/utils/shared_preference_utils.dart';
 import 'package:worldtime/worldtime.dart';
 
 class HomeViewModel extends GetxController {
-  @override
-  void onInit() {
-    // TODO: implement onInit
-
-    super.onInit();
-  }
-
   final worldtimePlugin = Worldtime();
   bool isFreeTrial = true;
   GlobalKey<ScaffoldState> homeDrawerKey = GlobalKey();

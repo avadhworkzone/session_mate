@@ -11,19 +11,28 @@ class AppStrings {
   static String signUp = 'Sign up';
 
   ///SIGN UP SCREEN
+  static String userName = 'User Name';
+  static String childName = 'Child Name';
   static String email = 'Email';
   static String phoneNo = 'Phone No';
   static String password = 'Password';
   static String confirmPassword = 'Confirm Password';
+  static String therapyCenterCode = 'Therapy Center code';
   static String emailHintTxt = 'demo@gmail.com';
+  static String userNameHintTxt = 'Enter Name';
   static String phoneNoHintTxt = 'Enter Your Phone number';
   static String passwordHintTxt = '*********';
+  static String centerCodeHintTxt = 'GGN98765';
   static String alreadyHaveAccount = 'Already have an Account ! ';
   static String registerWith = 'Or Register with';
   static String privacyAndTermsCheckTxt = 'By creating an account you agree to our';
   static String termsConditionTxt = 'Terms and Conditions';
   static String and = '&';
   static String privacyPoliceTxt = 'Privacy Policy';
+  static String role = 'Role';
+  static String therapist = 'Therapist';
+  static String caregiver = 'Caregiver';
+  static String selectRole = 'Select Role';
 
   /// SIGN IN SCREEN
   static String doNotHaveAccountTxt = 'Don’t have an Account ? ';
@@ -72,14 +81,17 @@ class AppStrings {
   ///APP ERROR MESSAGE
   static String enterValidEmail = "Please Enter Valid Email Address";
   static String emailIsRequired = "email address is Required";
+  static String roleIsRequired = "Role is Required";
   static String phoneNumberIsRequired = "phone number is Required";
   static String passwordIsRequired = "password is Required";
   static String confirmPasswordIsRequired = "confirm password is Required";
+  static String centerCodeIsRequired = "center Code is Required";
   static String isRequired = "isRequired";
   static String passValidation = "password and confirm password must be same";
   static const userExistError = 'User Already Exist!';
   static const loginError = 'User or Password invalid!';
   static const somethingWrong = 'Something Wrong';
+  static const pleaseSelectRole = 'Please select role';
 
   /// DRAWER SCREEN
   static String manageSessions = "Manage Sessions";
@@ -102,7 +114,6 @@ class AppStrings {
   static String searchForinterestRate = "Search for interest rate";
   static String searchForExchangeRate = "Search for exchange rate";
   static String searchforbranch = "Search for branch";
-  static String childName = "Child Name";
   static String childAge = "Child Age";
   static String back = "Back";
   static String hi = "Hi, ";
