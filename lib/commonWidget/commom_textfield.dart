@@ -365,10 +365,13 @@ class CommonReadableTextField extends StatelessWidget {
 
 ///COMMON ROUNDED TEXTFIELD
 commonRoundedTextField(
-    {required String text, required TextEditingController textEditingController}) {
+    {required String text,
+    required TextEditingController textEditingController,
+    void Function(String)? onChanged}) {
   return SizedBox(
     width: Get.width / 1.5,
     child: TextFormField(
+      onChanged: onChanged,
       controller: textEditingController,
       cursorColor: AppColors.white,
       decoration: InputDecoration(
