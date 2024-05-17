@@ -10,6 +10,9 @@ class UserModel {
   String? latitude;
   String? longitude;
   String? registrationDate;
+  String? role;
+  String? userName;
+  String? centerCode;
 
   UserModel({
     this.email,
@@ -23,6 +26,9 @@ class UserModel {
     this.latitude,
     this.longitude,
     this.registrationDate,
+    this.role,
+    this.userName,
+    this.centerCode,
   });
 
   UserModel.fromJson(Map<String, dynamic> json) {
@@ -37,6 +43,9 @@ class UserModel {
     latitude = json['latitude'] ?? "";
     longitude = json['longitude'] ?? "";
     registrationDate = json['registrationDate'] ?? "";
+    role = json['role'] ?? "";
+    userName = json['userName'] ?? "";
+    centerCode = json['centerCode'] ?? "";
   }
 
   Map<String, dynamic> toJson() => {
@@ -51,5 +60,8 @@ class UserModel {
         'latitude': latitude,
         'longitude': longitude,
         'registrationDate': registrationDate,
+        'role': role,
+        'userName': userName,
+        'centerCode': centerCode,
       };
 }

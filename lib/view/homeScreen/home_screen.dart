@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -29,9 +31,12 @@ class _HomeScreenState extends State<HomeScreen> {
   HomeViewModel homeViewModel = Get.put(HomeViewModel());
   SessionViewModel sessionViewModel = Get.put(SessionViewModel());
   final GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
+  Map<String, dynamic> userDetail = {};
 
   @override
   void initState() {
+    userDetail = jsonDecode(SharedPreferenceUtils.getUserDetail());
+    print(userDetail);
     homeViewModel.checkSubscription(context);
     // TODO: implement initState
     //bottomBarViewModel.checkIsFreeTrial();
@@ -63,7 +68,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   SizeConfig.sW40,
                   CustomText(
-                    '${AppStrings.hi} Nitin',
+                    '${AppStrings.hi} ${userDetail["userName"]}',
                     color: AppColors.black1c,
                     fontSize: 32.sp,
                     fontWeight: FontWeight.w400,
@@ -80,14 +85,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: ListView.builder(
                     itemCount: 3,
                     itemBuilder: (context, index) => Padding(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: 30.w, vertical: 10.h),
+                      padding: EdgeInsets.symmetric(horizontal: 30.w, vertical: 10.h),
                       child: GestureDetector(
                         onTap: () async {
                           if (index == 0) {
-                            Get.find<BottomBarViewModel>()
-                                .selectedBottomIndex
-                                .value = 1;
+                            Get.find<BottomBarViewModel>().selectedBottomIndex.value = 1;
                             await SharedPreferenceUtils.setSessionId('');
                             Get.to(() => const BottomBar());
                           } else if (index == 1) {

@@ -28,12 +28,4 @@ class BottomBarViewModel extends GetxController {
   void onInit() {
     super.onInit();
   }
-
-  void setUserData() async {
-    var userDetail;
-    CollectionUtils.userCollection.doc(SharedPreferenceUtils.getUserId()).get().then((value) {
-      userDetail = value.data();
-      SharedPreferenceUtils.setUserDetail(jsonEncode(value.data()));
-    });
-  }
 }
