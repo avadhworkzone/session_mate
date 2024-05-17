@@ -113,13 +113,13 @@ class _SessionScreenState extends State<SessionScreen> {
                   width: 60.w,
                   // padding: EdgeInsets.symmetric(horizontal: 30.w, vertical: 26.w),
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(25.r),
-                   color: AppColors.grey
-                    /*image: const DecorationImage(
+                      borderRadius: BorderRadius.circular(25.r),
+                      color: AppColors.grey
+                      /*image: const DecorationImage(
                           fit: BoxFit.cover,
                           image: NetworkImage(
                               'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSu0gYR-As9-_w2_fjRc895mD_91WQ5p7N_9Q&s'))*/
-                  ),
+                      ),
                   child: Center(
                     child: userDetail["userName"].toString().split("").first ==
                             ''
