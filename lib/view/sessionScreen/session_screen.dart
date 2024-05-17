@@ -121,8 +121,7 @@ class _SessionScreenState extends State<SessionScreen> {
                               'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSu0gYR-As9-_w2_fjRc895mD_91WQ5p7N_9Q&s'))*/
                       ),
                   child: Center(
-                    child: userDetail["userName"].toString().split("").first ==
-                            ''
+                    child: userDetail["userName"] == ''
                         ? const CustomText(
                             '',
                             color: AppColors.white,

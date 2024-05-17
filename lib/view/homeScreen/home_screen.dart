@@ -36,7 +36,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     userDetail = jsonDecode(SharedPreferenceUtils.getUserDetail());
-    print(userDetail);
+
     homeViewModel.checkSubscription(context);
     // TODO: implement initState
     //bottomBarViewModel.checkIsFreeTrial();
