@@ -26,7 +26,6 @@ class BottomBarViewModel extends GetxController {
 
   @override
   void onInit() {
-    setUserData();
     super.onInit();
   }
 

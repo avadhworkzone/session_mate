@@ -74,8 +74,9 @@ class SubscriptionViewModel extends GetxController {
         RazorpayService.makePaymentWithRazorPay(amount: 449);
       }
     } else {
-      // SharedPreferenceUtils.clearPreference();
-      // Get.offAll(() => const WelcomeScreen());
+      SharedPreferenceUtils.clearPreference();
+      hideLoadingDialog(context: context);
+      Get.offAll(() => const WelcomeScreen());
     }
   }
 }

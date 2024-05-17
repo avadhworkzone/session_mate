@@ -25,6 +25,12 @@ class HomeViewModel extends GetxController {
     String data = SharedPreferenceUtils.getUserDetail();
     var userDetailSnapshot = jsonDecode(data);
     var userDetail = userDetailSnapshot;
+    CollectionUtils.userCollection
+        .doc(SharedPreferenceUtils.getUserId())
+        .snapshots()
+        .listen((event) {
+      userDetail = event.data();
+    });
     final DateTime currentDate = await worldtimePlugin.timeByLocation(
       latitude: double.parse(userDetail?["latitude"]),
       longitude: double.parse(userDetail?["longitude"]),
@@ -49,13 +55,13 @@ class HomeViewModel extends GetxController {
         SharedPreferenceUtils.setIsSubscription(false);
 
         ///CHECK 14 DAYS FREE TRIAL
-        DateTime currentDate = DateTime.parse(SharedPreferenceUtils.getCurrentDate());
-        DateTime registrationDate =
-            DateTime.parse("2024-05-30" /*userDetail?["registrationDate"]*/);
+        DateTime currentDate =
+            DateTime.parse("2024-05-30" /*SharedPreferenceUtils.getCurrentDate()*/);
+        DateTime registrationDate = DateTime.parse(userDetail?["registrationDate"]);
         print(
             "Difference days from registration >>>> ${currentDate.difference(registrationDate).inDays}");
         hideLoadingDialog(context: context);
-        if (registrationDate.difference(currentDate).inDays > 14) {
+        if (currentDate.difference(registrationDate).inDays > 14) {
           isFreeTrial = false;
           update(["freeTrial"]);
         }
