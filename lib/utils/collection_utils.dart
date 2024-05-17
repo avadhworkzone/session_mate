@@ -10,25 +10,24 @@ class TextConfig {
   static const goalSubCategory = 'subGoal';
   static const currentLevel = 'Current Level';
   static const strategies = 'Strategies';
+  static const userTherapyData = 'userTherapyData';
 }
 
 class CollectionUtils {
-  static final userCollection =
-      FirebaseFirestore.instance.collection(TextConfig.user);
+  static final userCollection = FirebaseFirestore.instance.collection(TextConfig.user);
   static final sessionCollection =
       FirebaseFirestore.instance.collection(TextConfig.userSessionData);
   static final therapyCenterCollection =
       FirebaseFirestore.instance.collection(TextConfig.therapyCenter);
-  static final session =
-      FirebaseFirestore.instance.collection(TextConfig.session);
-  static final ageGroupLevel =
-      FirebaseFirestore.instance.collection(TextConfig.ageGroupLevel);
+  static final session = FirebaseFirestore.instance.collection(TextConfig.session);
+  static final ageGroupLevel = FirebaseFirestore.instance.collection(TextConfig.ageGroupLevel);
   static final goalCategoryCollection =
       FirebaseFirestore.instance.collection(TextConfig.goalCategory);
   static final goalSubCategoryCollection =
       FirebaseFirestore.instance.collection(TextConfig.goalSubCategory);
   static final currentLevelCollection =
       FirebaseFirestore.instance.collection(TextConfig.currentLevel);
-  static final strategiesCollection =
-      FirebaseFirestore.instance.collection(TextConfig.strategies);
+  static final strategiesCollection = FirebaseFirestore.instance.collection(TextConfig.strategies);
+  static final userTherapyDataCollection =
+      FirebaseFirestore.instance.collection(TextConfig.userTherapyData);
 }

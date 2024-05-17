@@ -23,6 +23,15 @@ class CombinedData {
     required this.currentLevel,
     required this.plannedStrategies,
   });
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['category'] = category;
+    data['subCategory'] = subCategory;
+    data['currentLevel'] = currentLevel;
+    data['plannedStrategies'] = plannedStrategies;
+    return data;
+  }
 }
 
 List<String> homeImageList = [
@@ -31,11 +40,7 @@ List<String> homeImageList = [
   AppImageAssets.therapyPlan
 ];
 
-List<String> homeTitle = [
-  AppStrings.addsession,
-  AppStrings.retrieveCounts,
-  AppStrings.therepyPlan
-];
+List<String> homeTitle = [AppStrings.addsession, AppStrings.retrieveCounts, AppStrings.therepyPlan];
 
 List<String> homeSubtitle = [
   AppStrings.searchforbranch,
@@ -54,16 +59,8 @@ List<Map<String, dynamic>> sessionDataList = [
     'image': AppImageAssets.occupationalTherapyIcn,
     'session_name': AppStrings.occupationalTherapy,
   },
-  {
-    'id': 2,
-    'image': AppImageAssets.sportIcn,
-    'session_name': AppStrings.sports
-  },
-  {
-    'id': 3,
-    'image': AppImageAssets.speechIcn,
-    'session_name': AppStrings.speech
-  },
+  {'id': 2, 'image': AppImageAssets.sportIcn, 'session_name': AppStrings.sports},
+  {'id': 3, 'image': AppImageAssets.speechIcn, 'session_name': AppStrings.speech},
   {
     'id': 4,
     'image': AppImageAssets.musicIcn,
@@ -72,8 +69,7 @@ List<Map<String, dynamic>> sessionDataList = [
 ];
 
 String formatMilliseconds(int millisecondsSinceEpoch) {
-  DateTime dateTime =
-      DateTime.fromMillisecondsSinceEpoch(millisecondsSinceEpoch);
+  DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(millisecondsSinceEpoch);
   String formattedDate = '${dateTime.month.toString().padLeft(2, '0')}/'
       '${dateTime.day.toString().padLeft(2, '0')}/'
       '${dateTime.year.toString()}';
