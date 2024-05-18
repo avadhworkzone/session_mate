@@ -30,7 +30,8 @@ Drawer buildDrawer({required String userName}) {
                     color: AppColors.primaryColor,
                   ),
                   child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 28.w, vertical: 25.h),
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 28.w, vertical: 25.h),
                     child: Column(
                       // mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,

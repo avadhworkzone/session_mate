@@ -11,8 +11,11 @@ class HomeViewModel extends GetxController {
   Rx<bool> isFreeTrial = true.obs;
   // GlobalKey<ScaffoldState> homeDrawerKey = GlobalKey();
   Rx<bool> checkSubscriptionLoader = false.obs;
-  RxList<String> homeImageList =
-      [AppImageAssets.addNewSession, AppImageAssets.retriveCount, AppImageAssets.therapyPlan].obs;
+  RxList<String> homeImageList = [
+    AppImageAssets.addNewSession,
+    AppImageAssets.retriveCount,
+    AppImageAssets.therapyPlan
+  ].obs;
 
   /// CHECK USER SUBSCRIPTION
   Future<void> checkSubscription(BuildContext context) async {
@@ -33,7 +36,8 @@ class HomeViewModel extends GetxController {
     );
     SharedPreferenceUtils.setCurrentDate(
         "${currentDate.year}-${currentDate.month < 10 ? "0${currentDate.month}" : "${currentDate.month}"}-${currentDate.day < 10 ? "0${currentDate.day}" : "${currentDate.day}"}");
-    DateTime subscriptionEndDate = DateTime.parse(userDetail?["subscriptionEndDate"]);
+    DateTime subscriptionEndDate =
+        DateTime.parse(userDetail?["subscriptionEndDate"]);
     if (subscriptionEndDate.isAfter(currentDate)) {
       CollectionUtils.userCollection
           .doc(SharedPreferenceUtils.getUserId())
@@ -43,7 +47,8 @@ class HomeViewModel extends GetxController {
         checkSubscriptionLoader.value = false;
         // hideLoadingDialog(context: context);
         // update(["freeTrial"]);
-        print("isSubscription ======>>>>${SharedPreferenceUtils.getIsSubscription()}<<<<");
+        print(
+            "isSubscription ======>>>>${SharedPreferenceUtils.getIsSubscription()}<<<<");
       });
     } else {
       CollectionUtils.userCollection
@@ -52,10 +57,12 @@ class HomeViewModel extends GetxController {
         SharedPreferenceUtils.setIsSubscription(false);
 
         ///CHECK 14 DAYS FREE TRIAL
-        DateTime currentDate = DateTime.parse(SharedPreferenceUtils.getCurrentDate());
+        DateTime currentDate =
+            DateTime.parse(SharedPreferenceUtils.getCurrentDate());
 
         ///SharedPreferenceUtils.getCurrentDate()
-        DateTime registrationDate = DateTime.parse(userDetail?["registrationDate"]);
+        DateTime registrationDate =
+            DateTime.parse(userDetail?["registrationDate"]);
         print(
             "Difference days from registration >>>> ${currentDate.difference(registrationDate).inDays}");
         // hideLoadingDialog(context: context);
@@ -64,7 +71,8 @@ class HomeViewModel extends GetxController {
           isFreeTrial.value = false;
           // update(["freeTrial"]);
         }
-        print("isSubscription ======>>>>${SharedPreferenceUtils.getIsSubscription()}<<<<");
+        print(
+            "isSubscription ======>>>>${SharedPreferenceUtils.getIsSubscription()}<<<<");
       });
     }
   }
