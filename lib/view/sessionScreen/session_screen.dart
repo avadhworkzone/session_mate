@@ -75,9 +75,11 @@ class _SessionScreenState extends State<SessionScreen> {
             'id': snapshot.sessionId,
             'session_name': snapshot.sessionName ?? '',
           });
-          logs('sessionViewModel.selectedSession====${sessionViewModel.selectedSession}');
+          logs(
+              'sessionViewModel.selectedSession====${sessionViewModel.selectedSession}');
         }
-        sessionViewModel.sessionDate.value = formatMilliseconds(snapshot.sessionSelectedDate ?? 0);
+        sessionViewModel.sessionDate.value =
+            formatMilliseconds(snapshot.sessionSelectedDate ?? 0);
         selectedValue = snapshot.therapyCenter;
         sessionViewModel.isLoadingData.value = false;
         // } else {
@@ -95,7 +97,8 @@ class _SessionScreenState extends State<SessionScreen> {
       backgroundColor: AppColors.primaryColor,
       appBar: AppBar(
         toolbarHeight: 0,
-        systemOverlayStyle: const SystemUiOverlayStyle(statusBarColor: AppColors.primaryColor),
+        systemOverlayStyle:
+            const SystemUiOverlayStyle(statusBarColor: AppColors.primaryColor),
         leading: const SizedBox(),
         leadingWidth: 0,
       ),
@@ -110,7 +113,8 @@ class _SessionScreenState extends State<SessionScreen> {
                   width: 60.w,
                   // padding: EdgeInsets.symmetric(horizontal: 30.w, vertical: 26.w),
                   decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(25.r), color: AppColors.grey
+                      borderRadius: BorderRadius.circular(25.r),
+                      color: AppColors.grey
                       /*image: const DecorationImage(
                           fit: BoxFit.cover,
                           image: NetworkImage(
@@ -142,7 +146,8 @@ class _SessionScreenState extends State<SessionScreen> {
                 decoration: BoxDecoration(
                     color: AppColors.white,
                     borderRadius: BorderRadius.only(
-                        topRight: Radius.circular(35.r), topLeft: Radius.circular(35.r))),
+                        topRight: Radius.circular(35.r),
+                        topLeft: Radius.circular(35.r))),
                 child: sessionViewModel.isLoadingData.value == true
                     ? const Center(child: CircularProgressIndicator())
                     : SingleChildScrollView(
@@ -161,7 +166,8 @@ class _SessionScreenState extends State<SessionScreen> {
                               stream: SessionService.getSessionList(),
                               builder: (context, snapshot) {
                                 if (!snapshot.hasData) {
-                                  return const Center(child: CircularProgressIndicator());
+                                  return const Center(
+                                      child: CircularProgressIndicator());
                                 }
                                 if (snapshot.hasError) {
                                   return noDataFound();
@@ -178,32 +184,48 @@ class _SessionScreenState extends State<SessionScreen> {
                                                   8.0), // Add some spacing between items
                                               child: InkWell(
                                                 onTap: () {
-                                                  if (!sessionViewModel.selectedSession.any(
-                                                      (element) =>
+                                                  if (!sessionViewModel
+                                                      .selectedSession
+                                                      .any((element) =>
                                                           element['id'] ==
-                                                          snapshotData![index].id)) {
-                                                    sessionViewModel.selectedSession.add({
-                                                      'id': snapshotData![index].id,
+                                                          snapshotData![index]
+                                                              .id)) {
+                                                    sessionViewModel
+                                                        .selectedSession
+                                                        .add({
+                                                      'id': snapshotData![index]
+                                                          .id,
                                                       'session_name':
-                                                          snapshotData![index].sessionName
+                                                          snapshotData![index]
+                                                              .sessionName
                                                     });
                                                     logs(
                                                         'sessionViewModel.selectedSession====${sessionViewModel.selectedSession}');
                                                   } else {
-                                                    sessionViewModel.selectedSession.removeWhere(
-                                                        (element) =>
-                                                            element['id'] ==
-                                                            snapshotData![index].id);
+                                                    sessionViewModel
+                                                        .selectedSession
+                                                        .removeWhere(
+                                                            (element) =>
+                                                                element['id'] ==
+                                                                snapshotData![
+                                                                        index]
+                                                                    .id);
                                                   }
                                                   setState(() {});
                                                 },
                                                 child: CommonSessionContainer(
-                                                  imageUrl: snapshotData![index].image!,
-                                                  titleText: snapshotData![index].sessionName!,
-                                                  color: sessionViewModel.selectedSession.any(
-                                                          (element) =>
+                                                  imageUrl: snapshotData![index]
+                                                      .image!,
+                                                  titleText:
+                                                      snapshotData![index]
+                                                          .sessionName!,
+                                                  color: sessionViewModel
+                                                          .selectedSession
+                                                          .any((element) =>
                                                               element['id'] ==
-                                                              snapshotData![index].id)
+                                                              snapshotData![
+                                                                      index]
+                                                                  .id)
                                                       ? AppColors.primaryColor
                                                       : Colors.transparent,
                                                 ),
@@ -234,17 +256,21 @@ class _SessionScreenState extends State<SessionScreen> {
                                           fontWeight: FontWeight.w500,
                                         ),
                                       ),
-                                      padding: EdgeInsets.symmetric(horizontal: 20.w),
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 20.w),
                                       alignment: Alignment.center,
                                       value: selectedValue,
                                       underline: Container(),
                                       icon: const Icon(
                                         Icons.keyboard_arrow_down,
                                       ),
-                                      items: locationData.map<DropdownMenuItem<String>>(
-                                          (TherapyCenterLocationDataModel serviceData) {
+                                      items: locationData
+                                          .map<DropdownMenuItem<String>>(
+                                              (TherapyCenterLocationDataModel
+                                                  serviceData) {
                                         return DropdownMenuItem<String>(
-                                          value: '${serviceData.city}, ${serviceData.state}',
+                                          value:
+                                              '${serviceData.city}, ${serviceData.state}',
                                           child: CustomText(
                                             '${serviceData.city!}, ${serviceData.state!}',
                                             fontSize: 16.sp,
@@ -266,19 +292,23 @@ class _SessionScreenState extends State<SessionScreen> {
                             Padding(
                               padding: EdgeInsets.symmetric(horizontal: 50.w),
                               child: GestureDetector(
-                                onTap: () => sessionViewModel.selectDate(context),
+                                onTap: () =>
+                                    sessionViewModel.selectDate(context),
                                 child: Container(
                                   // height: 45.h,
                                   // padding: const EdgeInsets.all(8.0),
-                                  margin: EdgeInsets.symmetric(horizontal: 20.w),
-                                  padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 10.w),
+                                  margin:
+                                      EdgeInsets.symmetric(horizontal: 20.w),
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 15.w, vertical: 10.w),
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(15.r),
                                     border: Border.all(color: Colors.grey),
                                   ),
                                   child: Obx(
                                     () => Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
                                         CustomText(
                                           '${sessionViewModel.sessionDate.value == '' ? AppStrings.calender : sessionViewModel.sessionDate.value}',
@@ -287,7 +317,9 @@ class _SessionScreenState extends State<SessionScreen> {
                                           color: AppColors.color97,
                                           fontWeight: FontWeight.w500,
                                         ),
-                                        const LocalAssets(imagePath: AppImageAssets.calenderIcn)
+                                        const LocalAssets(
+                                            imagePath:
+                                                AppImageAssets.calenderIcn)
                                       ],
                                     ),
                                   ),
@@ -327,10 +359,13 @@ class _SessionScreenState extends State<SessionScreen> {
         SessionService.deleteSessionData(SharedPreferenceUtils.getSessionId());
       }
       for (int i = 0; i < sessionViewModel.selectedSession.length; i++) {
-        sessionDataReq.sessionId = sessionViewModel.selectedSession[i]['id'].toString();
+        sessionDataReq.sessionId =
+            sessionViewModel.selectedSession[i]['id'].toString();
         sessionDataReq.userId = SharedPreferenceUtils.getUserId();
-        sessionDataReq.sessionName = sessionViewModel.selectedSession[i]['session_name'];
-        sessionDataReq.sessionSelectedDate = sessionViewModel.sessionDateMilliSecond.value;
+        sessionDataReq.sessionName =
+            sessionViewModel.selectedSession[i]['session_name'];
+        sessionDataReq.sessionSelectedDate =
+            sessionViewModel.sessionDateMilliSecond.value;
         sessionDataReq.therapyCenter = '${selectedValue}';
         sessionDataReq.createdAt = DateTime.now().millisecondsSinceEpoch;
         sessionDataReq.selectedMonth = sessionViewModel.selectedMonth;
