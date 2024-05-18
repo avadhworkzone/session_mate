@@ -108,38 +108,42 @@ class _SessionScreenState extends State<SessionScreen> {
             padding: EdgeInsets.only(left: 30.w, bottom: 30.w, top: 20.w),
             child: Row(
               children: [
-                Container(
-                  height: 50.h,
-                  width: 60.w,
-                  // padding: EdgeInsets.symmetric(horizontal: 30.w, vertical: 26.w),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(25.r),
-                      color: AppColors.grey
-                      /*image: const DecorationImage(
+                userDetail["userName"] == ""
+                    ? SizedBox()
+                    : Container(
+                        height: 50.h,
+                        width: 60.w,
+                        // padding: EdgeInsets.symmetric(horizontal: 30.w, vertical: 26.w),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(25.r),
+                            color: AppColors.grey
+                            /*image: const DecorationImage(
                           fit: BoxFit.cover,
                           image: NetworkImage(
                               'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSu0gYR-As9-_w2_fjRc895mD_91WQ5p7N_9Q&s'))*/
+                            ),
+                        child: Center(
+                          child: CustomText(
+                            userDetail["userName"]
+                                .toString()
+                                .split("")
+                                .first
+                                .toUpperCase(),
+                            color: AppColors.black,
+                            fontSize: 28.sp,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
                       ),
-                  child: Center(
-                    child: CustomText(
-                      userDetail["userName"]
-                          .toString()
-                          .split("")
-                          .first
-                          .toUpperCase(),
-                      color: AppColors.black,
-                      fontSize: 28.sp,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ),
                 SizeConfig.sW15,
-                CustomText(
-                  '${AppStrings.hi} ${userDetail["userName"]}',
-                  color: AppColors.white,
-                  fontSize: 20.sp,
-                  fontWeight: FontWeight.w400,
-                )
+                userDetail["userName"] == ""
+                    ? SizedBox()
+                    : CustomText(
+                        '${AppStrings.hi} ${userDetail["userName"]}',
+                        color: AppColors.white,
+                        fontSize: 20.sp,
+                        fontWeight: FontWeight.w400,
+                      )
               ],
             ),
           ),

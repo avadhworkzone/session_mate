@@ -68,12 +68,14 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                   SizeConfig.sW40,
-                  CustomText(
-                    '${AppStrings.hi} ${userDetail["userName"]}',
-                    color: AppColors.black1c,
-                    fontSize: 32.sp,
-                    fontWeight: FontWeight.w400,
-                  )
+                  userDetail["userName"] == ""
+                      ? SizedBox()
+                      : CustomText(
+                          '${AppStrings.hi} ${userDetail["userName"].toString().capitalizeFirst}',
+                          color: AppColors.black1c,
+                          fontSize: 32.sp,
+                          fontWeight: FontWeight.w400,
+                        )
                 ],
               ),
             )
@@ -93,18 +95,22 @@ class _HomeScreenState extends State<HomeScreen> {
                   return GestureDetector(
                       onTap: () async {
                         if (index == 0) {
-                          Get.find<BottomBarViewModel>().selectedBottomIndex.value = 1;
+                          Get.find<BottomBarViewModel>()
+                              .selectedBottomIndex
+                              .value = 1;
                           await SharedPreferenceUtils.setSessionId('');
                           Get.to(() => const BottomBar());
                         } else if (index == 1) {
                           sessionViewModel.retrieveCountMonthIs.value = '';
                           Get.to(() => const RetrieveCounts());
                         } else {
-                          if (homeViewModel.checkSubscriptionLoader.value == false) {
+                          if (homeViewModel.checkSubscriptionLoader.value ==
+                              false) {
                             if (homeViewModel.isFreeTrial.value == true) {
                               Get.to(() => const AssessmentAndPlanScreen());
                             } else {
-                              commonSnackBar(message: AppStrings.yourFreeTrialEnd);
+                              commonSnackBar(
+                                  message: AppStrings.yourFreeTrialEnd);
                             }
                           }
                         }

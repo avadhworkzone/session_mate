@@ -36,29 +36,33 @@ Drawer buildDrawer({required String userName}) {
                       // mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        CircleAvatar(
-                          radius: 30.w,
-                          backgroundColor: AppColors.grey,
-                          child: Center(
-                            child: CustomText(
-                              userName.split("").first.toUpperCase(),
-                              color: AppColors.black,
-                              fontSize: 28.sp,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                          // backgroundImage: const AssetImage(AppImageAssets.profile),
-                        ),
+                        userName == ""
+                            ? SizedBox()
+                            : CircleAvatar(
+                                radius: 30.w,
+                                backgroundColor: AppColors.grey,
+                                child: Center(
+                                  child: CustomText(
+                                    userName.split("").first.toUpperCase(),
+                                    color: AppColors.black,
+                                    fontSize: 28.sp,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                                // backgroundImage: const AssetImage(AppImageAssets.profile),
+                              ),
                         SizeConfig.sH12,
-                        CustomText(
-                          userName,
-                          color: AppColors.white,
-                          fontSize: 20.sp,
-                          fontWeight: FontWeight.bold,
-                        ),
+                        userName == ''
+                            ? SizedBox()
+                            : CustomText(
+                                userName.toString().capitalizeFirst!,
+                                color: AppColors.white,
+                                fontSize: 20.sp,
+                                fontWeight: FontWeight.bold,
+                              ),
                         SizeConfig.sH6,
                         CustomText(
-                          SharedPreferenceUtils.getUserId(),
+                          'User   ${SharedPreferenceUtils.getUserId()}',
                           color: AppColors.white,
                           fontSize: 19.sp,
                           fontWeight: FontWeight.bold,

@@ -34,9 +34,11 @@ class _RetrieveCountsState extends State<RetrieveCounts> {
   int? selectedDataIndex;
   String? selectedSessionName;
   List<SessionListData>? snapshotData;
+  Map<String, dynamic> userDetail = {};
 
   @override
   void initState() {
+    userDetail = jsonDecode(SharedPreferenceUtils.getUserDetail());
     // TODO: implement initState
     super.initState();
   }
@@ -47,7 +49,8 @@ class _RetrieveCountsState extends State<RetrieveCounts> {
       backgroundColor: AppColors.primaryColor,
       appBar: AppBar(
         toolbarHeight: 0,
-        systemOverlayStyle: const SystemUiOverlayStyle(statusBarColor: AppColors.primaryColor),
+        systemOverlayStyle:
+            const SystemUiOverlayStyle(statusBarColor: AppColors.primaryColor),
         leading: const SizedBox(),
         leadingWidth: 0,
       ),
@@ -67,22 +70,51 @@ class _RetrieveCountsState extends State<RetrieveCounts> {
                   ),
                 ),
                 SizeConfig.sW15,
-                CustomText(
-                  '${AppStrings.hi}',
-                  color: AppColors.white,
-                  fontSize: 20.sp,
-                  fontWeight: FontWeight.w400,
-                ),
+                userDetail["userName"] == ""
+                    ? SizedBox()
+                    : CustomText(
+                        '${AppStrings.hi} ${userDetail["userName"].toString().capitalizeFirst}',
+                        color: AppColors.white,
+                        fontSize: 20.sp,
+                        fontWeight: FontWeight.w400,
+                      ),
                 Spacer(),
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 30.w, vertical: 26.w),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(25.r),
-                      image: const DecorationImage(
+                userDetail["userName"] == ""
+                    ? SizedBox()
+                    : Container(
+                        height: 50.h,
+                        width: 60.w,
+                        // padding: EdgeInsets.symmetric(horizontal: 30.w, vertical: 26.w),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(25.r),
+                            color: AppColors.grey
+                            /*image: const DecorationImage(
                           fit: BoxFit.cover,
                           image: NetworkImage(
-                              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSu0gYR-As9-_w2_fjRc895mD_91WQ5p7N_9Q&s'))),
-                ),
+                              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSu0gYR-As9-_w2_fjRc895mD_91WQ5p7N_9Q&s'))*/
+                            ),
+                        child: Center(
+                          child: CustomText(
+                            userDetail["userName"]
+                                .toString()
+                                .split("")
+                                .first
+                                .toUpperCase(),
+                            color: AppColors.black,
+                            fontSize: 28.sp,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                // Container(
+                //   padding: EdgeInsets.symmetric(horizontal: 30.w, vertical: 26.w),
+                //   decoration: BoxDecoration(
+                //       borderRadius: BorderRadius.circular(25.r),
+                //       image: const DecorationImage(
+                //           fit: BoxFit.cover,
+                //           image: NetworkImage(
+                //               'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSu0gYR-As9-_w2_fjRc895mD_91WQ5p7N_9Q&s'))),
+                // ),
               ],
             ),
           ),
@@ -92,7 +124,8 @@ class _RetrieveCountsState extends State<RetrieveCounts> {
               decoration: BoxDecoration(
                   color: AppColors.white,
                   borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(35.r), topLeft: Radius.circular(35.r))),
+                      topRight: Radius.circular(35.r),
+                      topLeft: Radius.circular(35.r))),
               child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -110,7 +143,8 @@ class _RetrieveCountsState extends State<RetrieveCounts> {
                       stream: SessionService.getSessionList(),
                       builder: (context, snapshot) {
                         if (!snapshot.hasData) {
-                          return const Center(child: CircularProgressIndicator());
+                          return const Center(
+                              child: CircularProgressIndicator());
                         }
                         if (snapshot.hasError) {
                           return noDataFound();
@@ -128,12 +162,15 @@ class _RetrieveCountsState extends State<RetrieveCounts> {
                                       child: InkWell(
                                         onTap: () {
                                           selectedDataIndex = index;
-                                          selectedSessionName = snapshotData![index].sessionName;
+                                          selectedSessionName =
+                                              snapshotData![index].sessionName;
                                           setState(() {});
                                         },
                                         child: CommonSessionContainer(
-                                          imageUrl: sessionDataList[index]['image'],
-                                          titleText: snapshotData![index].sessionName!,
+                                          imageUrl: sessionDataList[index]
+                                              ['image'],
+                                          titleText:
+                                              snapshotData![index].sessionName!,
                                           color: selectedDataIndex == index
                                               ? AppColors.primaryColor
                                               : Colors.transparent,
@@ -149,7 +186,8 @@ class _RetrieveCountsState extends State<RetrieveCounts> {
                         onTap: () => sessionViewModel.selectMonth(context),
                         child: Container(
                           margin: EdgeInsets.symmetric(horizontal: 20.w),
-                          padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 10.w),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 15.w, vertical: 10.w),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(15.r),
                             border: Border.all(color: Colors.grey),
@@ -159,15 +197,18 @@ class _RetrieveCountsState extends State<RetrieveCounts> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 CustomText(
-                                  sessionViewModel.retrieveCountMonthIs.value == ''
+                                  sessionViewModel.retrieveCountMonthIs.value ==
+                                          ''
                                       ? AppStrings.calender
-                                      : sessionViewModel.retrieveCountMonthIs.value,
+                                      : sessionViewModel
+                                          .retrieveCountMonthIs.value,
                                   // : AppStrings.calender,
                                   fontSize: 15.sp,
                                   color: AppColors.color97,
                                   fontWeight: FontWeight.w500,
                                 ),
-                                const LocalAssets(imagePath: AppImageAssets.calenderIcn)
+                                const LocalAssets(
+                                    imagePath: AppImageAssets.calenderIcn)
                               ],
                             ),
                           ),
@@ -180,13 +221,14 @@ class _RetrieveCountsState extends State<RetrieveCounts> {
                       child: CustomBtn(
                           onTap: () async {
                             if (selectedSessionName == '' ||
-                                sessionViewModel.retrieveCountMonthIs.value.isEmpty) {
+                                sessionViewModel
+                                    .retrieveCountMonthIs.value.isEmpty) {
                               commonSnackBar(message: 'Please Select Data');
                             } else {
                               Get.to(() => RetrieveCountDetailScreen(
                                     sessionName: selectedSessionName!,
-                                    sessionSelectedMonth:
-                                        sessionViewModel.retrieveCountMonthIs.value,
+                                    sessionSelectedMonth: sessionViewModel
+                                        .retrieveCountMonthIs.value,
                                   ));
                             }
                           },

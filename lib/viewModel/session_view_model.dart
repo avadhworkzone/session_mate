@@ -45,7 +45,8 @@ class SessionViewModel extends GetxController {
           "${pickedDate.month}/${pickedDate.day}/${pickedDate.year}";
       DateTime dateTime =
           DateTime.fromMillisecondsSinceEpoch(sessionDateMilliSecond.value);
-      selectedMonth = DateFormat('MMMM').format(dateTime);
+      selectedMonth = DateFormat('MMMM').format(pickedDate);
+      print('selectedMonth${selectedMonth}');
 
       final TimeOfDay? pickedTime =
           await showTimePicker(context: context, initialTime: TimeOfDay.now());
