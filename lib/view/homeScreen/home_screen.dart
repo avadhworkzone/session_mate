@@ -36,8 +36,9 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     userDetail = jsonDecode(SharedPreferenceUtils.getUserDetail());
-
-    homeViewModel.checkSubscription(context);
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      homeViewModel.checkSubscription(context);
+    });
     // TODO: implement initState
     //bottomBarViewModel.checkIsFreeTrial();
     super.initState();

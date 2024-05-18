@@ -46,8 +46,9 @@ class SubscriptionViewModel extends GetxController {
 
   Future<void> buyBtnTap(int index, BuildContext context) async {
     showLoadingDialog(context: context);
-    var userDetailSnapshot =
-        await CollectionUtils.userCollection.doc(SharedPreferenceUtils.getUserId()).get();
+    var userDetailSnapshot = await CollectionUtils.userCollection
+        .doc(SharedPreferenceUtils.getUserId())
+        .get();
     var userDetail = userDetailSnapshot.data();
     final DateTime currentDateTime = await worldtimePlugin.timeByLocation(
       latitude: double.parse(userDetail?["latitude"]),
@@ -74,9 +75,9 @@ class SubscriptionViewModel extends GetxController {
         RazorpayService.makePaymentWithRazorPay(amount: 449);
       }
     } else {
-      SharedPreferenceUtils.clearPreference();
+      // SharedPreferenceUtils.clearPreference();
       hideLoadingDialog(context: context);
-      Get.offAll(() => const WelcomeScreen());
+      // Get.offAll(() => const WelcomeScreen());
     }
   }
 }

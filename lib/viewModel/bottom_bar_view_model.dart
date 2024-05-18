@@ -17,7 +17,7 @@ class BottomBarViewModel extends GetxController {
     const HomeScreen(),
     const SessionScreen(),
     const ProfileScreen(),
-    const SubscriptionsScreen(),
+    SubscriptionsScreen(),
     // const SettingScreen(),
     // const WelcomeScreen(),
     // const WelcomeScreen(),

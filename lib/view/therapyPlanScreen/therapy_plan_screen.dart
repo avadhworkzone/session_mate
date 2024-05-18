@@ -13,8 +13,10 @@ import 'package:session_mate/utils/app_string.dart';
 import 'package:session_mate/utils/common_methods.dart';
 import 'package:session_mate/utils/local_assets.dart';
 import 'package:session_mate/utils/size_config_utils.dart';
+import 'package:session_mate/view/bottomBar/bottom_bar_screen.dart';
 import 'package:session_mate/view/therapyPlanScreen/assessment_plan_screen.dart';
 import 'package:session_mate/viewModel/assessment_plan_view_model.dart';
+import 'package:session_mate/viewModel/bottom_bar_view_model.dart';
 import 'package:session_mate/viewModel/therapy_plan_view_model.dart';
 
 class TherapyPlan extends StatefulWidget {
@@ -30,11 +32,6 @@ class _TherapyPlanState extends State<TherapyPlan> {
 
   @override
   void initState() {
-    logs('Session Data===>>>>>>> ${assessmentAndPlanViewModel.sessionData.value?.toJson()}');
-    print("Category ${assessmentAndPlanViewModel.goalSelectedList}");
-    print("Sub Category ${assessmentAndPlanViewModel.subGoalSelectedList}");
-    print("Current Level ${assessmentAndPlanViewModel.currentLevelSelectedList}");
-    print("Planned Strategies ${assessmentAndPlanViewModel.strategiesSelectedList}");
     // TODO: implement initState
     super.initState();
   }
@@ -48,9 +45,9 @@ class _TherapyPlanState extends State<TherapyPlan> {
           () => Column(
             children: [
               commonAppBar(
-                title: AppStrings.therepyPlan,
-                textColor: AppColors.white,
-              ),
+                  title: AppStrings.therepyPlan,
+                  textColor: AppColors.white,
+                  iconColor: AppColors.white),
               Expanded(
                 child: SingleChildScrollView(
                   child: Padding(
@@ -58,24 +55,24 @@ class _TherapyPlanState extends State<TherapyPlan> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Center(
-                          child: commonRoundedTextField(
-                            onChanged: (val) {
-                              therapyPlanViewModel.childNameText = val;
-                            },
-                            text: AppStrings.childName,
-                            textEditingController: therapyPlanViewModel.childNameController.value,
-                          ),
-                        ),
-                        SizeConfig.sH10,
-                        Center(
-                            child: commonRoundedTextField(
-                                onChanged: (val) {
-                                  therapyPlanViewModel.childAgeText = val;
-                                },
-                                text: AppStrings.childAge,
-                                textEditingController:
-                                    therapyPlanViewModel.ageNameController.value)),
+                        // Center(
+                        //   child: commonRoundedTextField(
+                        //     onChanged: (val) {
+                        //       therapyPlanViewModel.childNameText = val;
+                        //     },
+                        //     text: AppStrings.childName,
+                        //     textEditingController: therapyPlanViewModel.childNameController.value,
+                        //   ),
+                        // ),
+                        // SizeConfig.sH10,
+                        // Center(
+                        //     child: commonRoundedTextField(
+                        //         onChanged: (val) {
+                        //           therapyPlanViewModel.childAgeText = val;
+                        //         },
+                        //         text: AppStrings.childAge,
+                        //         textEditingController:
+                        //             therapyPlanViewModel.ageNameController.value)),
                         SizeConfig.sH20,
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -90,9 +87,11 @@ class _TherapyPlanState extends State<TherapyPlan> {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: List.generate(
-                                  assessmentAndPlanViewModel.goalSelectedList.length,
+                                  assessmentAndPlanViewModel
+                                      .goalSelectedList.length,
                                   (index) => CustomText(
-                                        assessmentAndPlanViewModel.goalSelectedList[index]['name'],
+                                        assessmentAndPlanViewModel
+                                            .goalSelectedList[index]['name'],
                                         color: AppColors.white,
                                       )),
                             ),
@@ -107,10 +106,11 @@ class _TherapyPlanState extends State<TherapyPlan> {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: List.generate(
-                                  assessmentAndPlanViewModel.subGoalSelectedList.length,
+                                  assessmentAndPlanViewModel
+                                      .subGoalSelectedList.length,
                                   (index) => CustomText(
-                                        assessmentAndPlanViewModel.subGoalSelectedList[index]
-                                            ['name'],
+                                        assessmentAndPlanViewModel
+                                            .subGoalSelectedList[index]['name'],
                                         color: AppColors.white,
                                       )),
                             ),
@@ -125,9 +125,11 @@ class _TherapyPlanState extends State<TherapyPlan> {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: List.generate(
-                                  assessmentAndPlanViewModel.currentLevelSelectedList.length,
+                                  assessmentAndPlanViewModel
+                                      .currentLevelSelectedList.length,
                                   (index) => CustomText(
-                                        assessmentAndPlanViewModel.currentLevelSelectedList[index]
+                                        assessmentAndPlanViewModel
+                                                .currentLevelSelectedList[index]
                                             ['name'],
                                         color: AppColors.white,
                                       )),
@@ -143,9 +145,11 @@ class _TherapyPlanState extends State<TherapyPlan> {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: List.generate(
-                                  assessmentAndPlanViewModel.strategiesSelectedList.length,
+                                  assessmentAndPlanViewModel
+                                      .strategiesSelectedList.length,
                                   (index) => CustomText(
-                                        assessmentAndPlanViewModel.strategiesSelectedList[index]
+                                        assessmentAndPlanViewModel
+                                                .strategiesSelectedList[index]
                                             ['name'],
                                         color: AppColors.white,
                                       )),
@@ -211,7 +215,7 @@ class _TherapyPlanState extends State<TherapyPlan> {
                         //     ],
                         //   ),
                         // ),
-                        SizeConfig.sH15,
+                        SizeConfig.sH35,
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
@@ -229,6 +233,7 @@ class _TherapyPlanState extends State<TherapyPlan> {
                               onTap: () {
                                 // therapyPlanViewModel.fetchDataFromFirebase();
                                 therapyPlanViewModel.setTherapyData();
+                                Get.offAll(() => const BottomBar());
                                 // therapyPlanViewModel.generateAndSendPDF();
                               },
                               height: 55.h,
