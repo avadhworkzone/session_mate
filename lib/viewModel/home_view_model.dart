@@ -56,8 +56,6 @@ class HomeViewModel extends GetxController {
             DateTime.parse(SharedPreferenceUtils.getCurrentDate());
         DateTime registrationDate =
             DateTime.parse(userDetail?["registrationDate"]);
-        print(
-            "Difference days from registration >>>> ${currentDate.difference(registrationDate).inDays}");
         // hideLoadingDialog(context: context);
         checkSubscriptionLoader.value = false;
         if (currentDate.difference(registrationDate).inDays > 14) {
