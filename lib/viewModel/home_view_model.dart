@@ -1,16 +1,18 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:session_mate/utils/app_image_assets.dart';
 import 'package:session_mate/utils/collection_utils.dart';
-import 'package:session_mate/utils/loading_dialog.dart';
 import 'package:session_mate/utils/shared_preference_utils.dart';
 import 'package:worldtime/worldtime.dart';
 
 class HomeViewModel extends GetxController {
   final worldtimePlugin = Worldtime();
   Rx<bool> isFreeTrial = true.obs;
-  GlobalKey<ScaffoldState> homeDrawerKey = GlobalKey();
+  // GlobalKey<ScaffoldState> homeDrawerKey = GlobalKey();
   Rx<bool> checkSubscriptionLoader = false.obs;
+  RxList<String> homeImageList =
+      [AppImageAssets.addNewSession, AppImageAssets.retriveCount, AppImageAssets.therapyPlan].obs;
 
   /// CHECK USER SUBSCRIPTION
   Future<void> checkSubscription(BuildContext context) async {
@@ -31,8 +33,7 @@ class HomeViewModel extends GetxController {
     );
     SharedPreferenceUtils.setCurrentDate(
         "${currentDate.year}-${currentDate.month < 10 ? "0${currentDate.month}" : "${currentDate.month}"}-${currentDate.day < 10 ? "0${currentDate.day}" : "${currentDate.day}"}");
-    DateTime subscriptionEndDate =
-        DateTime.parse(userDetail?["subscriptionEndDate"]);
+    DateTime subscriptionEndDate = DateTime.parse(userDetail?["subscriptionEndDate"]);
     if (subscriptionEndDate.isAfter(currentDate)) {
       CollectionUtils.userCollection
           .doc(SharedPreferenceUtils.getUserId())
@@ -41,9 +42,8 @@ class HomeViewModel extends GetxController {
         isFreeTrial.value = true;
         checkSubscriptionLoader.value = false;
         // hideLoadingDialog(context: context);
-        update(["freeTrial"]);
-        print(
-            "isSubscription ======>>>>${SharedPreferenceUtils.getIsSubscription()}<<<<");
+        // update(["freeTrial"]);
+        print("isSubscription ======>>>>${SharedPreferenceUtils.getIsSubscription()}<<<<");
       });
     } else {
       CollectionUtils.userCollection
@@ -52,18 +52,19 @@ class HomeViewModel extends GetxController {
         SharedPreferenceUtils.setIsSubscription(false);
 
         ///CHECK 14 DAYS FREE TRIAL
-        DateTime currentDate =
-            DateTime.parse(SharedPreferenceUtils.getCurrentDate());
-        DateTime registrationDate =
-            DateTime.parse(userDetail?["registrationDate"]);
+        DateTime currentDate = DateTime.parse(SharedPreferenceUtils.getCurrentDate());
+
+        ///SharedPreferenceUtils.getCurrentDate()
+        DateTime registrationDate = DateTime.parse(userDetail?["registrationDate"]);
+        print(
+            "Difference days from registration >>>> ${currentDate.difference(registrationDate).inDays}");
         // hideLoadingDialog(context: context);
         checkSubscriptionLoader.value = false;
         if (currentDate.difference(registrationDate).inDays > 14) {
           isFreeTrial.value = false;
-          update(["freeTrial"]);
+          // update(["freeTrial"]);
         }
-        print(
-            "isSubscription ======>>>>${SharedPreferenceUtils.getIsSubscription()}<<<<");
+        print("isSubscription ======>>>>${SharedPreferenceUtils.getIsSubscription()}<<<<");
       });
     }
   }
