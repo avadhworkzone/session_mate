@@ -113,23 +113,24 @@ class _SessionScreenState extends State<SessionScreen> {
                   width: 60.w,
                   // padding: EdgeInsets.symmetric(horizontal: 30.w, vertical: 26.w),
                   decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(25.r),
-                      color: AppColors.grey
+                      borderRadius: BorderRadius.circular(25.r), color: AppColors.grey
                       /*image: const DecorationImage(
                           fit: BoxFit.cover,
                           image: NetworkImage(
                               'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSu0gYR-As9-_w2_fjRc895mD_91WQ5p7N_9Q&s'))*/
                       ),
                   child: Center(
-                    child: userDetail["userName"] == ''
+                    child:userDetail["userName"] == ''
                         ? const CustomText(
-                            '',
-                            color: AppColors.white,
-                          )
+                      '',
+                      color: AppColors.white,
+                    )
                         : CustomText(
-                            userDetail["userName"].toString().split("").first,
-                            color: AppColors.white,
-                          ),
+                      userDetail["userName"].toString().split("").first.toUpperCase(),
+                      color: AppColors.black,
+                      fontSize: 28.sp,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                 ),
                 SizeConfig.sW15,
