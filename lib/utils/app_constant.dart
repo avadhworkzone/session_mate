@@ -34,11 +34,11 @@ class CombinedData {
   }
 }
 
-List<String> homeImageList = [
-  AppImageAssets.addNewSession,
-  AppImageAssets.retriveCount,
-  AppImageAssets.therapyPlan
-];
+// List<String> homeImageList = [
+//   AppImageAssets.addNewSession,
+//   AppImageAssets.retriveCount,
+//   AppImageAssets.therapyPlan
+// ];
 
 List<String> homeTitle = [AppStrings.addsession, AppStrings.retrieveCounts, AppStrings.therepyPlan];
 

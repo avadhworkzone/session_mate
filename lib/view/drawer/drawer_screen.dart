@@ -12,7 +12,7 @@ import 'package:session_mate/view/manageSession/manage_sessions.dart';
 import 'package:session_mate/view/manageTherapyCenters/manage_therapy_centers.dart';
 import 'package:session_mate/view/welcomeScreen/welcome_screen.dart';
 
-Drawer buildDrawer() {
+Drawer buildDrawer({required String userName}) {
   return Drawer(
     width: Get.width / 1.5,
     backgroundColor: AppColors.primaryColor.withOpacity(0.8),
@@ -29,27 +29,34 @@ Drawer buildDrawer() {
                     color: AppColors.primaryColor,
                   ),
                   child: Padding(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 28.w, vertical: 25.h),
+                    padding: EdgeInsets.symmetric(horizontal: 28.w, vertical: 25.h),
                     child: Column(
                       // mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         CircleAvatar(
                           radius: 30.w,
-                          backgroundImage:
-                              const AssetImage(AppImageAssets.profile),
+                          backgroundColor: AppColors.grey,
+                          child: Center(
+                            child: CustomText(
+                              userName.split("").first.toUpperCase(),
+                              color: AppColors.black,
+                              fontSize: 28.sp,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          // backgroundImage: const AssetImage(AppImageAssets.profile),
                         ),
                         SizeConfig.sH12,
                         CustomText(
-                          "Nitin",
+                          userName,
                           color: AppColors.white,
                           fontSize: 20.sp,
                           fontWeight: FontWeight.bold,
                         ),
                         SizeConfig.sH6,
                         CustomText(
-                          "User  0987654321",
+                          SharedPreferenceUtils.getUserId(),
                           color: AppColors.white,
                           fontSize: 19.sp,
                           fontWeight: FontWeight.bold,
@@ -92,9 +99,7 @@ Drawer buildDrawer() {
                             color: AppColors.white,
                           ),
                           commonDrawerBtn(
-                              image: AppImageAssets.person,
-                              title: AppStrings.myPlan,
-                              ontap: () {}),
+                              image: AppImageAssets.person, title: AppStrings.myPlan, ontap: () {}),
                           const Divider(
                             color: AppColors.white,
                           ),
