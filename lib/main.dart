@@ -8,6 +8,8 @@ import 'package:session_mate/general/connectivity_wrapper.dart';
 import 'package:session_mate/utils/app_colors.dart';
 import 'package:session_mate/utils/app_theme.dart';
 import 'package:session_mate/utils/shared_preference_utils.dart';
+import 'package:session_mate/view/auth/sign_up_screen.dart';
+import 'package:session_mate/view/auth/therapist_screen.dart';
 import 'package:session_mate/view/bottomBar/bottom_bar_screen.dart';
 import 'package:session_mate/view/welcomeScreen/welcome_screen.dart';
 import 'package:session_mate/viewModel/otp_view_model.dart';
@@ -55,12 +57,13 @@ class MyApp extends StatelessWidget {
               pageTransitionsTheme: const PageTransitionsTheme(),
             ),
             transitionDuration: const Duration(milliseconds: 100),
-            home: ConnectivityWrapper(
-              // child: BottomBar()
-              child: SharedPreferenceUtils.getIsLogin() == true
-                  ? const BottomBar()
-                  : const WelcomeScreen(),
-            ),
+            home: const ConnectivityWrapper(
+                // child: BottomBar()
+                child: WelcomeScreen()
+                // SharedPreferenceUtils.getIsLogin() == true
+                //     ? const BottomBar()
+                //     : const WelcomeScreen(),
+                ),
           ),
         ),
       ),

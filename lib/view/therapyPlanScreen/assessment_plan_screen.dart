@@ -31,6 +31,28 @@ class _AssessmentAndPlanScreenState extends State<AssessmentAndPlanScreen> {
 
   List<String?> selectedGoalIds = [];
   bool strategiesExpanded = false;
+  List<String> childAge = [
+    '1',
+    '2',
+    '3',
+    '4',
+    '5',
+    '6',
+    '7',
+    '8',
+    '9',
+    '10',
+    '11',
+    '12',
+    '13',
+    '14',
+    '15',
+    '16',
+    '17',
+    '18',
+    '19',
+    '20'
+  ];
 
   @override
   void initState() {
@@ -1010,6 +1032,183 @@ class _AssessmentAndPlanScreenState extends State<AssessmentAndPlanScreen> {
                                             .isEmpty
                                         ? CustomText(
                                             AppStrings.selectYourStrategies,
+                                            fontSize: 17.sp,
+                                          )
+                                        : Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: List.generate(
+                                                assessmentAndPlanViewModel
+                                                    .strategiesSelectedList
+                                                    .length,
+                                                (index) => Padding(
+                                                      padding: const EdgeInsets
+                                                          .symmetric(
+                                                          vertical: 5),
+                                                      child: CustomText(
+                                                          '${assessmentAndPlanViewModel.strategiesSelectedList[index]['name']}${assessmentAndPlanViewModel.strategiesSelectedList.length > 1 ? ',' : ''}'),
+                                                    )),
+                                          )),
+                              ),
+                              const Icon(Icons.keyboard_arrow_down_sharp)
+                            ],
+                          ),
+                        ),
+                      ),
+                      SizeConfig.sH10,
+                      assessmentAndPlanViewModel.strategiesExpanded.value ==
+                              false
+                          ? const SizedBox()
+                          : Container(
+                              decoration: BoxDecoration(
+                                  color: AppColors.white,
+                                  borderRadius: BorderRadius.circular(10),
+                                  border: Border.all(
+                                      color:
+                                          AppColors.black1c.withOpacity(0.1))),
+                              child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: List.generate(
+                                      assessmentAndPlanViewModel
+                                          .strategiesStringData
+                                          .value
+                                          .length, (index) {
+                                    return Column(
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Expanded(
+                                              child: InkWell(
+                                                onTap: () {
+                                                  if (assessmentAndPlanViewModel
+                                                              .strategiesStringData
+                                                              .value[index]
+                                                          ['status'] ==
+                                                      true) {
+                                                    assessmentAndPlanViewModel
+                                                            .strategiesStringData
+                                                            .value[index]
+                                                        ['status'] = false;
+                                                    assessmentAndPlanViewModel
+                                                        .strategiesSelectedList
+                                                        .removeWhere((element) =>
+                                                            element['name'] ==
+                                                            assessmentAndPlanViewModel
+                                                                    .strategiesStringData
+                                                                    .value[
+                                                                index]['name']);
+                                                  } else {
+                                                    assessmentAndPlanViewModel
+                                                            .strategiesStringData
+                                                            .value[index]
+                                                        ['status'] = true;
+                                                    assessmentAndPlanViewModel
+                                                        .strategiesSelectedList
+                                                        .add({
+                                                      'name': assessmentAndPlanViewModel
+                                                          .strategiesStringData
+                                                          .value[index]['name']
+                                                    });
+                                                  }
+                                                },
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(8.0),
+                                                  child: CustomText(
+                                                      assessmentAndPlanViewModel
+                                                          .strategiesStringData
+                                                          .value[index]['name']),
+                                                ),
+                                              ),
+                                            ),
+                                            Checkbox(
+                                                value: assessmentAndPlanViewModel
+                                                            .strategiesStringData
+                                                            .value[index]
+                                                        ['status'] ??
+                                                    false,
+                                                onChanged: (val) {
+                                                  if (assessmentAndPlanViewModel
+                                                              .strategiesStringData
+                                                              .value[index]
+                                                          ['status'] ==
+                                                      true) {
+                                                    assessmentAndPlanViewModel
+                                                            .strategiesStringData
+                                                            .value[index]
+                                                        ['status'] = false;
+                                                    assessmentAndPlanViewModel
+                                                        .strategiesSelectedList
+                                                        .removeWhere((element) =>
+                                                            element['name'] ==
+                                                            assessmentAndPlanViewModel
+                                                                    .strategiesStringData
+                                                                    .value[
+                                                                index]['name']);
+                                                  } else {
+                                                    assessmentAndPlanViewModel
+                                                            .strategiesStringData
+                                                            .value[index]
+                                                        ['status'] = true;
+                                                    assessmentAndPlanViewModel
+                                                        .strategiesSelectedList
+                                                        .add({
+                                                      'name': assessmentAndPlanViewModel
+                                                          .strategiesStringData
+                                                          .value[index]['name']
+                                                    });
+                                                  }
+                                                })
+                                          ],
+                                        ),
+                                        index ==
+                                                assessmentAndPlanViewModel
+                                                        .strategiesStringData
+                                                        .value
+                                                        .length -
+                                                    1
+                                            ? Padding(
+                                                padding: EdgeInsets.all(20.w),
+                                                child: CustomBtn(
+                                                    onTap: () {
+                                                      assessmentAndPlanViewModel
+                                                          .strategiesExpanded
+                                                          .value = false;
+                                                    },
+                                                    title: 'Done'),
+                                              )
+                                            : const SizedBox()
+                                      ],
+                                    );
+                                  }))),
+
+                      /// CHILD AGE
+                      InkWell(
+                        onTap: () {},
+                        child: Container(
+                          padding: const EdgeInsets.all(15),
+                          decoration: BoxDecoration(
+                              color: AppColors.white,
+                              borderRadius: BorderRadius.circular(10),
+                              boxShadow: const [
+                                BoxShadow(
+                                    color: AppColors.grey, spreadRadius: 1)
+                              ]),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Expanded(
+                                child: Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: assessmentAndPlanViewModel
+                                            .strategiesSelectedList
+                                            .value
+                                            .isEmpty
+                                        ? CustomText(
+                                            AppStrings.childAge,
                                             fontSize: 17.sp,
                                           )
                                         : Column(

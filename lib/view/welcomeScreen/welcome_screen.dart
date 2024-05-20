@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -32,23 +33,22 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
 
   Future<void> requestLocationPermission({Widget? screen}) async {
     final permissionStatus = await Permission.location.status;
-    print('permissionStatus:=>$permissionStatus');
     if (await Permission.location.request().isGranted ||
         await Permission.locationWhenInUse.request().isGranted) {
       try {
-        Position position =
-            await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+        Position position = await Geolocator.getCurrentPosition(
+            desiredAccuracy: LocationAccuracy.high);
         double latitude = position.latitude;
-        print("Latitude>>>>>>>>>>>>>$latitude<<<<<<<<<<<<");
+
         SharedPreferenceUtils.setLatitude(latitude.toString());
         double longitude = position.longitude;
-        print("Longitude>>>>>>>>>>>>>$longitude<<<<<<<<<<<<");
+
         SharedPreferenceUtils.setLongitude(longitude.toString());
         if (screen != null) {
           Get.to(() => screen);
         }
       } on Exception catch (e) {
-        print('LOCATION ERROR :=>$e');
+        log('LOCATION ERROR :=>$e');
       }
     } else if (await Permission.location.status.isDenied) {
       if (Platform.isAndroid) {

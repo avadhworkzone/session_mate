@@ -18,6 +18,7 @@ class AppStrings {
   static String password = 'Password';
   static String confirmPassword = 'Confirm Password';
   static String therapyCenterCode = 'Therapy Center code';
+  static String dateOfBirth = 'Date of Birth';
   static String emailHintTxt = 'demo@gmail.com';
   static String userNameHintTxt = 'Enter Name';
   static String phoneNoHintTxt = 'Enter Your Phone number';
@@ -25,7 +26,8 @@ class AppStrings {
   static String centerCodeHintTxt = 'GGN98765';
   static String alreadyHaveAccount = 'Already have an Account ! ';
   static String registerWith = 'Or Register with';
-  static String privacyAndTermsCheckTxt = 'By creating an account you agree to our';
+  static String privacyAndTermsCheckTxt =
+      'By creating an account you agree to our';
   static String termsConditionTxt = 'Terms and Conditions';
   static String and = '&';
   static String privacyPoliceTxt = 'Privacy Policy';
@@ -33,6 +35,10 @@ class AppStrings {
   static String therapist = 'Therapist';
   static String caregiver = 'Caregiver';
   static String selectRole = 'Select Role';
+
+  /// THERAPIST DETAILS SCREEN
+  static String therapistDetail = 'Therapist Details';
+  static String therapistName = 'Therapist Name';
 
   /// SIGN IN SCREEN
   static String doNotHaveAccountTxt = 'Don’t have an Account ? ';
@@ -67,10 +73,12 @@ class AppStrings {
   static String calender = 'Calender';
   static String sessionCaptured = 'Session Captured';
   static String selectTherapyCenter = 'Select Therapy Center';
-  static String sessionSuccessfully = 'Session successfully Captured! Do you want to capture more?';
+  static String sessionSuccessfully =
+      'Session successfully Captured! Do you want to capture more?';
 
   /// Retrieve Counts Screen
-  static String retrieveCountTxt = 'Which Session do you want to\n the Count for?';
+  static String retrieveCountTxt =
+      'Which Session do you want to\n the Count for?';
 
   /// retrieve count detail screen
   static String sessionCount = 'Session Count';
@@ -156,8 +164,10 @@ class AppStrings {
   static String sessionTracking = "Session Tracking";
   static String therapyPlanDownload = "Therapy Plan Download";
   static String twoFreeSession = "2- Free  Counseling Sessions";
-  static String freeGuideOnGutHealth = "Free Guide on Comprehensive\nGut Health";
-  static String freeGuideOnAlternativeTherapy = "Free Guide on Alternative Therapies";
+  static String freeGuideOnGutHealth =
+      "Free Guide on Comprehensive\nGut Health";
+  static String freeGuideOnAlternativeTherapy =
+      "Free Guide on Alternative Therapies";
   static String buy = "Buy";
   static String fourteenDayAsked = "14 Day No Questions Asked";
   static String moneyBackGuarantee = "Money Back Guarantee";
@@ -170,7 +180,8 @@ class AppStrings {
   ///INTERNET ERROR SCREEN
   static String whoops = "Whoops!";
   static String itSeemsLikeSomeText = "It seems like some playful Paws";
-  static String disconnectedYouFromTheInternetText = "Disconnected you from the internet.";
+  static String disconnectedYouFromTheInternetText =
+      "Disconnected you from the internet.";
   static String pleaseCheckConnectionText = "Please check your connection and";
   static String restartAppText = "restart the app";
   static String goToSettingText = "Go to settings";
@@ -180,7 +191,8 @@ class AppStrings {
   static String inrYear1300 = " 1300.00 INR/YEAR";
   static String claimOffer = "Claim Offer";
   static String cancelAnytimeBilledAnnually = "Cancel Anytime billed annually";
-  static String termsAndConditionPrivacyPolicy = "Terms & condition  Privacy policy";
+  static String termsAndConditionPrivacyPolicy =
+      "Terms & condition  Privacy policy";
 
   ///ADD BANK CARD SCREEN
   static String addCreditDebitCard = "Add credit or Debit card";
@@ -198,7 +210,9 @@ class AppStrings {
   static String freeSubscription = "free";
   static String monthlySubscription = "monthly";
   static String yearlySubscription = "yearly";
-  static String monthlySubscriptionSuccess = "Monthly Subscription Purchased Successfully";
-  static String yearlySubscriptionSuccess = "Yearly Subscription Purchased Successfully";
+  static String monthlySubscriptionSuccess =
+      "Monthly Subscription Purchased Successfully";
+  static String yearlySubscriptionSuccess =
+      "Yearly Subscription Purchased Successfully";
   static String subscriptionSuccess = "Subscription Purchased Successfully";
 }
