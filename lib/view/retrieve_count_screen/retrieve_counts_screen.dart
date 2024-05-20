@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -14,7 +13,6 @@ import 'package:session_mate/utils/app_colors.dart';
 import 'package:session_mate/utils/app_constant.dart';
 import 'package:session_mate/utils/app_image_assets.dart';
 import 'package:session_mate/utils/app_string.dart';
-import 'package:session_mate/utils/common_methods.dart';
 import 'package:session_mate/utils/local_assets.dart';
 import 'package:session_mate/utils/shared_preference_utils.dart';
 import 'package:session_mate/utils/size_config_utils.dart';
