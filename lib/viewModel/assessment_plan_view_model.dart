@@ -34,4 +34,30 @@ class AssessmentAndPlanViewModel extends GetxController {
       <Map<String, dynamic>>[].obs;
   RxList<dynamic> strategiesSelectedList = [].obs;
   Rx<bool> strategiesExpanded = false.obs;
+
+  /// child age
+  RxList<String> childAge = [
+    '1',
+    '2',
+    '3',
+    '4',
+    '5',
+    '6',
+    '7',
+    '8',
+    '9',
+    '10',
+    '11',
+    '12',
+    '13',
+    '14',
+    '15',
+    '16',
+    '17',
+    '18',
+    '19',
+    '20'
+  ].obs;
+  Rx<bool> childAgeExpanded = false.obs;
+  Rx<String?> childSelectedAge = Rx<String?>(null);
 }

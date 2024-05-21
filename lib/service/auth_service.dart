@@ -30,10 +30,25 @@ class AuthService {
         .where('mobileNumber', isEqualTo: model.mobileNumber)
         .where('password', isEqualTo: model.password)
         .where('email', isEqualTo: model.email)
+        .where('role', isEqualTo: model.role)
+        .where('centerCode', isEqualTo: model.centerCode)
         .get()
         .then((value) => value.docs.isNotEmpty ? true : false)
         .catchError((e) {
       logs('CHECK USER EXIST ERROR:=>$e');
+      return false;
+    });
+  }
+
+  /// CHECK THERAPY CENTER CODE
+  static Future<bool> checkTherapyCenterCode(
+      {required String therapistCenterCode}) async {
+    return CollectionUtils.therapyCenterCodeCollection
+        .where('centerCode', isEqualTo: therapistCenterCode)
+        .get()
+        .then((value) => value.docs.isNotEmpty ? true : false)
+        .catchError((e) {
+      logs('CHECK THERAPY CENTER CODE ERROR:=>$e');
       return false;
     });
   }

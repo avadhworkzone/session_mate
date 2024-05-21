@@ -1,0 +1,1 @@
+typedef OnTapTextField = void Function();

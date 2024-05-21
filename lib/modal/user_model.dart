@@ -13,6 +13,7 @@ class UserModel {
   String? role;
   String? userName;
   String? centerCode;
+  String? dob;
 
   UserModel({
     this.email,
@@ -29,6 +30,7 @@ class UserModel {
     this.role,
     this.userName,
     this.centerCode,
+    this.dob,
   });
 
   UserModel.fromJson(Map<String, dynamic> json) {
@@ -46,6 +48,7 @@ class UserModel {
     role = json['role'] ?? "";
     userName = json['userName'] ?? "";
     centerCode = json['centerCode'] ?? "";
+    dob = json['dateOfBirth'] ?? "";
   }
 
   Map<String, dynamic> toJson() => {
@@ -63,5 +66,6 @@ class UserModel {
         'role': role,
         'userName': userName,
         'centerCode': centerCode,
+        'dateOfBirth': dob,
       };
 }

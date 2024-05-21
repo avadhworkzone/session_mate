@@ -57,13 +57,12 @@ class MyApp extends StatelessWidget {
               pageTransitionsTheme: const PageTransitionsTheme(),
             ),
             transitionDuration: const Duration(milliseconds: 100),
-            home: const ConnectivityWrapper(
-                // child: BottomBar()
-                child: WelcomeScreen()
-                // SharedPreferenceUtils.getIsLogin() == true
-                //     ? const BottomBar()
-                //     : const WelcomeScreen(),
-                ),
+            home: ConnectivityWrapper(
+              // child: BottomBar()
+              child: SharedPreferenceUtils.getIsLogin() == true
+                  ? const BottomBar()
+                  : const WelcomeScreen(),
+            ),
           ),
         ),
       ),

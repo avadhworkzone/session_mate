@@ -24,8 +24,8 @@ class RegularExpressionUtils {
   /// specialCharacters is used for one special characters is requiter in string
   var specialCharacters = RegExp(r'[!@#$%^&*(),.?":{}|<>]');
 
-  static var isValidEmail =
-      RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
+  static var isValidEmail = RegExp(
+      r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
 
   static RegExp passwordValidator =
       RegExp(r'^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*\W)(?!.* ).{8,12}');
@@ -60,7 +60,8 @@ class NoLeadingSpaceFormatter extends TextInputFormatter {
 
 class LowerCaseTextFormatter extends TextInputFormatter {
   @override
-  TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
+  TextEditingValue formatEditUpdate(
+      TextEditingValue oldValue, TextEditingValue newValue) {
     return TextEditingValue(
       text: newValue.text.toLowerCase(),
       selection: newValue.selection,
@@ -70,7 +71,8 @@ class LowerCaseTextFormatter extends TextInputFormatter {
 
 class TextFormatter extends TextInputFormatter {
   @override
-  TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
+  TextEditingValue formatEditUpdate(
+      TextEditingValue oldValue, TextEditingValue newValue) {
     return TextEditingValue(
       text: newValue.text,
       selection: newValue.selection,
@@ -97,7 +99,8 @@ class ValidationMethod {
   }
 
   static String? validateName(value) {
-    bool regex = RegExp(RegularExpressionUtils.alphabetSpacePattern).hasMatch(value);
+    bool regex =
+        RegExp(RegularExpressionUtils.alphabetSpacePattern).hasMatch(value);
     if (value == null) {
       return AppStrings.isRequired.tr;
     } else if (!regex) {
@@ -106,12 +109,12 @@ class ValidationMethod {
     return null;
   }
 
-  // static String? validateDate(value) {
-  //   if (value == null || value.isEmpty) {
-  //     return AppStrings.isRequired.tr;
-  //   }
-  //   return null;
-  // }
+  static String? validateDate(value) {
+    if (value == null || value.isEmpty) {
+      return AppStrings.selectDate;
+    }
+    return null;
+  }
   //
   // static String? validatePhone(value) {
   //   if (value == null || value.isEmpty) {

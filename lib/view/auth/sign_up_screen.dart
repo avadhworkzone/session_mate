@@ -17,6 +17,7 @@ import 'package:session_mate/utils/regex.dart';
 import 'package:session_mate/utils/size_config_utils.dart';
 import 'package:session_mate/view/auth/send_otp_method.dart';
 import 'package:session_mate/view/auth/sign_in_screen.dart';
+import 'package:session_mate/view/auth/therapist_screen.dart';
 import 'package:session_mate/view/services/webview_widget.dart';
 import 'package:session_mate/view/welcomeScreen/welcome_screen.dart';
 import 'package:session_mate/viewModel/sign_up_view_model.dart';
@@ -98,404 +99,446 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               key: signUpViewModel.signUpFormKey.value,
                               child: Column(
                                 children: [
-                                  GestureDetector(
-                                    onTap: () {
-                                      // if (signUpViewModel.roleVal == "") {
-                                      //   commonSnackBar(
-                                      //       message:
-                                      //           AppStrings.pleaseSelectRole);
-                                      // }
-                                    },
-                                    child: Column(
-                                      children: [
-                                        CommonTextField(
-                                          readOnly:
-                                              signUpViewModel.isReadOnly.value,
-                                          title: AppStrings.childName,
-                                          regularExpression:
-                                              RegularExpressionUtils.address,
-                                          textEditController: signUpViewModel
-                                              .signUpUserNameController.value,
-                                          contentPadding: EdgeInsets.only(
-                                              bottom: 9.w, top: 6.w),
-                                          hintText: AppStrings.userNameHintTxt,
-                                          preFixIconPath:
-                                              AppImageAssets.profileIcon,
-                                          validationType:
-                                              ValidationTypeEnum.address,
-                                          validationMessage:
-                                              AppStrings.emailIsRequired,
+                                  Column(
+                                    children: [
+                                      CommonDropdownField(
+                                          onChanged: (val) => signUpViewModel
+                                              .dropDownChange(val)),
+                                      SizeConfig.sH20,
+                                      signUpViewModel.roleVal.value ==
+                                              AppStrings.therapist
+                                          ? const SizedBox()
+                                          : CommonTextField(
+                                              title: AppStrings.childName,
+                                              regularExpression:
+                                                  RegularExpressionUtils
+                                                      .address,
+                                              textEditController:
+                                                  signUpViewModel
+                                                      .signUpUserNameController
+                                                      .value,
+                                              contentPadding: EdgeInsets.only(
+                                                  bottom: 9.w, top: 6.w),
+                                              hintText:
+                                                  AppStrings.userNameHintTxt,
+                                              preFixIconPath:
+                                                  AppImageAssets.profileIcon,
+                                              validationType:
+                                                  ValidationTypeEnum.address,
+                                              validationMessage: AppStrings
+                                                  .childNameIsRequired,
+                                            ),
+                                      signUpViewModel.roleVal.value ==
+                                              AppStrings.therapist
+                                          ? const SizedBox()
+                                          : SizeConfig.sH20,
+                                      Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: CustomText(
+                                          AppStrings.dateOfBirth,
+                                          fontSize: 15.sp,
+                                          fontWeight: FontWeight.w500,
+                                          color: AppColors.black1c
+                                              .withOpacity(0.8),
                                         ),
-                                        SizeConfig.sH20,
-                                        Align(
-                                          alignment: Alignment.centerLeft,
-                                          child: CustomText(
-                                            AppStrings.dateOfBirth,
+                                      ),
+                                      TextFormField(
+                                        controller: signUpViewModel
+                                            .dateOfBirthController.value,
+                                        onTap: () =>
+                                            signUpViewModel.selectDate(context),
+                                        readOnly: true,
+                                        style: TextStyle(
+                                            fontSize: 14.sp,
+                                            color: AppColors.black,
+                                            fontFamily: AppConstants.inter,
+                                            fontWeight: FontWeight.w400),
+                                        keyboardType: TextInputType.text,
+                                        maxLines: 1,
+                                        textCapitalization:
+                                            TextCapitalization.sentences,
+                                        inputFormatters: [
+                                          FilteringTextInputFormatter.allow(
+                                              RegExp(
+                                                  RegularExpressionUtils.text)),
+                                          NoLeadingSpaceFormatter(),
+                                          TextFormatter(),
+                                        ],
+                                        validator: (value) {
+                                          return ValidationMethod.validateDate(
+                                              value);
+                                        },
+                                        textInputAction: TextInputAction.next,
+                                        autovalidateMode:
+                                            AutovalidateMode.onUserInteraction,
+                                        cursorColor: AppColors.black1c,
+                                        cursorWidth: 1.5,
+                                        decoration: InputDecoration(
+                                          isDense: true,
+                                          fillColor: Colors.transparent,
+                                          filled: true,
+                                          contentPadding: EdgeInsets.symmetric(
+                                              horizontal: 15.w, vertical: 10.h),
+                                          hintText: AppStrings.dateFormat,
+                                          border: UnderlineInputBorder(
+                                              borderSide: BorderSide(
+                                                  color: AppColors.black1c
+                                                      .withOpacity(0.4))),
+                                          focusedBorder: UnderlineInputBorder(
+                                              borderSide: BorderSide(
+                                                  color: AppColors.black1c
+                                                      .withOpacity(0.4))),
+                                          disabledBorder: UnderlineInputBorder(
+                                              borderSide: BorderSide(
+                                                  color: AppColors.black1c
+                                                      .withOpacity(0.4))),
+                                          enabledBorder: UnderlineInputBorder(
+                                              borderSide: BorderSide(
+                                                  color: AppColors.black1c
+                                                      .withOpacity(0.4))),
+                                          prefixIcon: Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              const LocalAssets(
+                                                imagePath:
+                                                    AppImageAssets.calenderIcn,
+                                              ),
+                                              SizeConfig.sW8,
+                                              Container(
+                                                color: AppColors.black1c
+                                                    .withOpacity(0.3),
+                                                height: 17,
+                                                width: 1,
+                                              ),
+                                              SizeConfig.sW8,
+                                            ],
+                                          ),
+                                          prefixIconConstraints:
+                                              BoxConstraints(maxWidth: 50.w),
+                                          suffixIconConstraints:
+                                              BoxConstraints(maxWidth: 50.w),
+                                          counterText: ''.tr,
+                                          // filled: true,
+                                          // fillColor: ColorUtils.greyE7,
+                                          labelStyle: TextStyle(
+                                              fontSize: 14.sp,
+                                              color: AppColors.black,
+                                              fontWeight: FontWeight.w600),
+                                          hintStyle: TextStyle(
+                                            color: AppColors.black1c
+                                                .withOpacity(0.5),
+                                            fontSize: 14.sp,
+                                            fontFamily: AppConstants.inter,
+                                            fontWeight: FontWeight.normal,
+                                          ),
+                                          errorMaxLines: 2,
+                                        ),
+                                      ),
+                                      // CommonTextField(
+                                      //   onTap: () {
+                                      //     print('jndjewdfhewfbg');
+                                      //   },
+                                      //   readOnly: true,
+                                      //   title: AppStrings.dateOfBirth,
+                                      //   regularExpression:
+                                      //       RegularExpressionUtils.text,
+                                      //   textEditController: signUpViewModel
+                                      //       .dateOfBirthController.value,
+                                      //   contentPadding: EdgeInsets.only(
+                                      //       bottom: 9.w, top: 6.w),
+                                      //   hintText: AppStrings.dateFormat,
+                                      //   preFixIconPath:
+                                      //       AppImageAssets.calenderIcn,
+                                      //   validationMessage:
+                                      //       AppStrings.selectDate,
+                                      // ),
+                                      // Align(
+                                      //   alignment: Alignment.centerLeft,
+                                      //   child: CustomText(
+                                      //     AppStrings.dateOfBirth,
+                                      //     fontSize: 15.sp,
+                                      //     fontWeight: FontWeight.w500,
+                                      //     color: AppColors.black1c
+                                      //         .withOpacity(0.8),
+                                      //   ),
+                                      // ),
+
+                                      SizeConfig.sH20,
+
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          CustomText(
+                                            AppStrings.phoneNo,
                                             fontSize: 15.sp,
                                             fontWeight: FontWeight.w500,
                                             color: AppColors.black1c
                                                 .withOpacity(0.8),
                                           ),
-                                        ),
-                                        TextFormField(
-                                          controller: signUpViewModel
-                                              .dateOfBirthController.value,
-                                          style: TextStyle(
-                                              fontSize: 14.sp,
-                                              color: AppColors.black,
-                                              fontFamily: AppConstants.inter,
-                                              fontWeight: FontWeight.w400),
-                                          keyboardType: TextInputType.text,
-                                          maxLines: 1,
-                                          textCapitalization:
-                                              TextCapitalization.sentences,
-                                          inputFormatters: [
-                                            FilteringTextInputFormatter.allow(
-                                                RegExp(RegularExpressionUtils)),
-                                            NoLeadingSpaceFormatter(),
-                                          ],
-                                          obscuringCharacter: '*',
-                                          validator: (value) {},
-                                          autovalidateMode: AutovalidateMode
-                                              .onUserInteraction,
-                                          cursorColor: AppColors.black1c,
-                                          cursorWidth: 1.5,
-                                          decoration: InputDecoration(
-                                            isDense: true,
-                                            hintText: '23/03/2009',
-                                            fillColor: Colors.transparent,
-                                            filled: true,
-                                            contentPadding:
-                                                EdgeInsets.symmetric(
-                                                    horizontal: 15.w,
-                                                    vertical: 12.h),
-                                            border: UnderlineInputBorder(
-                                                borderSide: BorderSide(
-                                                    color: AppColors.black1c
-                                                        .withOpacity(0.4))),
-                                            focusedBorder: UnderlineInputBorder(
-                                                borderSide: BorderSide(
-                                                    color: AppColors.black1c
-                                                        .withOpacity(0.4))),
-                                            disabledBorder:
-                                                UnderlineInputBorder(
+                                          SizedBox(
+                                            height: 60.w,
+                                            child: IntlPhoneField(
+                                              // readOnly: signUpViewModel
+                                              //     .isReadOnly.value,
+                                              showDropdownIcon: false,
+                                              textAlignVertical:
+                                                  TextAlignVertical.bottom,
+                                              textInputAction:
+                                                  TextInputAction.done,
+                                              inputFormatters: [
+                                                FilteringTextInputFormatter
+                                                    .digitsOnly
+                                              ],
+                                              controller: signUpViewModel
+                                                  .signUpPhoneNoController
+                                                  .value,
+                                              autovalidateMode: AutovalidateMode
+                                                  .onUserInteraction,
+                                              keyboardType:
+                                                  TextInputType.number,
+                                              initialCountryCode: 'IN',
+                                              onChanged: (val) {
+                                                if (val.toString().isNotEmpty) {
+                                                  signUpViewModel
+                                                      .signUpPhoneIsValidate
+                                                      .value = false;
+                                                }
+                                              },
+                                              onCountryChanged: (val) {
+                                                signUpViewModel
+                                                    .signUpCountryCode
+                                                    .value = val.dialCode;
+                                              },
+                                              style: TextStyle(
+                                                  fontSize: 14.sp,
+                                                  color: AppColors.black,
+                                                  fontFamily:
+                                                      AppConstants.inter,
+                                                  fontWeight: FontWeight.w400),
+                                              decoration: InputDecoration(
+                                                isDense: true,
+                                                fillColor: Colors.transparent,
+                                                filled: true,
+                                                contentPadding:
+                                                    EdgeInsets.symmetric(
+                                                        vertical: 10.h),
+                                                hintText:
+                                                    AppStrings.phoneNoHintTxt,
+                                                hintStyle: TextStyle(
+                                                  color: AppColors.black1c
+                                                      .withOpacity(0.5),
+                                                  fontSize: 14.sp,
+                                                  fontFamily:
+                                                      AppConstants.inter,
+                                                  fontWeight: FontWeight.normal,
+                                                ),
+                                                // contentPadding: EdgeInsets.zero,
+                                                errorText: (signUpViewModel
+                                                                .signUpPhoneIsValidate
+                                                                .value ==
+                                                            true &&
+                                                        signUpViewModel
+                                                            .signUpPhoneNoController
+                                                            .value
+                                                            .text
+                                                            .isEmpty)
+                                                    ? AppStrings
+                                                        .phoneNumberIsRequired
+                                                    : null,
+                                                errorBorder: (signUpViewModel
+                                                                .signUpPhoneIsValidate
+                                                                .value ==
+                                                            true &&
+                                                        signUpViewModel
+                                                            .signUpPhoneNoController
+                                                            .value
+                                                            .text
+                                                            .isEmpty)
+                                                    ? const UnderlineInputBorder(
+                                                        borderSide: BorderSide(
+                                                            color: AppColors
+                                                                .red1D),
+                                                      )
+                                                    : UnderlineInputBorder(
+                                                        borderSide: BorderSide(
+                                                            color: AppColors
+                                                                .black1c
+                                                                .withOpacity(
+                                                                    0.4))),
+                                                border: UnderlineInputBorder(
                                                     borderSide: BorderSide(
                                                         color: AppColors.black1c
                                                             .withOpacity(0.4))),
-                                            enabledBorder: UnderlineInputBorder(
-                                                borderSide: BorderSide(
-                                                    color: AppColors.black1c
-                                                        .withOpacity(0.4))),
-                                            prefixIconConstraints:
-                                                BoxConstraints(maxWidth: 50.w),
-                                            suffixIconConstraints:
-                                                BoxConstraints(maxWidth: 50.w),
-                                            counterText: ''.tr,
-                                            labelStyle: TextStyle(
-                                                fontSize: 14.sp,
-                                                color: AppColors.black,
-                                                fontWeight: FontWeight.w600),
-                                            hintStyle: TextStyle(
-                                              color: AppColors.black1c
-                                                  .withOpacity(0.5),
-                                              fontSize: 14.sp,
-                                              fontFamily: AppConstants.inter,
-                                              fontWeight: FontWeight.normal,
-                                            ),
-                                            errorMaxLines: 2,
-                                          ),
-                                        ),
-                                        SizeConfig.sH20,
-
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            CustomText(
-                                              AppStrings.phoneNo,
-                                              fontSize: 15.sp,
-                                              fontWeight: FontWeight.w500,
-                                              color: AppColors.black1c
-                                                  .withOpacity(0.8),
-                                            ),
-                                            SizedBox(
-                                              height: 60.w,
-                                              child: IntlPhoneField(
-                                                readOnly: signUpViewModel
-                                                    .isReadOnly.value,
-                                                showDropdownIcon: false,
-                                                textAlignVertical:
-                                                    TextAlignVertical.bottom,
-                                                textInputAction:
-                                                    TextInputAction.done,
-                                                inputFormatters: [
-                                                  FilteringTextInputFormatter
-                                                      .digitsOnly
-                                                ],
-                                                controller: signUpViewModel
-                                                    .signUpPhoneNoController
-                                                    .value,
-                                                autovalidateMode:
-                                                    AutovalidateMode
-                                                        .onUserInteraction,
-                                                keyboardType:
-                                                    TextInputType.number,
-                                                initialCountryCode: 'IN',
-                                                onChanged: (val) {
-                                                  if (val
-                                                      .toString()
-                                                      .isNotEmpty) {
-                                                    signUpViewModel
-                                                        .signUpPhoneIsValidate
-                                                        .value = false;
-                                                  }
-                                                },
-                                                onCountryChanged: (val) {
-                                                  signUpViewModel
-                                                      .signUpCountryCode
-                                                      .value = val.dialCode;
-                                                },
-                                                style: TextStyle(
-                                                    fontSize: 14.sp,
-                                                    color: AppColors.black,
-                                                    fontFamily:
-                                                        AppConstants.inter,
-                                                    fontWeight:
-                                                        FontWeight.w400),
-                                                decoration: InputDecoration(
-                                                  isDense: true,
-                                                  fillColor: Colors.transparent,
-                                                  filled: true,
-                                                  contentPadding:
-                                                      EdgeInsets.symmetric(
-                                                          vertical: 10.h),
-                                                  hintText:
-                                                      AppStrings.phoneNoHintTxt,
-                                                  hintStyle: TextStyle(
-                                                    color: AppColors.black1c
-                                                        .withOpacity(0.5),
-                                                    fontSize: 14.sp,
-                                                    fontFamily:
-                                                        AppConstants.inter,
-                                                    fontWeight:
-                                                        FontWeight.normal,
-                                                  ),
-                                                  // contentPadding: EdgeInsets.zero,
-                                                  errorText: (signUpViewModel
-                                                                  .signUpPhoneIsValidate
-                                                                  .value ==
-                                                              true &&
-                                                          signUpViewModel
-                                                              .signUpPhoneNoController
-                                                              .value
-                                                              .text
-                                                              .isEmpty)
-                                                      ? AppStrings
-                                                          .phoneNumberIsRequired
-                                                      : null,
-                                                  errorBorder: (signUpViewModel
-                                                                  .signUpPhoneIsValidate
-                                                                  .value ==
-                                                              true &&
-                                                          signUpViewModel
-                                                              .signUpPhoneNoController
-                                                              .value
-                                                              .text
-                                                              .isEmpty)
-                                                      ? const UnderlineInputBorder(
-                                                          borderSide: BorderSide(
-                                                              color: AppColors
-                                                                  .red1D),
-                                                        )
-                                                      : UnderlineInputBorder(
-                                                          borderSide: BorderSide(
-                                                              color: AppColors
-                                                                  .black1c
-                                                                  .withOpacity(
-                                                                      0.4))),
-                                                  border: UnderlineInputBorder(
-                                                      borderSide: BorderSide(
-                                                          color: AppColors
-                                                              .black1c
-                                                              .withOpacity(
-                                                                  0.4))),
-                                                  focusedBorder:
-                                                      UnderlineInputBorder(
-                                                          borderSide: BorderSide(
-                                                              color: AppColors
-                                                                  .black1c
-                                                                  .withOpacity(
-                                                                      0.4))),
-                                                  disabledBorder:
-                                                      UnderlineInputBorder(
-                                                          borderSide: BorderSide(
-                                                              color: AppColors
-                                                                  .black1c
-                                                                  .withOpacity(
-                                                                      0.4))),
-                                                  enabledBorder:
-                                                      UnderlineInputBorder(
-                                                          borderSide: BorderSide(
-                                                              color: AppColors
-                                                                  .black1c
-                                                                  .withOpacity(
-                                                                      0.4))),
-                                                ),
+                                                focusedBorder:
+                                                    UnderlineInputBorder(
+                                                        borderSide: BorderSide(
+                                                            color: AppColors
+                                                                .black1c
+                                                                .withOpacity(
+                                                                    0.4))),
+                                                disabledBorder:
+                                                    UnderlineInputBorder(
+                                                        borderSide: BorderSide(
+                                                            color: AppColors
+                                                                .black1c
+                                                                .withOpacity(
+                                                                    0.4))),
+                                                enabledBorder:
+                                                    UnderlineInputBorder(
+                                                        borderSide: BorderSide(
+                                                            color: AppColors
+                                                                .black1c
+                                                                .withOpacity(
+                                                                    0.4))),
                                               ),
                                             ),
-                                          ],
-                                        ),
-                                        SizeConfig.sH20,
-                                        CommonTextField(
-                                          readOnly:
-                                              signUpViewModel.isReadOnly.value,
-                                          title: AppStrings.email,
-                                          regularExpression:
-                                              RegularExpressionUtils
-                                                  .emailPattern,
-                                          textEditController: signUpViewModel
-                                              .signUpEmailController.value,
-                                          keyBoardType:
-                                              TextInputType.emailAddress,
-                                          contentPadding: EdgeInsets.only(
-                                              bottom: 9.w, top: 6.w),
-                                          hintText: AppStrings.emailHintTxt,
-                                          preFixIconPath:
-                                              AppImageAssets.emailIcon,
-                                          isValidate: true,
-                                          validationType:
-                                              ValidationTypeEnum.email,
-                                          textInputAction: TextInputAction.next,
-                                          validationMessage:
-                                              AppStrings.emailIsRequired,
-                                        ),
-                                        SizeConfig.sH20,
-                                        CommonTextField(
-                                          readOnly:
-                                              signUpViewModel.isReadOnly.value,
-                                          title: AppStrings.password,
-                                          regularExpression:
-                                              RegularExpressionUtils
-                                                  .passwordPattern,
-                                          textEditController: signUpViewModel
-                                              .signUpPasswordController.value,
-                                          keyBoardType: TextInputType.text,
-                                          textInputAction: TextInputAction.next,
-                                          contentPadding: EdgeInsets.symmetric(
-                                            vertical: 7.w,
                                           ),
-                                          hintText: AppStrings.passwordHintTxt,
-                                          preFixIconPath:
-                                              AppImageAssets.passwordIcon,
-                                          validationType:
-                                              ValidationTypeEnum.password,
-                                          validationMessage:
-                                              AppStrings.passwordIsRequired,
-                                          obscureValue: signUpViewModel
-                                                      .signUpShowPass.value ==
-                                                  true
-                                              ? false
-                                              : true,
-                                          sIcon: InkWell(
-                                            onTap: () {
-                                              signUpViewModel
-                                                      .signUpShowPass.value =
-                                                  !signUpViewModel
-                                                      .signUpShowPass.value;
-                                            },
-                                            child: LocalAssets(
-                                              imagePath: signUpViewModel
-                                                          .signUpShowPass
-                                                          .value ==
-                                                      true
-                                                  ? AppImageAssets.eyeIcon
-                                                  : AppImageAssets
-                                                      .passwordViewIcon,
-                                              height: 22.w,
-                                            ),
-                                          ),
-                                          isValidate: true,
+                                        ],
+                                      ),
+                                      SizeConfig.sH20,
+                                      CommonTextField(
+                                        // readOnly:
+                                        //     signUpViewModel.isReadOnly.value,
+                                        title: AppStrings.email,
+                                        regularExpression:
+                                            RegularExpressionUtils.emailPattern,
+                                        textEditController: signUpViewModel
+                                            .signUpEmailController.value,
+                                        keyBoardType:
+                                            TextInputType.emailAddress,
+                                        contentPadding: EdgeInsets.only(
+                                            bottom: 9.w, top: 6.w),
+                                        hintText: AppStrings.emailHintTxt,
+                                        preFixIconPath:
+                                            AppImageAssets.emailIcon,
+                                        isValidate: true,
+                                        validationType:
+                                            ValidationTypeEnum.email,
+                                        textInputAction: TextInputAction.next,
+                                        validationMessage:
+                                            AppStrings.emailIsRequired,
+                                      ),
+                                      SizeConfig.sH20,
+                                      CommonTextField(
+                                        // readOnly:
+                                        //     signUpViewModel.isReadOnly.value,
+                                        title: AppStrings.password,
+                                        regularExpression:
+                                            RegularExpressionUtils
+                                                .passwordPattern,
+                                        textEditController: signUpViewModel
+                                            .signUpPasswordController.value,
+                                        keyBoardType: TextInputType.text,
+                                        textInputAction: TextInputAction.next,
+                                        contentPadding: EdgeInsets.symmetric(
+                                          vertical: 7.w,
                                         ),
-                                        SizeConfig.sH20,
-                                        CommonTextField(
-                                          readOnly:
-                                              signUpViewModel.isReadOnly.value,
-                                          textEditController: signUpViewModel
-                                              .signUpConfirmPasswordController
-                                              .value,
-                                          title: AppStrings.confirmPassword,
-                                          validationType:
-                                              ValidationTypeEnum.password,
-                                          regularExpression:
-                                              RegularExpressionUtils
-                                                  .passwordPattern,
-                                          keyBoardType: TextInputType.text,
-                                          validationMessage: AppStrings
-                                              .confirmPasswordIsRequired,
-                                          contentPadding: EdgeInsets.symmetric(
-                                            vertical: 7.w,
-                                          ),
-                                          hintText: AppStrings.passwordHintTxt,
-                                          textInputAction: TextInputAction.done,
-                                          obscureValue: signUpViewModel
-                                                      .signUpShowConPass
-                                                      .value ==
-                                                  true
-                                              ? false
-                                              : true,
-                                          preFixIconPath:
-                                              AppImageAssets.passwordIcon,
-                                          sIcon: InkWell(
-                                            onTap: () {
-                                              signUpViewModel
-                                                      .signUpShowConPass.value =
-                                                  !signUpViewModel
-                                                      .signUpShowConPass.value;
-                                            },
-                                            child: LocalAssets(
-                                              imagePath: signUpViewModel
-                                                          .signUpShowConPass
-                                                          .value ==
-                                                      true
-                                                  ? AppImageAssets.eyeIcon
-                                                  : AppImageAssets
-                                                      .passwordViewIcon,
-                                              height: 22.w,
-                                            ),
+                                        hintText: AppStrings.passwordHintTxt,
+                                        preFixIconPath:
+                                            AppImageAssets.passwordIcon,
+                                        validationType:
+                                            ValidationTypeEnum.password,
+                                        validationMessage:
+                                            AppStrings.passwordIsRequired,
+                                        obscureValue: signUpViewModel
+                                                    .signUpShowPass.value ==
+                                                true
+                                            ? false
+                                            : true,
+                                        sIcon: InkWell(
+                                          onTap: () {
+                                            signUpViewModel
+                                                    .signUpShowPass.value =
+                                                !signUpViewModel
+                                                    .signUpShowPass.value;
+                                          },
+                                          child: LocalAssets(
+                                            imagePath: signUpViewModel
+                                                        .signUpShowPass.value ==
+                                                    true
+                                                ? AppImageAssets.eyeIcon
+                                                : AppImageAssets
+                                                    .passwordViewIcon,
+                                            height: 22.w,
                                           ),
                                         ),
-                                        SizeConfig.sH20,
-                                        // CommonTextField(
-                                        //   readOnly:
-                                        //       signUpViewModel.isReadOnly.value,
-                                        //   textEditController: signUpViewModel
-                                        //       .therapyCenterCodeController
-                                        //       .value,
-                                        //   title: AppStrings.therapyCenterCode,
-                                        //   validationType:
-                                        //       ValidationTypeEnum.password,
-                                        //   regularExpression:
-                                        //       RegularExpressionUtils
-                                        //           .therapyCenterCode,
-                                        //   validationMessage:
-                                        //       AppStrings.centerCodeIsRequired,
-                                        //   contentPadding: EdgeInsets.symmetric(
-                                        //     vertical: 7.w,
-                                        //   ),
-                                        //   hintText:
-                                        //       AppStrings.centerCodeHintTxt,
-                                        //   textInputAction: TextInputAction.done,
-                                        //   obscureValue: false,
-                                        //   preFixIconPath:
-                                        //       AppImageAssets.passwordIcon,
-                                        // ),
-                                        CommonDropdownField(
-                                            onChanged: (val) => signUpViewModel
-                                                .dropDownChange(val)),
-                                        SizeConfig.sH20,
-                                      ],
-                                    ),
+                                        isValidate: true,
+                                      ),
+                                      SizeConfig.sH20,
+                                      CommonTextField(
+                                        // readOnly:
+                                        //     signUpViewModel.isReadOnly.value,
+                                        textEditController: signUpViewModel
+                                            .signUpConfirmPasswordController
+                                            .value,
+                                        title: AppStrings.confirmPassword,
+                                        validationType:
+                                            ValidationTypeEnum.password,
+                                        regularExpression:
+                                            RegularExpressionUtils
+                                                .passwordPattern,
+                                        keyBoardType: TextInputType.text,
+                                        validationMessage: AppStrings
+                                            .confirmPasswordIsRequired,
+                                        contentPadding: EdgeInsets.symmetric(
+                                          vertical: 7.w,
+                                        ),
+                                        hintText: AppStrings.passwordHintTxt,
+                                        textInputAction: TextInputAction.done,
+                                        obscureValue: signUpViewModel
+                                                    .signUpShowConPass.value ==
+                                                true
+                                            ? false
+                                            : true,
+                                        preFixIconPath:
+                                            AppImageAssets.passwordIcon,
+                                        sIcon: InkWell(
+                                          onTap: () {
+                                            signUpViewModel
+                                                    .signUpShowConPass.value =
+                                                !signUpViewModel
+                                                    .signUpShowConPass.value;
+                                          },
+                                          child: LocalAssets(
+                                            imagePath: signUpViewModel
+                                                        .signUpShowConPass
+                                                        .value ==
+                                                    true
+                                                ? AppImageAssets.eyeIcon
+                                                : AppImageAssets
+                                                    .passwordViewIcon,
+                                            height: 22.w,
+                                          ),
+                                        ),
+                                      ),
+                                      SizeConfig.sH20,
+                                      // CommonTextField(
+                                      //   readOnly:
+                                      //       signUpViewModel.isReadOnly.value,
+                                      //   textEditController: signUpViewModel
+                                      //       .therapyCenterCodeController
+                                      //       .value,
+                                      //   title: AppStrings.therapyCenterCode,
+                                      //   validationType:
+                                      //       ValidationTypeEnum.password,
+                                      //   regularExpression:
+                                      //       RegularExpressionUtils
+                                      //           .therapyCenterCode,
+                                      //   validationMessage:
+                                      //       AppStrings.centerCodeIsRequired,
+                                      //   contentPadding: EdgeInsets.symmetric(
+                                      //     vertical: 7.w,
+                                      //   ),
+                                      //   hintText:
+                                      //       AppStrings.centerCodeHintTxt,
+                                      //   textInputAction: TextInputAction.done,
+                                      //   obscureValue: false,
+                                      //   preFixIconPath:
+                                      //       AppImageAssets.passwordIcon,
+                                      // ),
+                                    ],
                                   ),
                                   SizeConfig.sH20,
                                   Row(
@@ -623,16 +666,33 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                           commonErrorSnackBar(
                                               message:
                                                   AppStrings.passValidation);
+                                        } else if (signUpViewModel
+                                                .roleVal.value ==
+                                            "") {
+                                          commonSnackBar(
+                                              message:
+                                                  AppStrings.pleaseSelectRole);
+                                        } else if (!signUpViewModel
+                                            .isPrivacyAndTermsChecked.value) {
+                                          commonSnackBar(
+                                              message: AppStrings
+                                                  .agreeTermsCondition);
                                         } else {
-                                          sendOtp(
-                                              phoneNumber: signUpViewModel
-                                                  .signUpPhoneNoController
-                                                  .value
-                                                  .text,
-                                              countryCode: signUpViewModel
-                                                  .signUpCountryCode.value,
-                                              context: context,
-                                              isLoginScreen: false);
+                                          if (signUpViewModel.roleVal.value ==
+                                              AppStrings.therapist) {
+                                            Get.to(() =>
+                                                const TherapistDetailScreen());
+                                          } else {
+                                            sendOtp(
+                                                phoneNumber: signUpViewModel
+                                                    .signUpPhoneNoController
+                                                    .value
+                                                    .text,
+                                                countryCode: signUpViewModel
+                                                    .signUpCountryCode.value,
+                                                context: context,
+                                                isLoginScreen: false);
+                                          }
                                         }
                                       }
                                     },

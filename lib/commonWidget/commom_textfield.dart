@@ -10,6 +10,7 @@ import 'package:session_mate/utils/app_string.dart';
 import 'package:session_mate/utils/local_assets.dart';
 import 'package:session_mate/utils/regex.dart';
 import 'package:session_mate/utils/size_config_utils.dart';
+import 'package:session_mate/utils/typedef_utils.dart' as tpdf;
 
 typedef OnChangeString = void Function(String value);
 
@@ -35,7 +36,7 @@ class CommonTextField extends StatelessWidget {
   final bool? underLineBorder;
   final bool? showLabel;
   final OnChangeString? onChange;
-  final VoidCallback? onTap;
+  final tpdf.OnTapTextField? onTap;
   final Color? borderColor;
   final Color? hintTextColor;
   final Color? fillColor;
@@ -99,12 +100,15 @@ class CommonTextField extends StatelessWidget {
                 fontWeight: FontWeight.w500,
                 color: AppColors.black1c.withOpacity(0.8),
               ),
-        title == null || title!.isEmpty ? const SizedBox.shrink() : const SizedBox.shrink(),
+        title == null || title!.isEmpty
+            ? const SizedBox.shrink()
+            : const SizedBox.shrink(),
         SizedBox(
           width: Get.width,
           child: TextFormField(
             controller: textEditController,
             maxLength: maxLength,
+            onTap: onTap,
             style: style ??
                 TextStyle(
                     fontSize: 14.sp,
@@ -117,15 +121,18 @@ class CommonTextField extends StatelessWidget {
                 : CustomTextStyle.textStyleInputField,*/
             keyboardType: keyBoardType ?? TextInputType.text,
             maxLines: maxLine ?? 1,
-            textCapitalization:
-                isCapitalize! ? TextCapitalization.characters : TextCapitalization.sentences,
+            textCapitalization: isCapitalize!
+                ? TextCapitalization.characters
+                : TextCapitalization.sentences,
             inputFormatters: [
               LengthLimitingTextInputFormatter(inputLength),
               FilteringTextInputFormatter.allow(RegExp(regularExpression.tr)),
               NoLeadingSpaceFormatter(),
               lowerCaseFormatter ?? TextFormatter(),
             ],
-            obscureText: validationType == ValidationTypeEnum.password ? obscureValue! : false,
+            obscureText: validationType == ValidationTypeEnum.password
+                ? obscureValue!
+                : false,
             obscuringCharacter: '*',
             onChanged: onChange,
             enabled: !readOnly!,
@@ -151,20 +158,28 @@ class CommonTextField extends StatelessWidget {
               isDense: true,
               fillColor: fillColor ?? Colors.transparent,
               filled: true,
-              contentPadding:
-                  contentPadding ?? EdgeInsets.symmetric(horizontal: 15.w, vertical: 17.h),
+              contentPadding: contentPadding ??
+                  EdgeInsets.symmetric(horizontal: 15.w, vertical: 17.h),
               hintText: hintText!.tr,
               // errorBorder: OutlineInputBorder(
               //     borderSide: BorderSide(color: AppColors.white),
               //     borderRadius: BorderRadius.circular(10.r)),
               border: UnderlineInputBorder(
-                  borderSide: BorderSide(color: borderColor ?? AppColors.black1c.withOpacity(0.4))),
+                  borderSide: BorderSide(
+                      color:
+                          borderColor ?? AppColors.black1c.withOpacity(0.4))),
               focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: borderColor ?? AppColors.black1c.withOpacity(0.4))),
+                  borderSide: BorderSide(
+                      color:
+                          borderColor ?? AppColors.black1c.withOpacity(0.4))),
               disabledBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: borderColor ?? AppColors.black1c.withOpacity(0.4))),
+                  borderSide: BorderSide(
+                      color:
+                          borderColor ?? AppColors.black1c.withOpacity(0.4))),
               enabledBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: borderColor ?? AppColors.black1c.withOpacity(0.4))),
+                  borderSide: BorderSide(
+                      color:
+                          borderColor ?? AppColors.black1c.withOpacity(0.4))),
               prefixIcon: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -186,8 +201,10 @@ class CommonTextField extends StatelessWidget {
               counterText: ''.tr,
               // filled: true,
               // fillColor: ColorUtils.greyE7,
-              labelStyle:
-                  TextStyle(fontSize: 14.sp, color: AppColors.black, fontWeight: FontWeight.w600),
+              labelStyle: TextStyle(
+                  fontSize: 14.sp,
+                  color: AppColors.black,
+                  fontWeight: FontWeight.w600),
               hintStyle: TextStyle(
                 color: hintTextColor ?? AppColors.black1c.withOpacity(0.5),
                 fontSize: 14.sp,
@@ -292,14 +309,17 @@ class CommonReadableTextField extends StatelessWidget {
                     fontWeight: FontWeight.w400),
             keyboardType: keyBoardType ?? TextInputType.text,
             maxLines: maxLine ?? 1,
-            textCapitalization:
-                isCapitalize! ? TextCapitalization.characters : TextCapitalization.sentences,
+            textCapitalization: isCapitalize!
+                ? TextCapitalization.characters
+                : TextCapitalization.sentences,
             inputFormatters: [
               LengthLimitingTextInputFormatter(inputLength),
               FilteringTextInputFormatter.allow(RegExp(regularExpression.tr)),
               NoLeadingSpaceFormatter(),
             ],
-            obscureText: validationType == ValidationTypeEnum.password ? obscureValue! : false,
+            obscureText: validationType == ValidationTypeEnum.password
+                ? obscureValue!
+                : false,
             obscuringCharacter: '*',
             onChanged: onChange,
             enabled: !readOnly!,
@@ -325,20 +345,28 @@ class CommonReadableTextField extends StatelessWidget {
               isDense: true,
               fillColor: fillColor ?? Colors.transparent,
               filled: true,
-              contentPadding:
-                  contentPadding ?? EdgeInsets.symmetric(horizontal: 15.w, vertical: 17.h),
+              contentPadding: contentPadding ??
+                  EdgeInsets.symmetric(horizontal: 15.w, vertical: 17.h),
               hintText: hintText!.tr,
               // errorBorder: OutlineInputBorder(
               //     borderSide: BorderSide(color: AppColors.white),
               //     borderRadius: BorderRadius.circular(10.r)),
               border: UnderlineInputBorder(
-                  borderSide: BorderSide(color: borderColor ?? AppColors.black1c.withOpacity(0.4))),
+                  borderSide: BorderSide(
+                      color:
+                          borderColor ?? AppColors.black1c.withOpacity(0.4))),
               focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: borderColor ?? AppColors.black1c.withOpacity(0.4))),
+                  borderSide: BorderSide(
+                      color:
+                          borderColor ?? AppColors.black1c.withOpacity(0.4))),
               disabledBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: borderColor ?? AppColors.black1c.withOpacity(0.4))),
+                  borderSide: BorderSide(
+                      color:
+                          borderColor ?? AppColors.black1c.withOpacity(0.4))),
               enabledBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: borderColor ?? AppColors.black1c.withOpacity(0.4))),
+                  borderSide: BorderSide(
+                      color:
+                          borderColor ?? AppColors.black1c.withOpacity(0.4))),
 
               suffixIcon: sIcon,
               prefixIconConstraints: BoxConstraints(maxWidth: 50.w),
@@ -346,8 +374,10 @@ class CommonReadableTextField extends StatelessWidget {
               counterText: ''.tr,
               // filled: true,
               // fillColor: ColorUtils.greyE7,
-              labelStyle:
-                  TextStyle(fontSize: 14.sp, color: AppColors.black, fontWeight: FontWeight.w600),
+              labelStyle: TextStyle(
+                  fontSize: 14.sp,
+                  color: AppColors.black,
+                  fontWeight: FontWeight.w600),
               hintStyle: TextStyle(
                 color: hintTextColor ?? AppColors.black1c.withOpacity(0.5),
                 fontSize: 14.sp,

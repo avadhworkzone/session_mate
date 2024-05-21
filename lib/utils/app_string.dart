@@ -35,6 +35,7 @@ class AppStrings {
   static String therapist = 'Therapist';
   static String caregiver = 'Caregiver';
   static String selectRole = 'Select Role';
+  static String dateFormat = '23/03/2009';
 
   /// THERAPIST DETAILS SCREEN
   static String therapistDetail = 'Therapist Details';
@@ -98,8 +99,14 @@ class AppStrings {
   static String passValidation = "password and confirm password must be same";
   static const userExistError = 'User Already Exist!';
   static const loginError = 'User or Password invalid!';
+  static const therapyCenterCodeError = 'Enter Valid Therapy Center Code';
   static const somethingWrong = 'Something Wrong';
   static const pleaseSelectRole = 'Please select role';
+  static const agreeTermsCondition =
+      'Please agree terms and condition & privacy police';
+  static const selectDate = 'Select your birth date';
+  static const childNameIsRequired = 'child name is Required';
+  static const therapistNameIsRequired = 'therapist name is Required';
 
   /// DRAWER SCREEN
   static String manageSessions = "Manage Sessions";
@@ -110,7 +117,7 @@ class AppStrings {
   static String logOut = "Log out";
   static String plans = "Therapy Plans";
   static String search = "Search For exchange rate";
-  static String add = "Add Therapy Center";
+  static String addTherapyCenter = "Add Therapy Center";
 
   /// MANAGE THERAPY CENTER
   static String noTherapy = "No therapy centers \n Try adding one!";

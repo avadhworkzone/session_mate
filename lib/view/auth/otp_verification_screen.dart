@@ -134,13 +134,15 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                             decoration: BoxDecoration(
                                 color: AppColors.whiteF6,
                                 borderRadius: BorderRadius.circular(30.r),
-                                border: Border.all(color: AppColors.primaryColor))),
+                                border:
+                                    Border.all(color: AppColors.primaryColor))),
                         onChanged: (val) {},
                       ),
                     ),
                     SizeConfig.sH35,
                     if (int.parse(otpViewModel
-                            .strDigits(otpViewModel.myDuration.value.inSeconds.remainder(60))
+                            .strDigits(otpViewModel.myDuration.value.inSeconds
+                                .remainder(60))
                             .value) >
                         0)
                       CustomText(
@@ -156,7 +158,9 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                     ),
                     SizeConfig.sH5,
                     int.parse(otpViewModel
-                                .strDigits(otpViewModel.myDuration.value.inSeconds.remainder(60))
+                                .strDigits(otpViewModel
+                                    .myDuration.value.inSeconds
+                                    .remainder(60))
                                 .value) >
                             0
                         ? CustomText(
@@ -215,10 +219,13 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
         if (widget.isLoginScreen) {
           commonSnackBar(message: AppStrings.loginSuccessfully);
           await SharedPreferenceUtils.setIsLogin(true);
-          await SharedPreferenceUtils.setUserId(signInViewModel.signInPhoneNoController.value.text)
+          await SharedPreferenceUtils.setUserId(
+                  signInViewModel.signInPhoneNoController.value.text)
               .then((value) {
             hideLoadingDialog(context: context);
-            CollectionUtils.userCollection.doc(SharedPreferenceUtils.getUserId()).update({
+            CollectionUtils.userCollection
+                .doc(SharedPreferenceUtils.getUserId())
+                .update({
               "latitude": SharedPreferenceUtils.getLatitude(),
               "longitude": SharedPreferenceUtils.getLongitude()
             }).then((value) {
@@ -228,7 +235,9 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                   .then((value) async {
                 Map<String, dynamic>? userDetail;
                 userDetail = value.data();
-                await SharedPreferenceUtils.setUserDetail(jsonEncode(value.data())).then((value) {
+                await SharedPreferenceUtils.setUserDetail(
+                        jsonEncode(value.data()))
+                    .then((value) {
                   Get.to(() => const BottomBar());
                 });
               });
@@ -237,7 +246,9 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
           signInViewModel.signInEmailController.value.clear();
           signInViewModel.signInPhoneNoController.value.clear();
           signInViewModel.signInPasswordController.value.clear();
-
+          signInViewModel.therapyCenterCodeController.value.clear();
+          signInViewModel.signInPhoneIsValidate.value = false;
+          otpViewModel.pinPutController.value.clear();
           // onLoginTap();
         } else {
           hideLoadingDialog(context: context);
@@ -282,7 +293,8 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
     model.isSubscription = false;
     model.latitude = SharedPreferenceUtils.getLatitude();
     model.longitude = SharedPreferenceUtils.getLongitude();
-    model.role = signUpViewModel.roleVal;
+    model.role = signUpViewModel.roleVal.value;
+    model.dob = signUpViewModel.dateOfBirthController.value.text;
     model.userName = signUpViewModel.signUpUserNameController.value.text;
     model.centerCode = signUpViewModel.therapyCenterCodeController.value.text;
     final DateTime currentDateTime = await worldtimePlugin.timeByLocation(
@@ -295,11 +307,10 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
         "${DateTime.now().year}-${DateTime.now().month < 10 ? "0${DateTime.now().month}" : "${DateTime.now().month}"}-${DateTime.now().day < 10 ? "0${DateTime.now().day}" : "${DateTime.now().day}"}";
     model.subscriptionEndDate =
         "${DateTime.now().year}-${DateTime.now().month < 10 ? "0${DateTime.now().month}" : "${DateTime.now().month}"}-${DateTime.now().day < 10 ? "0${DateTime.now().day}" : "${DateTime.now().day}"}";
-    print(model.subscriptionStartDate);
-    print(model.subscriptionEndDate);
     showLoadingDialog(context: context);
 
-    final checkUserExistStatus = await AuthService.checkUserExist(model.mobileNumber!);
+    final checkUserExistStatus =
+        await AuthService.checkUserExist(model.mobileNumber!);
     if (checkUserExistStatus) {
       /// LOADING FALSE
       /// SHOW TOAST M<SG USER ALREADY EXIST
@@ -309,13 +320,9 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
     }
     final status = await AuthService.signUp(model);
     if (status) {
-      commonSnackBar(message: AppStrings.loginSuccessfully);
-      hideLoadingDialog(context: context);
-      // PreferenceManagerUtils.setUserId(model.mobileNumber ?? '');
-      // PreferenceManagerUtils.setLoginExist('true');
-      // Get.offAll(() => DoctorSelectionScreen());
       await SharedPreferenceUtils.setIsLogin(true);
-      await SharedPreferenceUtils.setUserId(signUpViewModel.signUpPhoneNoController.value.text)
+      await SharedPreferenceUtils.setUserId(
+              signUpViewModel.signUpPhoneNoController.value.text)
           .then((value) {
         CollectionUtils.userCollection
             .doc(SharedPreferenceUtils.getUserId())
@@ -323,11 +330,25 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
             .then((value) async {
           Map<String, dynamic>? userDetail;
           userDetail = value.data();
-          await SharedPreferenceUtils.setUserDetail(jsonEncode(value.data())).then((value) {
+          await SharedPreferenceUtils.setUserDetail(jsonEncode(value.data()))
+              .then((value) {
             Get.to(() => const BottomBar());
           });
         });
       });
+      commonSnackBar(message: AppStrings.loginSuccessfully);
+      hideLoadingDialog(context: context);
+      signUpViewModel.roleVal.value = '';
+      signUpViewModel.dateOfBirthController.value.clear();
+      signUpViewModel.signUpEmailController.value.clear();
+      signUpViewModel.signUpPhoneNoController.value.clear();
+      signUpViewModel.signUpPasswordController.value.clear();
+      signUpViewModel.signUpConfirmPasswordController.value.clear();
+      signUpViewModel.signUpPhoneIsValidate.value = false;
+      otpViewModel.pinPutController.value.clear();
+      // PreferenceManagerUtils.setUserId(model.mobileNumber ?? '');
+      // PreferenceManagerUtils.setLoginExist('true');
+      // Get.offAll(() => DoctorSelectionScreen());
     } else {
       hideLoadingDialog(context: context);
       commonSnackBar(message: AppStrings.userExistError);
@@ -357,7 +378,8 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
             if (exception.code == 'invalid-phone-number' ||
                 exception.code == "missing-client-identifier") {
               // hideLoadingDialog(context: context);
-              commonSnackBar(message: 'The provided phone number is not valid.');
+              commonSnackBar(
+                  message: 'The provided phone number is not valid.');
             } else if (exception.code == "too-many-requests") {
               // hideLoadingDialog(context: context);
               commonSnackBar(
