@@ -21,12 +21,18 @@ class SessionService {
     return CollectionUtils.sessionCollection
         .where('userId', isEqualTo: SharedPreferenceUtils.getUserId())
         .snapshots()
-        .map((event) => event.docs.map((e) => AddSessionDataModel.fromJson(e.data())).toList());
+        .map((event) => event.docs
+            .map((e) => AddSessionDataModel.fromJson(e.data()))
+            .toList());
   }
 
   /// DELETE SESSION DATA
   static Future<bool> deleteSessionData(String id) async {
-    return CollectionUtils.sessionCollection.doc(id).delete().then((value) => true).catchError((e) {
+    return CollectionUtils.sessionCollection
+        .doc(id)
+        .delete()
+        .then((value) => true)
+        .catchError((e) {
       logs(' delete ERROR :=>$e');
       return false;
     });
@@ -62,7 +68,8 @@ class SessionService {
   }
 
   /// ADD THERAPY CENTER
-  static Future<bool> addTherapyCenter(TherapyCenterLocationDataModel model) async {
+  static Future<bool> addTherapyCenter(
+      TherapyCenterLocationDataModel model) async {
     final doc = CollectionUtils.therapyCenterCollection.doc();
     model.locationId = doc.id;
     return doc.set(model.toJson()).then((value) => true).catchError((e) {
@@ -72,20 +79,21 @@ class SessionService {
   }
 
   /// GET THERAPY CENTER
-  static Stream<List<TherapyCenterLocationDataModel>> getTherapyCenterLocationData() {
+  static Stream<List<TherapyCenterLocationDataModel>>
+      getTherapyCenterLocationData() {
     return CollectionUtils.therapyCenterCollection
         .where('userId', isEqualTo: SharedPreferenceUtils.getUserId())
         .snapshots()
-        .map((event) =>
-            event.docs.map((e) => TherapyCenterLocationDataModel.fromJson(e.data())).toList());
+        .map((event) => event.docs
+            .map((e) => TherapyCenterLocationDataModel.fromJson(e.data()))
+            .toList());
   }
 
   /// GET THERAPY CENTER FOR DROP DOWN LIST
-  Future<List<TherapyCenterLocationDataModel>> getTherapyDropdownCenter() async {
+  Future<List<TherapyCenterLocationDataModel>>
+      getTherapyDropdownCenter() async {
     try {
-      final snapshot = await CollectionUtils.therapyCenterCollection
-          .where('userId', isEqualTo: SharedPreferenceUtils.getUserId())
-          .get();
+      final snapshot = await CollectionUtils.therapyCenterCollection.get();
 
       if (snapshot.docs.isNotEmpty) {
         return snapshot.docs.map((doc) {
@@ -115,8 +123,7 @@ class SessionService {
 
   /// GET SESSION LIST
   static Stream<List<SessionListData>> getSessionList() {
-    return CollectionUtils.session
-        .snapshots()
-        .map((event) => event.docs.map((e) => SessionListData.fromJson(e.data())).toList());
+    return CollectionUtils.session.snapshots().map((event) =>
+        event.docs.map((e) => SessionListData.fromJson(e.data())).toList());
   }
 }

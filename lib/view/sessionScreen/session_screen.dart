@@ -37,7 +37,8 @@ class _SessionScreenState extends State<SessionScreen> {
   AddSessionDataModel sessionDataReq = AddSessionDataModel();
   List<TherapyCenterLocationDataModel> locationData = [];
   List<SessionListData>? snapshotData;
-  String? selectedValue;
+  String? selectedTherapyCenter;
+  String? selectedTherapyCenterTherapistId;
   bool isLocationNotSelected = false;
   Map<String, dynamic> userDetail = {};
 
@@ -75,12 +76,13 @@ class _SessionScreenState extends State<SessionScreen> {
             'id': snapshot.sessionId,
             'session_name': snapshot.sessionName ?? '',
           });
-          logs(
-              'sessionViewModel.selectedSession====${sessionViewModel.selectedSession}');
         }
         sessionViewModel.sessionDate.value =
             formatMilliseconds(snapshot.sessionSelectedDate ?? 0);
-        selectedValue = snapshot.therapyCenter;
+        selectedTherapyCenter = snapshot.therapyCenter;
+
+        // sessionViewModel.therapyCenterData.value = snapshot;
+        selectedTherapyCenterTherapistId = snapshot.selectedCenterTherapistId;
         sessionViewModel.isLoadingData.value = false;
         // } else {
         //   sessionViewModel.isLoadingData.value = false;
@@ -207,8 +209,6 @@ class _SessionScreenState extends State<SessionScreen> {
                                                           snapshotData![index]
                                                               .sessionName
                                                     });
-                                                    logs(
-                                                        'sessionViewModel.selectedSession====${sessionViewModel.selectedSession}');
                                                   } else {
                                                     sessionViewModel
                                                         .selectedSession
@@ -267,7 +267,7 @@ class _SessionScreenState extends State<SessionScreen> {
                                       padding: EdgeInsets.symmetric(
                                           horizontal: 20.w),
                                       alignment: Alignment.center,
-                                      value: selectedValue,
+                                      value: selectedTherapyCenter,
                                       underline: Container(),
                                       icon: const Icon(
                                         Icons.keyboard_arrow_down,
@@ -278,9 +278,9 @@ class _SessionScreenState extends State<SessionScreen> {
                                                   serviceData) {
                                         return DropdownMenuItem<String>(
                                           value:
-                                              '${serviceData.city}, ${serviceData.state}',
+                                              '${serviceData.city!}, ${serviceData.state!}, ${serviceData.userId}',
                                           child: CustomText(
-                                            '${serviceData.city!}, ${serviceData.state!}',
+                                            '${serviceData.city!}, ${serviceData.state!}, ${serviceData.userId}',
                                             fontSize: 16.sp,
                                             fontWeight: FontWeight.w500,
                                             color: AppColors.color97,
@@ -290,7 +290,21 @@ class _SessionScreenState extends State<SessionScreen> {
                                       }).toList(),
                                       onChanged: (String? serviceData) {
                                         setState(() {
-                                          selectedValue = serviceData;
+                                          print('serviceData==${serviceData}');
+                                          selectedTherapyCenter = serviceData;
+                                          selectedTherapyCenterTherapistId =
+                                              serviceData!
+                                                  .split(RegExp(r'\D+'))
+                                                  .last;
+                                          // final dataIs = locationData.where(
+                                          //     (element) =>
+                                          //         '${element.city}, ${element.state}' ==
+                                          //         serviceData);
+                                          print(
+                                              'dataIs======${selectedTherapyCenterTherapistId}');
+                                          // final dataIs =locationData.where((element) => element.);
+                                          // selectedTherapyCenter =
+                                          //     '${sessionViewModel.therapyCenterData.value!.city}, ${sessionViewModel.therapyCenterData.value!.state}';
                                         });
                                       },
                                     ),
@@ -358,7 +372,7 @@ class _SessionScreenState extends State<SessionScreen> {
   Future<void> addSessionOnTap() async {
     if (sessionViewModel.sessionDate.value == '' ||
         sessionViewModel.selectedSession.isEmpty ||
-        selectedValue == null) {
+        selectedTherapyCenter == null) {
       commonSnackBar(message: 'Please Select data');
     } else {
       showLoadingDialog(context: context);
@@ -374,7 +388,10 @@ class _SessionScreenState extends State<SessionScreen> {
             sessionViewModel.selectedSession[i]['session_name'];
         sessionDataReq.sessionSelectedDate =
             sessionViewModel.sessionDateMilliSecond.value;
-        sessionDataReq.therapyCenter = '${selectedValue}';
+        sessionDataReq.therapyCenter = '$selectedTherapyCenter';
+        sessionDataReq.selectedCenterTherapistId =
+            selectedTherapyCenterTherapistId;
+        sessionDataReq.userName = userDetail["userName"];
         sessionDataReq.createdAt = DateTime.now().millisecondsSinceEpoch;
         sessionDataReq.selectedMonth = sessionViewModel.selectedMonth;
 

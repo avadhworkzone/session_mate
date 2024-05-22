@@ -1,3 +1,4 @@
+import 'package:session_mate/modal/add_session_data_model.dart';
 import 'package:session_mate/modal/age_group_level_model.dart';
 import 'package:session_mate/modal/current_level_model.dart';
 import 'package:session_mate/modal/get_session_list_model.dart';
@@ -32,7 +33,8 @@ class TherapyPlanService {
   Future<List<AgeGroupLevelModel>> getAgeGroupLevelList() async {
     try {
       final snapshot = await CollectionUtils.ageGroupLevel
-          .where('sessionId', isEqualTo: SharedPreferenceUtils.getTherapyPlanSessionId())
+          .where('sessionId',
+              isEqualTo: SharedPreferenceUtils.getTherapyPlanSessionId())
           .get();
       if (snapshot.docs.isNotEmpty) {
         return snapshot.docs.map((doc) {
@@ -49,10 +51,12 @@ class TherapyPlanService {
   }
 
   /// GET GOALS CATEGORY DATA
-  Future<List<GoalCategoryModel>> getGoalsCategoryData({required String ageLevelId}) async {
+  Future<List<GoalCategoryModel>> getGoalsCategoryData(
+      {required String ageLevelId}) async {
     try {
       final snapshot = await CollectionUtils.goalCategoryCollection
-          .where('sessionId', isEqualTo: SharedPreferenceUtils.getTherapyPlanSessionId())
+          .where('sessionId',
+              isEqualTo: SharedPreferenceUtils.getTherapyPlanSessionId())
           .where('ageLevelId', isEqualTo: ageLevelId)
           .get();
       if (snapshot.docs.isNotEmpty) {
@@ -113,12 +117,14 @@ class TherapyPlanService {
   }
 
   /// GET STRATEGIES DATA
-  Future<List<StrategiesModel>> getStrategiesData({required List<String?> goalIds}) async {
+  Future<List<StrategiesModel>> getStrategiesData(
+      {required List<String?> goalIds}) async {
     try {
       List<StrategiesModel> strategies = [];
       for (String? goalId in goalIds) {
-        final snapshot =
-            await CollectionUtils.strategiesCollection.where('goalId', isEqualTo: goalId).get();
+        final snapshot = await CollectionUtils.strategiesCollection
+            .where('goalId', isEqualTo: goalId)
+            .get();
         if (snapshot.docs.isNotEmpty) {
           strategies.addAll(snapshot.docs.map((doc) {
             final data = doc.data();
@@ -143,5 +149,28 @@ class TherapyPlanService {
       logs("User Therapy Error :=> $e");
       return false;
     });
+  }
+
+  /// get child name
+  Future<List<AddSessionDataModel>> getChildNameList() async {
+    try {
+      final snapshot = await CollectionUtils.sessionCollection
+          .where('session_id',
+              isEqualTo: SharedPreferenceUtils.getTherapyPlanSessionId())
+          .where('selected_center_therapist_id',
+              isEqualTo: SharedPreferenceUtils.getUserId())
+          .get();
+      if (snapshot.docs.isNotEmpty) {
+        return snapshot.docs.map((doc) {
+          final data = doc.data();
+          return AddSessionDataModel.fromJson(data);
+        }).toList();
+      } else {
+        return [];
+      }
+    } catch (e) {
+      logs('get child name error :=>$e');
+      throw e;
+    }
   }
 }

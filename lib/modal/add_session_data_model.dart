@@ -5,6 +5,8 @@ class AddSessionDataModel {
   int? sessionSelectedDate;
   String? sessionName;
   String? therapyCenter;
+  String? selectedCenterTherapistId;
+  String? userName;
   int? createdAt;
   String? selectedMonth;
 
@@ -14,8 +16,10 @@ class AddSessionDataModel {
     this.sessionSelectedDate,
     this.sessionName,
     this.therapyCenter,
+    this.selectedCenterTherapistId,
     this.createdAt,
     this.selectedMonth,
+    this.userName,
   });
 
   AddSessionDataModel.fromJson(Map<String, dynamic> json) {
@@ -25,8 +29,10 @@ class AddSessionDataModel {
     sessionSelectedDate = json['session_date'] ?? "";
     sessionName = json['session_name'] ?? "";
     therapyCenter = json['therapy_center'] ?? "";
+    selectedCenterTherapistId = json['selected_center_therapist_id'] ?? "";
     createdAt = json['created_at'] ?? "";
     selectedMonth = json['session_month'] ?? "";
+    userName = json['userName'] ?? "";
   }
 
   Map<String, dynamic> toJson() => {
@@ -38,5 +44,7 @@ class AddSessionDataModel {
         'therapy_center': therapyCenter,
         'created_at': createdAt,
         'session_month': selectedMonth,
+        'selected_center_therapist_id': selectedCenterTherapistId,
+        'userName': userName,
       };
 }

@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:session_mate/modal/add_session_data_model.dart';
 import 'package:session_mate/modal/age_group_level_model.dart';
 import 'package:session_mate/modal/current_level_model.dart';
 import 'package:session_mate/modal/get_session_list_model.dart';
@@ -60,4 +61,9 @@ class AssessmentAndPlanViewModel extends GetxController {
   ].obs;
   Rx<bool> childAgeExpanded = false.obs;
   Rx<String?> childSelectedAge = Rx<String?>(null);
+
+  /// child name
+  RxList<Map<String, dynamic>> childNameData = <Map<String, dynamic>>[].obs;
+  RxList<dynamic> childNameSelectedList = [].obs;
+  Rx<bool> childNameExpanded = false.obs;
 }

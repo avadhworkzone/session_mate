@@ -12,6 +12,7 @@ class SharedPreferenceUtils {
   static String longitude = 'longitude';
   static String currentDate = 'currentDate';
   static String userDetail = 'userDetail';
+  static String role = 'role';
 
   /// is login
   static Future setIsLogin(bool value) async {
@@ -96,5 +97,14 @@ class SharedPreferenceUtils {
 
   static String getCurrentDate() {
     return getStorage.read(currentDate) ?? "1970-01-01";
+  }
+
+  /// ROLE
+  static setRole(String value) async {
+    await getStorage.write(role, value);
+  }
+
+  static String getRole() {
+    return getStorage.read(role) ?? "";
   }
 }

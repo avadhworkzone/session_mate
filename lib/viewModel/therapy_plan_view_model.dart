@@ -37,6 +37,7 @@ class TherapyPlanViewModel extends GetxController {
       selectedStrategiesData.add(item["name"]);
     }
     print(selectedStrategiesData);
+
     // userTherapyDataModel.value?.sessionId = assessmentAndPlanViewModel.sessionData.value?.id ?? "";
     // print(assessmentAndPlanViewModel.sessionData.value?.id);
     // print(userTherapyDataModel.value?.sessionId);
@@ -60,7 +61,9 @@ class TherapyPlanViewModel extends GetxController {
       "subGoal": selectedSubGoalData,
       "currentLevel": selectedCurrentLevelData,
       "strategies": selectedStrategiesData,
+      "UserName": assessmentAndPlanViewModel.childNameSelectedList.value
     };
+
     print(data);
     TherapyPlanService()
         .setUserTherapyData(data)
@@ -84,18 +87,21 @@ class TherapyPlanViewModel extends GetxController {
         subCategory: i < assessmentAndPlanViewModel.subGoalSelectedList.length
             ? assessmentAndPlanViewModel.subGoalSelectedList[i]['name']
             : '',
-        currentLevel: i < assessmentAndPlanViewModel.currentLevelSelectedList.length
-            ? assessmentAndPlanViewModel.currentLevelSelectedList[i]['name']
-            : '',
-        plannedStrategies: i < assessmentAndPlanViewModel.strategiesSelectedList.length
-            ? assessmentAndPlanViewModel.strategiesSelectedList[i]['name']
-            : '',
+        currentLevel:
+            i < assessmentAndPlanViewModel.currentLevelSelectedList.length
+                ? assessmentAndPlanViewModel.currentLevelSelectedList[i]['name']
+                : '',
+        plannedStrategies:
+            i < assessmentAndPlanViewModel.strategiesSelectedList.length
+                ? assessmentAndPlanViewModel.strategiesSelectedList[i]['name']
+                : '',
       ));
     }
   }
 
   Future<void> generateAndSendPDF() async {
     combineLists();
+
     // /// For Generate Pdf
     // final pdf = pw.Document();
     // final cellStyleFont = pw.Font.ttf(await rootBundle.load('assets/fonts/OpenSans-Regular.ttf'));

@@ -93,4 +93,12 @@ class SessionViewModel extends GetxController {
       retrieveCountMonthIs.value = DateFormat('MMMM').format(pickedMonth);
     }
   }
+
+  /// GET THERAPY CENTER DROP DOWN DATA
+  // RxList<TherapyCenterLocationDataModel> therapyCenterListData =
+  //     <TherapyCenterLocationDataModel>[].obs;
+  // Rx<TherapyCenterLocationDataModel?> therapyCenterData =
+  //     Rx<TherapyCenterLocationDataModel?>(null);
+  // Rx<TherapyCenterLocationDataModel?> therapyCenterData =
+  //     Rx<TherapyCenterLocationDataModel?>(null);
 }
