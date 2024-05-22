@@ -30,6 +30,7 @@ class RazorpayService {
       'send_sms_hash': true,
       'prefill': {'contact': '8888888888', 'email': 'test@razorpay.com'},
     };
+
     initiateRazorPay();
     razorpay.open(options);
   }
