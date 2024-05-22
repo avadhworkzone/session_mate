@@ -2,24 +2,18 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:session_mate/commonWidget/commom_textfield.dart';
 import 'package:session_mate/commonWidget/common_appbar.dart';
 import 'package:session_mate/commonWidget/custom_btn.dart';
 import 'package:session_mate/commonWidget/custom_text.dart';
 import 'package:session_mate/utils/app_colors.dart';
 import 'package:session_mate/utils/app_image_assets.dart';
 import 'package:session_mate/utils/app_string.dart';
-import 'package:session_mate/utils/common_methods.dart';
 import 'package:session_mate/utils/local_assets.dart';
 import 'package:session_mate/utils/shared_preference_utils.dart';
 import 'package:session_mate/utils/size_config_utils.dart';
-import 'package:session_mate/view/bottomBar/bottom_bar_screen.dart';
-import 'package:session_mate/view/therapyPlanScreen/assessment_plan_screen.dart';
 import 'package:session_mate/viewModel/assessment_plan_view_model.dart';
-import 'package:session_mate/viewModel/bottom_bar_view_model.dart';
 import 'package:session_mate/viewModel/therapy_plan_view_model.dart';
 
 class TherapyPlan extends StatefulWidget {
