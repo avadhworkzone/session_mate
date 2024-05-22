@@ -15,6 +15,7 @@ import 'package:session_mate/view/bottomBar/bottom_bar_screen.dart';
 import 'package:session_mate/view/drawer/drawer_screen.dart';
 import 'package:session_mate/view/retrieve_count_screen/retrieve_counts_screen.dart';
 import 'package:session_mate/view/therapyPlanScreen/assessment_plan_screen.dart';
+import 'package:session_mate/view/therapyPlanScreen/show_therapy_data.dart';
 import 'package:session_mate/viewModel/bottom_bar_view_model.dart';
 import 'package:session_mate/viewModel/home_view_model.dart';
 import 'package:session_mate/viewModel/session_view_model.dart';
@@ -39,6 +40,7 @@ class _HomeScreenState extends State<HomeScreen> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       homeViewModel.checkSubscription(context);
     });
+    homeViewModel.getTherapyPlanData();
     // TODO: implement initState
     //bottomBarViewModel.checkIsFreeTrial();
     super.initState();
@@ -107,10 +109,9 @@ class _HomeScreenState extends State<HomeScreen> {
                           if (homeViewModel.checkSubscriptionLoader.value ==
                               false) {
                             if (homeViewModel.isFreeTrial.value == true) {
-                              Get.to(() => const AssessmentAndPlanScreen());
+                              Get.to(() => const ShowTherapyData());
                             } else {
-                              commonSnackBar(
-                                  message: AppStrings.yourFreeTrialEnd);
+                              commonSnackBar(message: AppStrings.yourFreeTrialEnd);
                             }
                           }
                         }

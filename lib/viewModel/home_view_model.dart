@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:session_mate/utils/app_image_assets.dart';
@@ -9,6 +10,8 @@ import 'package:worldtime/worldtime.dart';
 class HomeViewModel extends GetxController {
   final worldtimePlugin = Worldtime();
   Rx<bool> isFreeTrial = true.obs;
+  List<Map<String,dynamic>> therapyPlanData = [];
+  List<Map<String,dynamic>> currentTherapyPlanData = [];
   // GlobalKey<ScaffoldState> homeDrawerKey = GlobalKey();
   Rx<bool> checkSubscriptionLoader = false.obs;
   RxList<String> homeImageList = [
@@ -75,5 +78,27 @@ class HomeViewModel extends GetxController {
             "isSubscription ======>>>>${SharedPreferenceUtils.getIsSubscription()}<<<<");
       });
     }
+  }
+
+
+  Future<void> getTherapyPlanData() async {
+    QuerySnapshot<Map<String, dynamic>> therapyDataSnapshot =
+    await CollectionUtils.userTherapyDataCollection.get();
+    therapyPlanData.clear();
+    currentTherapyPlanData.clear();
+    for (var element in therapyDataSnapshot.docs) {
+      therapyPlanData.add(element.data());
+    }
+    for (var element in therapyPlanData) {
+      for(var userName in element['UserName']){
+        print(element['UserName'].length);
+        if(userName['mobile_number'] == SharedPreferenceUtils.getUserId()){
+          currentTherapyPlanData.add(element);
+        }
+      }
+    }
+    print(currentTherapyPlanData[0]);
+    print(currentTherapyPlanData[1]);
+    // print(therapyPlanData);
   }
 }

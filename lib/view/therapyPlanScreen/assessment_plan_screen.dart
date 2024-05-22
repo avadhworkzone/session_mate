@@ -35,7 +35,6 @@ class _AssessmentAndPlanScreenState extends State<AssessmentAndPlanScreen> {
   @override
   void initState() {
     getSessionList();
-    // TODO: implement initState
     super.initState();
   }
 
@@ -158,10 +157,10 @@ class _AssessmentAndPlanScreenState extends State<AssessmentAndPlanScreen> {
                                         '')
                                 .then((goalData) {
                               if (goalData.isNotEmpty) {
-                                goalData.forEach((element) {
+                                for (var element in goalData) {
                                   assessmentAndPlanViewModel
                                       .goalListData.value = element.goal!;
-                                });
+                                }
                               }
                             }).catchError((error) {
                               logs('Error goalData list data: $error');
@@ -418,8 +417,7 @@ class _AssessmentAndPlanScreenState extends State<AssessmentAndPlanScreen> {
                                     return Column(
                                       children: [
                                         Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                           children: [
                                             Expanded(
                                               child: InkWell(
