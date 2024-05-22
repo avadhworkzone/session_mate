@@ -111,8 +111,9 @@ class TherapyPlanViewModel extends GetxController {
     }
   }
 
-  Future<void> generateAndSendPDFOnEmail() async {
+  Future<void> generateAndSendPDFOnEmail({required String userEmailId}) async {
     combineLists();
+
     /// For Generate Pdf
     final cellStyleFont =
         pw.Font.ttf(await rootBundle.load('assets/fonts/OpenSans-Regular.ttf'));
@@ -159,7 +160,7 @@ class TherapyPlanViewModel extends GetxController {
     final smtpServer = gmail('dhruvi.madvise@gmail.com', 'wjulhfrnfprfcfom');
     final message = Message()
       ..from = const Address('dhruvi.madvise@gmail.com', 'SessionMate')
-      ..recipients.add('dev.dhruvirakholiya@gmail.com')
+      ..recipients.add(userEmailId)
       ..subject = 'Therapy Plan'
       ..text = 'Attached is the Therapy Plan'
       ..attachments.add(
@@ -170,8 +171,9 @@ class TherapyPlanViewModel extends GetxController {
       if (kDebugMode) {
         print('Message sent: $sendReport');
       }
-      showSussesSnackBar('Send successfully', 'Send pdf successfully on your email');
-       Get.offAll(const BottomBar());
+      showSussesSnackBar(
+          'Send successfully', 'Send pdf successfully on your email');
+      Get.offAll(const BottomBar());
     } on MailerException catch (e) {
       if (kDebugMode) {
         print('Message not sent. $e');
@@ -182,6 +184,7 @@ class TherapyPlanViewModel extends GetxController {
 
   Future<void> generateAndSendPdfOnWhatsApp() async {
     combineLists();
+
     /// For Generate Pdf
     final cellStyleFont =
         pw.Font.ttf(await rootBundle.load('assets/fonts/OpenSans-Regular.ttf'));

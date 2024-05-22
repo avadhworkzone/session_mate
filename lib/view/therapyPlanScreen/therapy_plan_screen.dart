@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -12,6 +14,7 @@ import 'package:session_mate/utils/app_image_assets.dart';
 import 'package:session_mate/utils/app_string.dart';
 import 'package:session_mate/utils/common_methods.dart';
 import 'package:session_mate/utils/local_assets.dart';
+import 'package:session_mate/utils/shared_preference_utils.dart';
 import 'package:session_mate/utils/size_config_utils.dart';
 import 'package:session_mate/view/bottomBar/bottom_bar_screen.dart';
 import 'package:session_mate/view/therapyPlanScreen/assessment_plan_screen.dart';
@@ -29,9 +32,11 @@ class TherapyPlan extends StatefulWidget {
 class _TherapyPlanState extends State<TherapyPlan> {
   TherapyPlanViewModel therapyPlanViewModel = Get.put(TherapyPlanViewModel());
   AssessmentAndPlanViewModel assessmentAndPlanViewModel = Get.find();
+  Map<String, dynamic> userDetail = {};
 
   @override
   void initState() {
+    userDetail = jsonDecode(SharedPreferenceUtils.getUserDetail());
     // TODO: implement initState
     super.initState();
   }
@@ -266,8 +271,8 @@ class _TherapyPlanState extends State<TherapyPlan> {
                             CustomBtn(
                               onTap: () {
                                 therapyPlanViewModel.setTherapyData();
-                                therapyPlanViewModel.generateAndSendPDFOnEmail();
-
+                                therapyPlanViewModel.generateAndSendPDFOnEmail(
+                                    userEmailId: userDetail["email"]);
                               },
                               height: 55.h,
                               width: 144.w,
@@ -312,11 +317,11 @@ class _TherapyPlanState extends State<TherapyPlan> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            Icon(
-                              Icons.share_outlined,
-                              color: AppColors.whiteFF,
-                              size: 30.w,
-                            ),
+                            // Icon(
+                            //   Icons.share_outlined,
+                            //   color: AppColors.whiteFF,
+                            //   size: 30.w,
+                            // ),
                             // Container(
                             //   decoration: BoxDecoration(
                             //       borderRadius: BorderRadius.circular(20),
@@ -334,8 +339,9 @@ class _TherapyPlanState extends State<TherapyPlan> {
                             //   ),
                             // ),
                             GestureDetector(
-                              onTap: (){
-                                therapyPlanViewModel.generateAndSendPdfOnWhatsApp();
+                              onTap: () {
+                                therapyPlanViewModel
+                                    .generateAndSendPdfOnWhatsApp();
                               },
                               child: LocalAssets(
                                 imagePath: AppImageAssets.whatsapp,
@@ -343,18 +349,18 @@ class _TherapyPlanState extends State<TherapyPlan> {
                                 width: 80.w,
                               ),
                             ),
-                            Container(
-                                height: 56.h,
-                                width: 65.w,
-                                decoration: BoxDecoration(
-                                  color: AppColors.white,
-                                  borderRadius: BorderRadius.circular(10),
-                                  // image: DecorationImage(image: LocalAssets(imagePath: AppImageAssets.download,boxFix: BoxFit.fill,imgColor: AppColors.primaryColor,)
-                                ),
-                                child: const Center(
-                                    child: LocalAssets(
-                                  imagePath: AppImageAssets.messageBox,
-                                ))),
+                            // Container(
+                            //     height: 56.h,
+                            //     width: 65.w,
+                            //     decoration: BoxDecoration(
+                            //       color: AppColors.white,
+                            //       borderRadius: BorderRadius.circular(10),
+                            //       // image: DecorationImage(image: LocalAssets(imagePath: AppImageAssets.download,boxFix: BoxFit.fill,imgColor: AppColors.primaryColor,)
+                            //     ),
+                            //     child: const Center(
+                            //         child: LocalAssets(
+                            //       imagePath: AppImageAssets.messageBox,
+                            //     ))),
                           ],
                         )
                       ],

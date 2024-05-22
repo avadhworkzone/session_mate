@@ -108,7 +108,9 @@ Drawer buildDrawer({required String userName}) {
                               image: AppImageAssets.setting,
                               title: AppStrings.settings,
                               ontap: () {
-                                Get.to(()=> const SettingScreen());
+                                Get.to(() => SettingScreen(
+                                      isDrawerScreen: true,
+                                    ));
                               }),
                           const Divider(
                             color: AppColors.white,

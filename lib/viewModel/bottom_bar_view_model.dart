@@ -8,6 +8,7 @@ import 'package:session_mate/utils/shared_preference_utils.dart';
 import 'package:session_mate/view/homeScreen/home_screen.dart';
 import 'package:session_mate/view/profile_screen.dart';
 import 'package:session_mate/view/sessionScreen/session_screen.dart';
+import 'package:session_mate/view/setting_screen/setting_screen.dart';
 import 'package:session_mate/view/subScriptionScreen/subScription_screen.dart';
 import 'package:worldtime/worldtime.dart';
 
@@ -16,7 +17,7 @@ class BottomBarViewModel extends GetxController {
   RxList screenList = [
     const HomeScreen(),
     const SessionScreen(),
-    const ProfileScreen(),
+    SettingScreen(),
     SubscriptionsScreen(),
     // const SettingScreen(),
     // const WelcomeScreen(),
