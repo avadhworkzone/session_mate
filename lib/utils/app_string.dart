@@ -222,4 +222,8 @@ class AppStrings {
   static String yearlySubscriptionSuccess =
       "Yearly Subscription Purchased Successfully";
   static String subscriptionSuccess = "Subscription Purchased Successfully";
+
+  ///SETTING SCREEN
+  static String account = "Account";
+  static String editProfile = "Edit profile";
 }

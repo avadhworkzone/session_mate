@@ -8,8 +8,6 @@ import 'package:session_mate/general/connectivity_wrapper.dart';
 import 'package:session_mate/utils/app_colors.dart';
 import 'package:session_mate/utils/app_theme.dart';
 import 'package:session_mate/utils/shared_preference_utils.dart';
-import 'package:session_mate/view/auth/sign_up_screen.dart';
-import 'package:session_mate/view/auth/therapist_screen.dart';
 import 'package:session_mate/view/bottomBar/bottom_bar_screen.dart';
 import 'package:session_mate/view/welcomeScreen/welcome_screen.dart';
 import 'package:session_mate/viewModel/otp_view_model.dart';
@@ -36,8 +34,6 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   MyApp({super.key});
 
-//demo
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
@@ -58,7 +54,6 @@ class MyApp extends StatelessWidget {
             ),
             transitionDuration: const Duration(milliseconds: 100),
             home: ConnectivityWrapper(
-              // child: BottomBar()
               child: SharedPreferenceUtils.getIsLogin() == true
                   ? const BottomBar()
                   : const WelcomeScreen(),

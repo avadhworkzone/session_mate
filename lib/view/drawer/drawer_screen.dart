@@ -10,6 +10,7 @@ import 'package:session_mate/utils/shared_preference_utils.dart';
 import 'package:session_mate/utils/size_config_utils.dart';
 import 'package:session_mate/view/manageSession/manage_sessions.dart';
 import 'package:session_mate/view/manageTherapyCenters/manage_therapy_centers.dart';
+import 'package:session_mate/view/setting_screen/setting_screen.dart';
 import 'package:session_mate/view/subScriptionScreen/subScription_screen.dart';
 import 'package:session_mate/view/welcomeScreen/welcome_screen.dart';
 
@@ -106,7 +107,9 @@ Drawer buildDrawer({required String userName}) {
                           commonDrawerBtn(
                               image: AppImageAssets.setting,
                               title: AppStrings.settings,
-                              ontap: () {}),
+                              ontap: () {
+                                Get.to(()=> const SettingScreen());
+                              }),
                           const Divider(
                             color: AppColors.white,
                           ),
