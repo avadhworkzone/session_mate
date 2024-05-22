@@ -231,10 +231,9 @@ class _TherapyPlanState extends State<TherapyPlan> {
                             ),
                             CustomBtn(
                               onTap: () {
-                                // therapyPlanViewModel.fetchDataFromFirebase();
                                 therapyPlanViewModel.setTherapyData();
-                                Get.offAll(() => const BottomBar());
-                                // therapyPlanViewModel.generateAndSendPDF();
+                                therapyPlanViewModel.generateAndSendPDFOnEmail();
+
                               },
                               height: 55.h,
                               width: 144.w,
@@ -244,10 +243,10 @@ class _TherapyPlanState extends State<TherapyPlan> {
                             )
                           ],
                         ),
-                        // SizeConfig.sH15,
-                        // const Divider(
-                        //   color: AppColors.whiteFF,
-                        // ),
+                        SizeConfig.sH15,
+                        const Divider(
+                          color: AppColors.whiteFF,
+                        ),
                         // Row(
                         //   children: [
                         //     Padding(
@@ -275,50 +274,55 @@ class _TherapyPlanState extends State<TherapyPlan> {
                         //     )
                         //   ],
                         // ),
-                        // SizeConfig.sH15,
-                        // Row(
-                        //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        //   children: [
-                        //     Icon(
-                        //       Icons.share_outlined,
-                        //       color: AppColors.whiteFF,
-                        //       size: 30.w,
-                        //     ),
-                        //     // Container(
-                        //     //   decoration: BoxDecoration(
-                        //     //       borderRadius: BorderRadius.circular(20),
-                        //     //       color: AppColors.primaryColor,
-                        //     //       border: Border.all(
-                        //     //           width: 2, color: AppColors.white)),
-                        //     //   child: Padding(
-                        //     //     padding: const EdgeInsets.all(10),
-                        //     //     child: CustomText(
-                        //     //       AppStrings.share,
-                        //     //       color: AppColors.white,
-                        //     //       fontSize: 20.sp,
-                        //     //       fontWeight: FontWeight.w700,
-                        //     //     ),
-                        //     //   ),
-                        //     // ),
-                        //     LocalAssets(
-                        //       imagePath: AppImageAssets.whatsapp,
-                        //       height: 80.h,
-                        //       width: 80.w,
-                        //     ),
-                        //     Container(
-                        //         height: 56.h,
-                        //         width: 65.w,
-                        //         decoration: BoxDecoration(
-                        //           color: AppColors.white,
-                        //           borderRadius: BorderRadius.circular(10),
-                        //           // image: DecorationImage(image: LocalAssets(imagePath: AppImageAssets.download,boxFix: BoxFit.fill,imgColor: AppColors.primaryColor,)
-                        //         ),
-                        //         child: const Center(
-                        //             child: LocalAssets(
-                        //           imagePath: AppImageAssets.messageBox,
-                        //         ))),
-                        //   ],
-                        // )
+                        SizeConfig.sH15,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Icon(
+                              Icons.share_outlined,
+                              color: AppColors.whiteFF,
+                              size: 30.w,
+                            ),
+                            // Container(
+                            //   decoration: BoxDecoration(
+                            //       borderRadius: BorderRadius.circular(20),
+                            //       color: AppColors.primaryColor,
+                            //       border: Border.all(
+                            //           width: 2, color: AppColors.white)),
+                            //   child: Padding(
+                            //     padding: const EdgeInsets.all(10),
+                            //     child: CustomText(
+                            //       AppStrings.share,
+                            //       color: AppColors.white,
+                            //       fontSize: 20.sp,
+                            //       fontWeight: FontWeight.w700,
+                            //     ),
+                            //   ),
+                            // ),
+                            GestureDetector(
+                              onTap: (){
+                                therapyPlanViewModel.generateAndSendPdfOnWhatsApp();
+                              },
+                              child: LocalAssets(
+                                imagePath: AppImageAssets.whatsapp,
+                                height: 80.h,
+                                width: 80.w,
+                              ),
+                            ),
+                            Container(
+                                height: 56.h,
+                                width: 65.w,
+                                decoration: BoxDecoration(
+                                  color: AppColors.white,
+                                  borderRadius: BorderRadius.circular(10),
+                                  // image: DecorationImage(image: LocalAssets(imagePath: AppImageAssets.download,boxFix: BoxFit.fill,imgColor: AppColors.primaryColor,)
+                                ),
+                                child: const Center(
+                                    child: LocalAssets(
+                                  imagePath: AppImageAssets.messageBox,
+                                ))),
+                          ],
+                        )
                       ],
                     ),
                   ),

@@ -138,4 +138,10 @@ class AppImageAssets {
 
   ///SCAN BANK CARD SCREEN
   static const gPayImg = "${AppConstants.baseImageAssetsPath}gPayImg.png";
+
+  /// SETTING SCREEN ICONS
+  static const accountIcon = "${AppConstants.baseIconAssetsPath}accountIcon.svg";
+  static const editProfileIcon = "${AppConstants.baseIconAssetsPath}editProfileIcon.svg";
+  static const editProfileCameraIcon = "${AppConstants.baseIconAssetsPath}editProfileCameraIcon.svg";
+
 }
