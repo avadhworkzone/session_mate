@@ -88,15 +88,21 @@ Drawer buildDrawer({required String userName}) {
                           const Divider(
                             color: AppColors.white,
                           ),
-                          commonDrawerBtn(
-                              image: AppImageAssets.person,
-                              title: AppStrings.therapyCentres,
-                              ontap: () {
-                                Get.to(() => const ManageTherapyCenters());
-                              }),
-                          const Divider(
-                            color: AppColors.white,
-                          ),
+                          SharedPreferenceUtils.getRole() ==
+                                  AppStrings.therapist
+                              ? commonDrawerBtn(
+                                  image: AppImageAssets.person,
+                                  title: AppStrings.therapyCentres,
+                                  ontap: () {
+                                    Get.to(() => const ManageTherapyCenters());
+                                  })
+                              : SizedBox(),
+                          SharedPreferenceUtils.getRole() ==
+                                  AppStrings.therapist
+                              ? const Divider(
+                                  color: AppColors.white,
+                                )
+                              : SizedBox(),
                           commonDrawerBtn(
                               image: AppImageAssets.setting,
                               title: AppStrings.settings,

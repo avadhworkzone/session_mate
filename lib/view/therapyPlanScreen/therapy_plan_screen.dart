@@ -73,10 +73,44 @@ class _TherapyPlanState extends State<TherapyPlan> {
                         //         text: AppStrings.childAge,
                         //         textEditingController:
                         //             therapyPlanViewModel.ageNameController.value)),
+                        Center(
+                          child: Container(
+                            decoration: BoxDecoration(
+                                color: AppColors.white,
+                                borderRadius: BorderRadius.circular(10)),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 20.w, vertical: 10.w),
+                            child: CustomText(
+                                assessmentAndPlanViewModel
+                                        .ageGroupData.value!.level ??
+                                    "",
+                                color: AppColors.black1c),
+                          ),
+                        ),
                         SizeConfig.sH20,
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                            CustomText(
+                              AppStrings.childName,
+                              color: AppColors.white,
+                              fontWeight: FontWeight.w700,
+                              fontSize: 20.w,
+                            ),
+                            SizeConfig.sH5,
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: List.generate(
+                                  assessmentAndPlanViewModel
+                                      .childNameSelectedList.length,
+                                  (index) => CustomText(
+                                        assessmentAndPlanViewModel
+                                                .childNameSelectedList[index]
+                                            ['name'],
+                                        color: AppColors.white,
+                                      )),
+                            ),
+                            SizeConfig.sH20,
                             CustomText(
                               AppStrings.category,
                               color: AppColors.white,

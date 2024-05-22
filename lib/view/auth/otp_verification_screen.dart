@@ -219,6 +219,10 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
         if (widget.isLoginScreen) {
           commonSnackBar(message: AppStrings.loginSuccessfully);
           await SharedPreferenceUtils.setIsLogin(true);
+          await SharedPreferenceUtils.setRole(
+              signInViewModel.signInRoleVal.value);
+          print(
+              'Login SharedPreferenceUtils==>>${SharedPreferenceUtils.getRole()}');
           await SharedPreferenceUtils.setUserId(
                   signInViewModel.signInPhoneNoController.value.text)
               .then((value) {
@@ -254,7 +258,6 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
           hideLoadingDialog(context: context);
           signUpOnTap();
         }
-
         // await AuthServices.deleteBlockedUser(number: widget.phoneNumber);
         // await authServices.signIn(context: context);
       } else {
@@ -276,7 +279,6 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
         // }
         // commonSnackBar(
         //     message: "Invalid Otp, $remainingAttempt attempts remaining");
-        logs('frg yhythjuyjh${e.toString()}');
       } else {
         commonSnackBar(message: e.toString());
         logs('invalid code === ${e.code}');
@@ -321,6 +323,9 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
     final status = await AuthService.signUp(model);
     if (status) {
       await SharedPreferenceUtils.setIsLogin(true);
+      await SharedPreferenceUtils.setRole(signUpViewModel.roleVal.value);
+      print(
+          'Sign Up SharedPreferenceUtils==>>${SharedPreferenceUtils.getRole()}');
       await SharedPreferenceUtils.setUserId(
               signUpViewModel.signUpPhoneNoController.value.text)
           .then((value) {
