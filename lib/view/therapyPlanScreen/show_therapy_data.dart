@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:session_mate/commonWidget/custom_text.dart';
+import 'package:session_mate/view/therapyPlanScreen/user_therapy_plan_screen.dart';
 import 'package:session_mate/viewModel/home_view_model.dart';
 
 class ShowTherapyData extends StatefulWidget {
@@ -29,7 +30,7 @@ class _ShowTherapyDataState extends State<ShowTherapyData> {
                 children: [
                   ListTile(
                     onTap: (){
-                      
+                      Get.to(()=> UserTherapyPlanScreen(therapyPlan: homeViewModel.currentTherapyPlanData[index],));
                     },
                     title: CustomText(
                         homeViewModel.currentTherapyPlanData[index]['userId']

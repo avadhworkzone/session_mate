@@ -111,7 +111,8 @@ class _HomeScreenState extends State<HomeScreen> {
                             if (homeViewModel.isFreeTrial.value == true) {
                               Get.to(() => const ShowTherapyData());
                             } else {
-                              commonSnackBar(message: AppStrings.yourFreeTrialEnd);
+                              commonSnackBar(
+                                  message: AppStrings.yourFreeTrialEnd);
                             }
                           }
                         }
