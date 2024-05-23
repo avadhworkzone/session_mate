@@ -34,8 +34,6 @@ Future<bool?> sendOtp({
         timeout: const Duration(seconds: 100),
         verificationCompleted: (PhoneAuthCredential credential) {},
         verificationFailed: (FirebaseAuthException exception) {
-          logs('VERI FAILED :${exception.code}');
-          logs('VERI FAILED ERROR :$exception');
           hideLoadingDialog(context: context);
           // setLoader(false);
           if (exception.code == 'invalid-phone-number' ||

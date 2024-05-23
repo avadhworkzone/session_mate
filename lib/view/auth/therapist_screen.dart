@@ -167,9 +167,6 @@ class _TherapistDetailScreenState extends State<TherapistDetailScreen> {
           countryCode: signUpViewModel.signUpCountryCode.value,
           context: context,
           isLoginScreen: false);
-      // await PreferenceManagerUtils.setUserId(model.mobileNumber ?? '');
-      // hideLoadingDialog(context: context);
-      // PreferenceManagerUtils.setLoginExist('true');
     } else {
       hideLoadingDialog(context: context);
       commonSnackBar(message: AppStrings.therapyCenterCodeError);

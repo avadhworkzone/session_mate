@@ -7,10 +7,7 @@ import 'package:session_mate/commonWidget/custom_text.dart';
 import 'package:session_mate/modal/add_session_data_model.dart';
 import 'package:session_mate/service/session_service.dart';
 import 'package:session_mate/utils/app_colors.dart';
-import 'package:session_mate/utils/app_image_assets.dart';
 import 'package:session_mate/utils/app_string.dart';
-import 'package:session_mate/utils/common_methods.dart';
-import 'package:session_mate/utils/local_assets.dart';
 import 'package:session_mate/utils/size_config_utils.dart';
 import 'package:session_mate/viewModel/session_view_model.dart';
 
@@ -65,8 +62,6 @@ class _RetrieveCountDetailScreenState extends State<RetrieveCountDetailScreen> {
       });
       print('Error fetching data: $error');
     });
-    // int count = await SessionService().fetchFilteredDataCount(
-    //     selectedSessionName!, sessionViewModel.monthIs.value);
   }
 
   @override

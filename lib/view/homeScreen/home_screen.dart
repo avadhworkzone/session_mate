@@ -82,11 +82,7 @@ class _HomeScreenState extends State<HomeScreen> {
             )
           ]),
           SizeConfig.sH45,
-          // Obx(() {
-          //   return
-          // homeViewModel.checkSubscriptionLoader.value == true
-          //   ? Expanded(child: Center(child: const CircularProgressIndicator()))
-          //   :
+
           Expanded(
             child: ListView.builder(
               itemCount: 3,

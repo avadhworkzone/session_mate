@@ -115,10 +115,6 @@ class CommonTextField extends StatelessWidget {
                     color: AppColors.black,
                     fontFamily: AppConstants.inter,
                     fontWeight: FontWeight.w400),
-            /*?? underLineBorder!
-                ? CustomTextStyle.textStyleInputField
-                .copyWith(color: AppColors.black)
-                : CustomTextStyle.textStyleInputField,*/
             keyboardType: keyBoardType ?? TextInputType.text,
             maxLines: maxLine ?? 1,
             textCapitalization: isCapitalize!
@@ -144,10 +140,6 @@ class CommonTextField extends StatelessWidget {
                       ? validationMessage ?? AppStrings.isRequired
                       : validationType == ValidationTypeEnum.email
                           ? ValidationMethod.validateEmail(value)
-                          // : validationType == ValidationTypeEnum.name
-                          //     ? ValidationMethod.validateName(value)
-                          //     : validationType == ValidationTypeEnum.address
-                          //         ? ValidationMethod.validateAddress(value)
                           : null;
             },
             textInputAction: textInputAction,
@@ -161,9 +153,6 @@ class CommonTextField extends StatelessWidget {
               contentPadding: contentPadding ??
                   EdgeInsets.symmetric(horizontal: 15.w, vertical: 17.h),
               hintText: hintText!.tr,
-              // errorBorder: OutlineInputBorder(
-              //     borderSide: BorderSide(color: AppColors.white),
-              //     borderRadius: BorderRadius.circular(10.r)),
               border: UnderlineInputBorder(
                   borderSide: BorderSide(
                       color:

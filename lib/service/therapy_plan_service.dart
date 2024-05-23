@@ -5,7 +5,6 @@ import 'package:session_mate/modal/get_session_list_model.dart';
 import 'package:session_mate/modal/goal_category_model.dart';
 import 'package:session_mate/modal/goal_sub_category_model.dart';
 import 'package:session_mate/modal/strategies_data_model.dart';
-import 'package:session_mate/modal/user_therapy_plan_model.dart';
 import 'package:session_mate/utils/collection_utils.dart';
 import 'package:session_mate/utils/common_methods.dart';
 import 'package:session_mate/utils/shared_preference_utils.dart';

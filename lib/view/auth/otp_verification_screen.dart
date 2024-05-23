@@ -47,8 +47,6 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
   SignUpViewModel signUpViewModel = Get.put(SignUpViewModel());
   SignInViewModel signInViewModel = Get.put(SignInViewModel());
 
-  // SignUpViewModel signUpViewModel = Get.find();
-  // SignInViewModel signInViewModel = Get.find();
   UserModel model = UserModel();
   final worldtimePlugin = Worldtime();
 
@@ -324,8 +322,6 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
     if (status) {
       await SharedPreferenceUtils.setIsLogin(true);
       await SharedPreferenceUtils.setRole(signUpViewModel.roleVal.value);
-      print(
-          'Sign Up SharedPreferenceUtils==>>${SharedPreferenceUtils.getRole()}');
       await SharedPreferenceUtils.setUserId(
               signUpViewModel.signUpPhoneNoController.value.text)
           .then((value) {
@@ -351,9 +347,6 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
       signUpViewModel.signUpConfirmPasswordController.value.clear();
       signUpViewModel.signUpPhoneIsValidate.value = false;
       otpViewModel.pinPutController.value.clear();
-      // PreferenceManagerUtils.setUserId(model.mobileNumber ?? '');
-      // PreferenceManagerUtils.setLoginExist('true');
-      // Get.offAll(() => DoctorSelectionScreen());
     } else {
       hideLoadingDialog(context: context);
       commonSnackBar(message: AppStrings.userExistError);
