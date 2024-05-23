@@ -30,7 +30,10 @@ class _ShowTherapyDataState extends State<ShowTherapyData> {
                 children: [
                   ListTile(
                     onTap: () {
-                      Get.to(()=> UserTherapyPlanScreen(therapyPlan: homeViewModel.currentTherapyPlanData[index],));
+                      Get.to(() => UserTherapyPlanScreen(
+                            therapyPlan:
+                                homeViewModel.currentTherapyPlanData[index],
+                          ));
                     },
                     title: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
