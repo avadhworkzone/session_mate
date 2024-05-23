@@ -24,8 +24,10 @@ class _SettingScreenState extends State<SettingScreen> {
   List<Map<String, dynamic>> settingOptionData = [
     {'icon': AppImageAssets.accountIcon, 'title': AppStrings.account},
     {'icon': AppImageAssets.editProfileIcon, 'title': AppStrings.editProfile},
-    {'icon': AppImageAssets.accountIcon, 'title': AppStrings.account},
-    {'icon': AppImageAssets.accountIcon, 'title': AppStrings.account}
+    {
+      'icon': AppImageAssets.notificationIcon,
+      'title': AppStrings.notifications
+    },
   ];
 
   @override
@@ -95,7 +97,7 @@ class _SettingScreenState extends State<SettingScreen> {
             child: ListView.builder(
               itemCount: settingOptionData.length,
               itemBuilder: (context, index) => Padding(
-                padding: EdgeInsets.symmetric(horizontal: 40.w, vertical: 5.h),
+                padding: EdgeInsets.symmetric(horizontal: 40.w, vertical: 10.h),
                 child: InkWell(
                   onTap: () {
                     // Get.to(const EditProfileScreen());

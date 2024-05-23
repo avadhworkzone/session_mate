@@ -227,4 +227,5 @@ class AppStrings {
   ///SETTING SCREEN
   static String account = "Account";
   static String editProfile = "Edit profile";
+  static String notifications = "Notifications";
 }
