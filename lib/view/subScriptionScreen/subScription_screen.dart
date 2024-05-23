@@ -7,9 +7,6 @@ import 'package:session_mate/utils/app_colors.dart';
 import 'package:session_mate/utils/app_constant.dart';
 import 'package:session_mate/utils/app_image_assets.dart';
 import 'package:session_mate/utils/app_string.dart';
-import 'package:session_mate/utils/local_assets.dart';
-import 'package:session_mate/utils/size_config_utils.dart';
-import 'package:session_mate/view/subScriptionScreen/common_subscription_textfield.dart';
 import 'package:session_mate/viewModel/subScription_view_model.dart';
 
 class SubscriptionsScreen extends StatefulWidget {

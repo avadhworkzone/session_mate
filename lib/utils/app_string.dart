@@ -151,6 +151,7 @@ class AppStrings {
   static String selectYourCurrentLevel = 'Select Your Current Level';
   static String selectYourStrategies = 'Select Your Strategies';
   static String selectYourSession = 'Please Select Session';
+  static String yourTherapyPlan = 'Your Therapy Plan';
 
   ///-------DropDown Data-------///
   static String zeroTo3YearTxt = '0 to 3 years';
