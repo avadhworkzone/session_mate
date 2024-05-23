@@ -10,8 +10,8 @@ import 'package:worldtime/worldtime.dart';
 class HomeViewModel extends GetxController {
   final worldtimePlugin = Worldtime();
   Rx<bool> isFreeTrial = true.obs;
-  List<Map<String,dynamic>> therapyPlanData = [];
-  List<Map<String,dynamic>> currentTherapyPlanData = [];
+  List<Map<String, dynamic>> therapyPlanData = [];
+  List<Map<String, dynamic>> currentTherapyPlanData = [];
   // GlobalKey<ScaffoldState> homeDrawerKey = GlobalKey();
   Rx<bool> checkSubscriptionLoader = false.obs;
   RxList<String> homeImageList = [
@@ -80,25 +80,22 @@ class HomeViewModel extends GetxController {
     }
   }
 
-
   Future<void> getTherapyPlanData() async {
     QuerySnapshot<Map<String, dynamic>> therapyDataSnapshot =
-    await CollectionUtils.userTherapyDataCollection.get();
+        await CollectionUtils.userTherapyDataCollection.get();
     therapyPlanData.clear();
     currentTherapyPlanData.clear();
     for (var element in therapyDataSnapshot.docs) {
       therapyPlanData.add(element.data());
     }
     for (var element in therapyPlanData) {
-      for(var userName in element['UserName']){
+      for (var userName in element['UserName']) {
         print(element['UserName'].length);
-        if(userName['mobile_number'] == SharedPreferenceUtils.getUserId()){
+        if (userName['mobile_number'] == SharedPreferenceUtils.getUserId()) {
           currentTherapyPlanData.add(element);
         }
       }
     }
-    print(currentTherapyPlanData[0]);
-    print(currentTherapyPlanData[1]);
     // print(therapyPlanData);
   }
 }

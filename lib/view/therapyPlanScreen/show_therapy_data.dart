@@ -28,11 +28,15 @@ class _ShowTherapyDataState extends State<ShowTherapyData> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   ListTile(
-                    onTap: (){
-                      
-                    },
-                    title: CustomText(
-                        homeViewModel.currentTherapyPlanData[index]['userId']
+                    onTap: () {},
+                    title: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        CustomText(homeViewModel.currentTherapyPlanData[index]
+                            ['therapistName']),
+                        CustomText(homeViewModel.currentTherapyPlanData[index]
+                            ['userId']),
+                      ],
                     ),
                   ),
                 ],

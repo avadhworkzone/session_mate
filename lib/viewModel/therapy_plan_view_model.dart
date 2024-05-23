@@ -62,11 +62,12 @@ class TherapyPlanViewModel extends GetxController {
     // userTherapyDataModel.value?.strategies = selectedStrategiesData;
   }
 
-  void setTherapyData() {
+  void setTherapyData({required String therapistName}) {
     combineAllSelectedData();
     Map<String, dynamic> data = {
       "sessionId": assessmentAndPlanViewModel.sessionData.value?.id,
       "userId": SharedPreferenceUtils.getUserId(),
+      'therapistName': therapistName,
       "childName": childNameText,
       "childAge": childAgeText,
       "goal": selectedGoalData,

@@ -264,7 +264,8 @@ class _TherapyPlanState extends State<TherapyPlan> {
                             ),
                             CustomBtn(
                               onTap: () {
-                                therapyPlanViewModel.setTherapyData();
+                                therapyPlanViewModel.setTherapyData(
+                                    therapistName: userDetail["userName"]);
                                 therapyPlanViewModel.generateAndSendPDFOnEmail(
                                     userEmailId: userDetail["email"]);
                               },
